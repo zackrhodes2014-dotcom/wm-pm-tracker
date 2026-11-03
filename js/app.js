@@ -38,7 +38,7 @@ function itemCard(v,it){const done=M.itemDone(v,it),iss=M.itemIssue(v,it),r=v.re
   return `<article class="card item ${iss?'issue':done?'done':''}" data-id="${esc(it.id)}">
    <div class="row sb" style="align-items:flex-start;gap:10px"><div style="min-width:0"><h2>${esc(M.itemName(it))}</h2>${it.kind==='task'?`<div class="tag">${esc(M.tmpl(v.templateId).label)} item</div>`:''}${u?.sample?`<div class="tag">sample unit</div>`:''}${u?.asset?`<div class="tag" data-asset>Asset ${esc(u.asset)}</div>`:''}${u?.cadence?`<div class="tag" data-cadence>${esc(u.cadence)}</div>`:''}${u?.notes?`<div class="muted text-sm" data-unotes>${esc(u.notes)}</div>`:''}${(u?.flags||[]).map(f=>`<div class="tag warn">⚠ ${esc(f)}</div>`).join('')}</div>
    <button class="flag ${iss?'on':''}" data-issue="${esc(it.id)}" ${ro?'disabled':''} aria-pressed="${iss}">⚑ ISSUE</button></div>
-   ${specLine(v,it)}<div class="chks">${chk}</div>
+   ${specLine(v,it)}<div class="chks">${chk}</div>${!ro&&!done&&!iss&&ap.length>1&&ap.some(f=>!r[f]?.v)?`<button class="btn ghost sm checkall" data-checkall="${esc(it.id)}">✓ Check all (${ap.filter(f=>!r[f]?.v).length})</button>`:''}
    <textarea class="note" rows="2" placeholder="Add note…" data-note="${esc(it.id)}" ${ro?'disabled':''}>${esc(r.note?.v||'')}</textarea>
    <div class="row" style="gap:6px;flex-wrap:wrap">${r.note?.v?`<span class="stamp muted2">✎ note ${esc(first(r.note.by))}, ${tfmt(r.note.at)}</span>`:''}${iss?`<span class="stamp red">⚑ ${esc(first(r.issue.by))}, ${tfmt(r.issue.at)}</span>`:''}${lr&&!iss?`<span class="stamp">✓ Done by ${esc(first(lr.by))}, ${tfmt(lr.at)}</span>`:''}</div></article>`}
 
@@ -71,7 +71,8 @@ function remainingList(v,areas,items){const rem=items.filter(i=>M.remaining(v,i)
  return `<div class="muted font-bold mt-3" id="remcount">${rem.length} remaining</div>`+areas.map(a=>{const r=rem.filter(i=>M.itemArea(i)===a.id).sort((x,y)=>M.itemIssue(v,y)-M.itemIssue(v,x));return r.length?`<h3 class="grp">${esc(a.name)} <span class="muted">(${r.length})</span></h3>`+r.map(i=>itemCard(v,i)).join(''):''}).join('')}
 function areaView(l,a){const v=M.currentVisit(l.id),its=M.visibleItems(v,a.id),x=M.stats(v,its);
  const shown=ui.mode==='all'?its.map(i=>itemCard(v,i)).join(''):remainingList(v,[a],its);
- return header('#/l/'+l.id,a.name,`<div class="row sb"><span>${x.done}/${x.total} items complete</span><span class="red">${x.issues} issue${x.issues==1?'':'s'}</span></div>`)+`<main class="wrap has-bottom">${bar(x.pct)}${seg()}<div id="list">${shown}</div></main>
+ const cp=v.status==='active'?M.checkAllPlan(v,its):{plan:[]};
+ return header('#/l/'+l.id,a.name,`<div class="row sb"><span>${x.done}/${x.total} items complete</span><span class="red">${x.issues} issue${x.issues==1?'':'s'}</span></div>`)+`<main class="wrap has-bottom">${bar(x.pct)}${cp.plan.length?`<button class="btn ghost mt-3" id="checkarea" data-checkarea="${a.id}">✓ Check all in ${esc(a.name)} (${cp.plan.length})</button>`:''}${seg()}<div id="list">${shown}</div></main>
  <nav class="bottom stats"><span class="green">✓ ${x.done} done</span><span class="amber">● ${x.prog} in prog</span><span class="red">⚑ ${x.issues} issues</span><span class="muted">○ ${x.left} left</span></nav>`}
 function visitsView(l){const vs=M.st().visits.filter(x=>x.locationId===l.id).slice().reverse(),cur=M.currentVisit(l.id);
  return header('#/l/'+l.id,'Visits',esc(l.name))+`<main class="wrap"><div class="card"><h2>Start new visit from template</h2>
@@ -195,8 +196,19 @@ function sheetHtml(){const s=ui.sheet;if(!s)return '';
   <p class="muted font-bold">${due.length?'Due this month: '+due.join(', '):'Not scheduled this month — will be tagged “Out of season”.'}</p>
   <div class="lab">Codes to include</div><div class="checkgrid">${codes.map(c=>`<label class="toggle"><input type="checkbox" data-gcode="${c}" ${s.codes.includes(c)?'checked':''}> ${esc(c)} · ${esc(M.codeLabel(l.id,c))}</label>`).join('')}</div>
   <div class="row mt-3" style="gap:10px"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" id="startgroup">Start visit</button></div></section>`}
+ if(s.type==='checkarea'){const v=M.st().visits.find(x=>x.id===s.visit),a=M.area(s.area),{plan,skipped}=M.checkAllPlan(v,M.visibleItems(v,a.id));
+  return `<div class="sheet-back" data-close></div><section class="sheet" role="alertdialog" aria-label="Confirm check all"><div class="grab"></div><h2>Check ${plan.length} item${plan.length==1?'':'s'} in ${esc(a.name)}?</h2>
+  <p class="muted font-bold mt-2">Each is stamped ${esc(user())}, now. Already-checked items keep their stamp. Notes untouched.${skipped?` <span class="red">${skipped} unit${skipped==1?'':'s'} flagged ISSUE will be skipped.</span>`:''}</p>
+  <div class="row mt-4" style="gap:10px"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" id="confirmcheckarea">✓ Check all</button></div></section>`}
  if(s.type==='newsize')return `<div class="sheet-back" data-close></div><section class="sheet" role="dialog"><div class="grab"></div><h2>New ${s.kind} size</h2><input class="inp" id="nsname" placeholder="${s.kind==='filter'?'20X20X2':'A49'}"><div class="row mt-3" style="gap:10px"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" id="nssave">Add size</button></div></section>`;
  return ''}
+
+// ---------- toast with Undo ----------
+let toastT=null;function toast(msg,undo){document.querySelector('.toast')?.remove();clearTimeout(toastT);const d=document.createElement('div');d.className='toast';d.setAttribute('role','status');
+ d.innerHTML=`<span>${esc(msg)}</span>${undo?'<button class="btn ghost mini2" id="undocheck">Undo</button>':''}`;document.body.appendChild(d);ui.lastCheck=undo||null;
+ toastT=setTimeout(()=>{d.remove();ui.lastCheck=null},6000)}
+function doCheckAll(v,items,label){const r=M.checkAll(v,items,user());if(navigator.vibrate)navigator.vibrate(15);rerender();
+ toast(`✓ ${r.ticked} checked${label?' in '+label:''}${r.skipped?` · ${r.skipped} ISSUE unit${r.skipped==1?'':'s'} skipped`:''}`,r.ticked?r:null);return r}
 
 // ---------- router / render ----------
 function route(){return location.hash.replace(/^#\/?/,'').split('?')[0].split('/')}
@@ -231,6 +243,10 @@ document.addEventListener('click',async e=>{const t=e.target.closest('button,[da
  if(t.dataset.edit){const [item,field]=t.dataset.edit.split('|');ui.sheet={type:'time',visit:v.id,item,field};rerender();return}
  if(t.id==='savetime'){const s=ui.sheet,vv=M.st().visits.find(x=>x.id===s.visit);const iso=new Date(`${$('#tdate').value}T${$('#ttime').value}`).toISOString?.();
   try{S.editStampTime(vv,s.item,s.field,new Date(`${$('#tdate').value}T${$('#ttime').value}`).toISOString(),u);ui.sheet=null;rerender()}catch(err){$('#terr').textContent=err.message.includes('Invalid')?'Pick a valid date and time':err.message}return}
+ if(t.dataset.checkall){const it=v.items.find(i=>i.id===t.dataset.checkall);window.__lastCheckAll=doCheckAll(v,[it],M.itemName(it));return}
+ if(t.dataset.checkarea){ui.sheet={type:'checkarea',visit:v.id,area:t.dataset.checkarea};rerender();return}
+ if(t.id==='confirmcheckarea'){const s=ui.sheet;ui.sheet=null;const vv=M.st().visits.find(x=>x.id===s.visit);window.__lastCheckAll=doCheckAll(vv,M.visibleItems(vv,s.area),M.area(s.area).name);return}
+ if(t.id==='undocheck'){if(ui.lastCheck){M.undoCheckAll(ui.lastCheck,u);ui.lastCheck=null}document.querySelector('.toast')?.remove();rerender();return}
  if(t.dataset.issue){const cur=v.records[t.dataset.issue]?.issue?.v;S.setField(v,t.dataset.issue,'issue',!cur,u);rerender();return}
  if(t.id==='startvisit'){ui.noAuto=true;M.newVisit(l.id,$('#tpl').value,$('#vlabel').value.trim(),$('#vdate').value,u);ui.mode='all';location.hash='#/l/'+l.id;return}
  if(t.dataset.open){ui.noAuto=true;M.st().currentVisit[l.id]=t.dataset.open;S.save();location.hash='#/l/'+l.id;return}

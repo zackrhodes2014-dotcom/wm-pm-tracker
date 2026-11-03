@@ -28,3 +28,7 @@ export function editStampTime(visit,itemId,field,newIso,by){
   (rec.history||=[]).push({from:rec.at,to:iso,editedAt:now(),editedBy:by});
   rec.at=iso;rec.editedAt=now();rec.editedBy=by;rec.by=by;visit.updatedAt=now();visit.updatedBy=by;
   logChange('record',visit.id+'/'+itemId,field+'.at',{at:iso,originalLoggedAt:rec.originalLoggedAt,editedAt:rec.editedAt,editedBy:by},by);save();return rec}
+// Undo helper: put back exactly the record that was there before (or remove it), logged like a normal change.
+export function restoreField(visit,itemId,field,prev,by){const rec=(visit.records[itemId]||={});
+  if(prev)rec[field]=prev;else delete rec[field];visit.updatedAt=now();visit.updatedBy=by;
+  logChange('record',visit.id+'/'+itemId,field,prev?prev.v:false,by);save()}
