@@ -11,7 +11,7 @@ const first=n=>(n||'').split(' ')[0];
 const tfmt=iso=>new Date(iso).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
 const dtfmt=iso=>new Date(iso).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
 const dfmt=d=>new Date(d+'T12:00').toLocaleDateString([], {month:'short',day:'numeric',year:'numeric'});
-const ui={mode:'all',reportArea:'all',reportKind:'Mid-PM',parts:true,log:true,sheet:null,draft:null};
+const ui={layout:localStorage.getItem('wmpm.layout')==='grid'?'grid':'cards',mode:'all',reportArea:'all',reportKind:'Mid-PM',parts:true,log:true,sheet:null,draft:null};
 const user=()=>S.getUser(), isOwner=()=>user()===M.OWNER;
 const pad=n=>String(n).padStart(2,'0');
 const localParts=iso=>{const d=new Date(iso);return [`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`,`${pad(d.getHours())}:${pad(d.getMinutes())}`]};
@@ -21,6 +21,27 @@ function syncPill(){const s=Sync.status(S.outbox().length);return `<span class="
 function header(back,title,sub){const u=user();return `<header class="topbar"><div class="row sb">${back?`<a class="btn ghost sq" href="${back}" aria-label="Back">‹</a>`:`<span class="brand"><img src="brand/logo-horizontal.svg" alt="West Mechanical PM Tracker" id="brandlogo"></span>`}<div class="row" style="gap:8px">${syncPill()}${!back&&isOwner()?`<a class="btn ghost sq gear" id="settingsbtn" href="#/settings" aria-label="Settings">⚙</a>`:''}<button class="chip" id="userchip" aria-label="Switch user"><span class="av">${esc(u[0])}</span>${esc(first(u))}</button></div></div>
  ${title?`<h1 class="mt-3">${esc(title)}</h1>`:''}${sub?`<div class="muted font-bold mt-1">${sub}</div>`:''}</header>`}
 const bar=(p,g)=>`<div class="bar ${g?'g':''}"><i style="width:${p}%"></i></div>`;
+const layoutSeg=()=>`<div class="seg mt-2" role="tablist" aria-label="Layout">${['cards','grid'].map(m=>`<button class="${ui.layout===m?'on':''}" data-layout="${m}" role="tab" aria-selected="${ui.layout===m}">${m==='cards'?'▤ Cards':'▦ Grid'}</button>`).join('')}</div>`;
+// ---------- spreadsheet-style grid (optional; per-device) ----------
+function cellSummary(u,f){if(!u)return '';const fmt=a=>a.map(x=>`${x.qty}× ${M.sizeName(x.sizeId)}`).join(' + ');
+ if(f==='filters')return u.filters?.length?fmt(u.filters):'';if(f==='belts')return u.belts?.length?fmt(u.belts):'';return ''}
+function gridHtml(v,areas,items,whole){const its=items.filter(i=>ui.mode==='all'||M.remaining(v,i));
+ if(!its.length)return `<div class="card done mt-4 text-center"><h2 class="green">✓ Nothing left</h2></div>`;
+ const cols=[];its.forEach(it=>{const tf=it.kind==='unit'?M.tfields(v,it):['done'];tf.forEach(f=>cols.includes(f)||cols.push(f))});
+ const order=['filters','belts','ops',M.MERGED,'done'];cols.sort((a,b)=>(order.indexOf(a)+99)%99-(order.indexOf(b)+99)%99);
+ const act=v.status==='active';const aid=whole?'':(areas[0]?.id||'');
+ const head=`<tr><th class="gsticky gcorner">Unit</th>${cols.map(f=>{const n=M.checkAllPlan(v,its,f).plan.length;const d=M.fieldDef(f);
+   return `<th>${act&&n?`<button class="gcolbtn" data-gcol="${f}" data-garea="${aid}" aria-label="Check all ${esc(d.label)}">${esc(d.short||d.label)}<small>✓ all (${n})</small></button>`:`<span class="gcolh">${esc(d.short||d.label)}</span>`}</th>`}).join('')}<th>Notes / Issue</th><th>Row</th></tr>`;
+ const row=it=>{const r=v.records[it.id]||{},u=it.kind==='unit'?M.unit(it.unitId):null,ap=M.fields(v,it),tf=it.kind==='unit'?M.tfields(v,it):['done'],iss=M.itemIssue(v,it),ro=!act||M.itemGone(it),done=M.itemDone(v,it);
+   const cells=cols.map(f=>{if(!tf.includes(f))return '<td class="gnone"></td>';const na=!ap.includes(f),on=!!r[f]?.v,sum=cellSummary(u,f);
+     if(na&&!on)return `<td><span class="gcell na" aria-disabled="true">N/A</span></td>`;
+     return `<td><button class="gcell ${on?'on':''}" data-item="${esc(it.id)}" data-field="${f}" ${ro?'disabled':''} aria-pressed="${on}" aria-label="${esc(M.itemName(it))} ${esc(M.fieldDef(f).label)}"><span class="gbox">${on?'✓':''}</span>${sum?`<span class="gsum">${esc(sum)}</span>`:''}${on?`<span class="gstamp">${r[f].editedAt?'✎ ':''}${esc(first(r[f].by))} ${tfmt(r[f].at)}</span>`:''}</button></td>`}).join('');
+   const left=ap.filter(f=>!r[f]?.v).length;
+   return `<tr class="grow ${iss?'gissue':done?'gdone':''}" data-grow="${esc(it.id)}"><th class="gsticky"><button class="gname" data-gunit="${esc(it.id)}">${esc(M.itemName(it))}${u?.asset?`<small>Asset ${esc(u.asset)}</small>`:''}${u?.sample?'<small>sample</small>':''}</button></th>${cells}
+    <td><button class="gflag ${iss?'on':''}" data-issue="${esc(it.id)}" ${ro?'disabled':''} aria-pressed="${iss}" aria-label="Issue">⚑</button>${r.note?.v?`<button class="gnote" data-gunit="${esc(it.id)}" aria-label="Note">✎</button>`:''}</td>
+    <td>${!ro&&!iss&&left>1?`<button class="gcheckrow" data-checkall="${esc(it.id)}" aria-label="Check all for ${esc(M.itemName(it))}">✓ all</button>`:''}</td></tr>`};
+ const body=areas.map(a=>{const rs=its.filter(i=>M.itemArea(i)===a.id);if(!rs.length)return '';return (whole?`<tr class="gsec"><th class="gsticky" colspan="1">${esc(a.name)}</th><td colspan="${cols.length+2}"></td></tr>`:'')+rs.map(row).join('')}).join('');
+ return `<div class="gridwrap" id="grid"><table class="grid"><thead>${head}</thead><tbody>${body}</tbody></table></div><p class="muted text-xs mt-2">Tap a cell to tick/untick · tap a unit name for notes, issue &amp; editing times · column header ✓ all ticks that column (skips ISSUE units).</p>`}
 const seg=()=>`<div class="seg mt-3" role="tablist">${['all','remaining'].map(m=>`<button class="${ui.mode===m?'on':''}" data-mode="${m}" role="tab" aria-selected="${ui.mode===m}">${m==='all'?'All':'Remaining'}</button>`).join('')}</div>`;
 function specLine(v,it){if(it.kind!=='unit')return '';const u=M.unit(it.unitId);if(!u)return '';const tf=M.tfields(v,it),p=[];
   const fmt=a=>a.map(x=>`${x.qty} x ${M.sizeName(x.sizeId)}`).join(' + ');
@@ -57,6 +78,7 @@ function areasForVisit(v){const all=M.areasOf(v.locationId,true);return all.filt
 function locView(l){const v=M.currentVisit(l.id);if(!v)return header('#/',l.name)+`<main class="wrap"><a class="btn primary" href="#/l/${l.id}/visits">Start a visit</a></main>`;
  const items=M.visibleItems(v),s=M.stats(v,items),t=M.tmpl(v.templateId);let body='';
  if(!items.length)body=`<div class="card mt-4 empty"><h2>No units in this visit</h2><p class="muted mt-2 font-bold">${esc(t.emptyText||(v.templateId==='schedule'?'No units are tagged with this equipment group yet. Tag units in Settings → unit editor.':'No units yet.'))}</p></div>`;
+ else if(ui.layout==='grid')body=gridHtml(v,areasForVisit(v),items,true);
  else if(ui.mode==='all')body=areasForVisit(v).map(a=>{const its=M.visibleItems(v,a.id);if(!its.length)return '';const x=M.stats(v,its),dn=x.total&&x.done===x.total;
   return `<a class="card area ${dn?'done':''}" href="#/l/${l.id}/a/${a.id}" data-area="${a.id}"><div class="row sb"><h2>${esc(a.name)}${a.archived?' (removed)':''}</h2>${x.issues?`<span class="badge">⚑ ${x.issues}</span>`:dn?'<span class="green font-black">✓ DONE</span>':''}</div>${bar(x.pct,dn)}
    <div class="row sb muted text-sm font-bold mt-2"><span>${x.done}/${x.total} items</span><span>${x.last?esc(first(x.last.by))+', '+tfmt(x.last.at):''}</span></div></a>`}).join('');
@@ -64,15 +86,15 @@ function locView(l){const v=M.currentVisit(l.id);if(!v)return header('#/',l.name
  return header('#/',l.name,`${esc(v.label)} · ${dfmt(v.date)}${v.status!=='active'?' · <span class="green">COMPLETED (history)</span>':''}`)+`<main class="wrap has-bottom">
   <div class="row mt-3" style="gap:8px"><a class="btn ghost sm" href="#/l/${l.id}/visits">📋 Visits (${M.st().visits.filter(x=>x.locationId===l.id).length})</a><a class="btn ghost sm" href="#/l/${l.id}/history">🕘 History log</a>${l.schedule?`<a class="btn ghost sm" id="schedbtn" href="#/l/${l.id}/schedule">🗓 Schedule</a>`:''}</div>${v.outOfSeason?'<span class="tag" id="oostag">Out of season</span>':''}${v.kind==='month'?`<span class="tag" id="monthtag">Monthly visit · stays open all month</span>`:''}${l.schedule&&M.overdue(l.id).length?`<a class="card issue mt-3" style="display:block" id="overduebanner" href="#/l/${l.id}/schedule"><b class="red">⚠ Overdue from ${M.overdue(l.id).map(o=>esc(o.visit.label)).join(', ')}</b><div class="muted text-sm">${M.overdue(l.id).reduce((n,o)=>n+o.open.length,0)} item(s) still open · tap for Schedule</div></a>`:''}
   <div class="card prog"><div class="row sb"><div><div class="muted font-bold text-sm">OVERALL PROGRESS</div><div class="big">${s.done}<span class="muted text-xl">/${s.total} items</span></div></div><div class="text-right"><div class="big amber">${s.pct}%</div><div class="red font-bold">${s.issues} issue${s.issues==1?'':'s'}</div></div></div>${bar(s.pct)}</div>
-  ${seg()}<div id="list">${body}</div></main>
+  ${seg()}${layoutSeg()}<div id="list">${body}</div></main>
   <nav class="bottom"><div class="row" style="gap:10px"><a class="btn primary" href="#/l/${l.id}/report">📄 Issue Report</a><a class="btn ghost" style="width:40%" href="#/l/${l.id}/parts">🧰 Parts</a></div></nav>`}
 function remainingList(v,areas,items){const rem=items.filter(i=>M.remaining(v,i));
  if(!rem.length)return `<div class="card done mt-4 text-center"><h2 class="green">✓ Nothing left</h2><p class="muted">All items checked, no open issues.</p></div>`;
  return `<div class="muted font-bold mt-3" id="remcount">${rem.length} remaining</div>`+areas.map(a=>{const r=rem.filter(i=>M.itemArea(i)===a.id).sort((x,y)=>M.itemIssue(v,y)-M.itemIssue(v,x));return r.length?`<h3 class="grp">${esc(a.name)} <span class="muted">(${r.length})</span></h3>`+r.map(i=>itemCard(v,i)).join(''):''}).join('')}
 function areaView(l,a){const v=M.currentVisit(l.id),its=M.visibleItems(v,a.id),x=M.stats(v,its);
- const shown=ui.mode==='all'?its.map(i=>itemCard(v,i)).join(''):remainingList(v,[a],its);
+ const shown=ui.layout==='grid'?gridHtml(v,[a],its,false):ui.mode==='all'?its.map(i=>itemCard(v,i)).join(''):remainingList(v,[a],its);
  const cp=v.status==='active'?M.checkAllPlan(v,its):{plan:[]};
- return header('#/l/'+l.id,a.name,`<div class="row sb"><span>${x.done}/${x.total} items complete</span><span class="red">${x.issues} issue${x.issues==1?'':'s'}</span></div>`)+`<main class="wrap has-bottom">${bar(x.pct)}${cp.plan.length?`<button class="btn ghost mt-3" id="checkarea" data-checkarea="${a.id}">✓ Check all in ${esc(a.name)} (${cp.plan.length})</button>`:''}${seg()}<div id="list">${shown}</div></main>
+ return header('#/l/'+l.id,a.name,`<div class="row sb"><span>${x.done}/${x.total} items complete</span><span class="red">${x.issues} issue${x.issues==1?'':'s'}</span></div>`)+`<main class="wrap has-bottom">${bar(x.pct)}${cp.plan.length?`<button class="btn ghost mt-3" id="checkarea" data-checkarea="${a.id}">✓ Check all in ${esc(a.name)} (${cp.plan.length})</button>`:''}${seg()}${layoutSeg()}<div id="list">${shown}</div></main>
  <nav class="bottom stats"><span class="green">✓ ${x.done} done</span><span class="amber">● ${x.prog} in prog</span><span class="red">⚑ ${x.issues} issues</span><span class="muted">○ ${x.left} left</span></nav>`}
 function visitsView(l){const vs=M.st().visits.filter(x=>x.locationId===l.id).slice().reverse(),cur=M.currentVisit(l.id);
  return header('#/l/'+l.id,'Visits',esc(l.name))+`<main class="wrap"><div class="card"><h2>Start new visit from template</h2>
@@ -196,6 +218,12 @@ function sheetHtml(){const s=ui.sheet;if(!s)return '';
   <p class="muted font-bold">${due.length?'Due this month: '+due.join(', '):'Not scheduled this month — will be tagged “Out of season”.'}</p>
   <div class="lab">Codes to include</div><div class="checkgrid">${codes.map(c=>`<label class="toggle"><input type="checkbox" data-gcode="${c}" ${s.codes.includes(c)?'checked':''}> ${esc(c)} · ${esc(M.codeLabel(l.id,c))}</label>`).join('')}</div>
   <div class="row mt-3" style="gap:10px"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" id="startgroup">Start visit</button></div></section>`}
+ if(s.type==='unit'){const v=M.st().visits.find(x=>x.id===s.visit),it=v.items.find(i=>i.id===s.item);if(!it)return '';
+  return `<div class="sheet-back" data-close></div><section class="sheet unitsheet" role="dialog" aria-label="Unit detail"><div class="grab"></div><div class="row sb"><h2>Unit detail</h2><button class="btn ghost mini2" data-close>Close</button></div>${itemCard(v,it)}</section>`}
+ if(s.type==='checkcol'){const v=M.st().visits.find(x=>x.id===s.visit),a=s.area?M.area(s.area):null,its=M.visibleItems(v,a?.id).filter(i=>ui.mode==='all'||M.remaining(v,i)),{plan,skipped}=M.checkAllPlan(v,its,s.field),d=M.fieldDef(s.field);
+  return `<div class="sheet-back" data-close></div><section class="sheet" role="alertdialog" aria-label="Confirm check column"><div class="grab"></div><h2>Check ${esc(d.label)} on ${plan.length} unit${plan.length==1?'':'s'} in ${esc(a?a.name:M.loc(v.locationId).name)}?</h2>
+  <p class="muted font-bold mt-2">Each is stamped ${esc(user())}, now. Already-checked cells keep their stamp.${skipped?` <span class="red">${skipped} unit${skipped==1?'':'s'} flagged ISSUE will be skipped.</span>`:''}</p>
+  <div class="row mt-4" style="gap:10px"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" id="confirmcheckcol">✓ Check column</button></div></section>`}
  if(s.type==='checkarea'){const v=M.st().visits.find(x=>x.id===s.visit),a=M.area(s.area),{plan,skipped}=M.checkAllPlan(v,M.visibleItems(v,a.id));
   return `<div class="sheet-back" data-close></div><section class="sheet" role="alertdialog" aria-label="Confirm check all"><div class="grab"></div><h2>Check ${plan.length} item${plan.length==1?'':'s'} in ${esc(a.name)}?</h2>
   <p class="muted font-bold mt-2">Each is stamped ${esc(user())}, now. Already-checked items keep their stamp. Notes untouched.${skipped?` <span class="red">${skipped} unit${skipped==1?'':'s'} flagged ISSUE will be skipped.</span>`:''}</p>
@@ -212,7 +240,7 @@ function doCheckAll(v,items,label){const r=M.checkAll(v,items,user());if(navigat
 
 // ---------- router / render ----------
 function route(){return location.hash.replace(/^#\/?/,'').split('?')[0].split('/')}
-function render(){const y=scrollY,app=$('#app');
+function render(){const y=scrollY,app=$('#app'),gw=$('#grid'),gs=gw&&render.keep?[gw.scrollLeft,gw.scrollTop]:null;
  if(!user()){app.innerHTML=login();return}
  const p=route();let h;
  if(p[0]==='l'&&M.loc(p[1])){const l=M.loc(p[1]);
@@ -223,7 +251,7 @@ function render(){const y=scrollY,app=$('#app');
   else if(p[1]==='u'){const aid=new URLSearchParams(location.hash.split('?')[1]).get('area')||M.unit(p[2])?.areaId;h=settingsArea(M.area(ui.draft&&ui.draft._for?.startsWith(p[2])?ui.draft.areaId:aid)||M.area(aid))+settingsUnit(p[2],aid)}
   else if(p[1]==='sizes')h=settingsSizes(p[2]==='belt'?'belt':'filter');else if(p[1]==='archived')h=settingsArchived();else h=settingsHome()}
  else if(p[0]==='import')h=importView();else h=home();
- app.innerHTML=h+sheetHtml();document.title='West Mechanical PM Tracker';
+ app.innerHTML=h+sheetHtml();document.title='West Mechanical PM Tracker';if(gs&&$('#grid')){$('#grid').scrollLeft=gs[0];$('#grid').scrollTop=gs[1]}
  if(render.keep)scrollTo(0,y);render.keep=false}
 function rerender(){render.keep=true;render()}
 const ctxLoc=()=>{const p=route();return p[0]==='l'?M.loc(p[1]):null};
@@ -243,6 +271,11 @@ document.addEventListener('click',async e=>{const t=e.target.closest('button,[da
  if(t.dataset.edit){const [item,field]=t.dataset.edit.split('|');ui.sheet={type:'time',visit:v.id,item,field};rerender();return}
  if(t.id==='savetime'){const s=ui.sheet,vv=M.st().visits.find(x=>x.id===s.visit);const iso=new Date(`${$('#tdate').value}T${$('#ttime').value}`).toISOString?.();
   try{S.editStampTime(vv,s.item,s.field,new Date(`${$('#tdate').value}T${$('#ttime').value}`).toISOString(),u);ui.sheet=null;rerender()}catch(err){$('#terr').textContent=err.message.includes('Invalid')?'Pick a valid date and time':err.message}return}
+ if(t.dataset.layout){ui.layout=t.dataset.layout;localStorage.setItem('wmpm.layout',ui.layout);rerender();return}
+ if(t.dataset.gunit){ui.sheet={type:'unit',visit:v.id,item:t.dataset.gunit};rerender();return}
+ if(t.dataset.gcol){ui.sheet={type:'checkcol',visit:v.id,field:t.dataset.gcol,area:t.dataset.garea||null};rerender();return}
+ if(t.id==='confirmcheckcol'){const s=ui.sheet;ui.sheet=null;const vv=M.st().visits.find(x=>x.id===s.visit);const its=M.visibleItems(vv,s.area||undefined).filter(i=>ui.mode==='all'||M.remaining(vv,i));
+  const r=M.checkAll(vv,its,u,s.field);window.__lastCheckAll=r;rerender();toast(`✓ ${M.fieldDef(s.field).label}: ${r.ticked} checked${r.skipped?` · ${r.skipped} ISSUE unit${r.skipped==1?'':'s'} skipped`:''}`,r.ticked?r:null);return}
  if(t.dataset.checkall){const it=v.items.find(i=>i.id===t.dataset.checkall);window.__lastCheckAll=doCheckAll(v,[it],M.itemName(it));return}
  if(t.dataset.checkarea){ui.sheet={type:'checkarea',visit:v.id,area:t.dataset.checkarea};rerender();return}
  if(t.id==='confirmcheckarea'){const s=ui.sheet;ui.sheet=null;const vv=M.st().visits.find(x=>x.id===s.visit);window.__lastCheckAll=doCheckAll(vv,M.visibleItems(vv,s.area),M.area(s.area).name);return}
@@ -303,7 +336,7 @@ document.addEventListener('change',async e=>{const t=e.target;const l=ctxLoc(),u
   S.init(data.state);localStorage.setItem('wmpm.outbox.v1',JSON.stringify(data.outbox||[]));render();$('#bkresult').innerHTML='<span class="green">✓ Backup restored</span>'}catch(err){$('#bkresult').innerHTML=`<span class="red">✗ ${esc(err.message)}</span>`}}
 });
 function autoMonth(){const p=route();if(p[0]==='l'&&!p[2]&&M.loc(p[1])&&!ui.noAuto)M.ensureMonthVisit(p[1],user()||'seed');ui.noAuto=false}
-addEventListener('hashchange',()=>{autoMonth();ui.mode='all';ui.sheet=null;if(!location.hash.includes('/report'))ui.reportArea='all';if(!location.hash.includes('/settings/u/'))ui.draft=null;render();scrollTo(0,0)});
+addEventListener('hashchange',()=>{document.querySelector('.toast')?.remove();autoMonth();ui.mode='all';ui.sheet=null;if(!location.hash.includes('/report'))ui.reportArea='all';if(!location.hash.includes('/settings/u/'))ui.draft=null;render();scrollTo(0,0)});
 addEventListener('online',()=>{Sync.syncNow(S.outbox,S.clearOutbox).finally(rerender)});addEventListener('offline',rerender);
 
 export async function boot(){S.load();

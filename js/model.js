@@ -234,11 +234,11 @@ export function migrateGroups(s,seed){const m=seed.groupMigration;if(!m||(s.grou
 
 // ---- Check all (unit or area): ticks every applicable, not-yet-checked field of the current checklist.
 // Already-checked fields keep their stamp; units flagged ISSUE are skipped; notes/issue untouched.
-export function checkAllPlan(v,items){const plan=[];let skipped=0;
-  for(const it of items){if(itemGone(it))continue;if(itemIssue(v,it)){if(fields(v,it).some(f=>!val(v,it,f)))skipped++;continue}
-    for(const f of fields(v,it))if(!val(v,it,f))plan.push([it.id,f])}
+export function checkAllPlan(v,items,only){const plan=[];let skipped=0;const fl=it=>fields(v,it).filter(f=>!only||f===only);
+  for(const it of items){if(itemGone(it))continue;if(itemIssue(v,it)){if(fl(it).some(f=>!val(v,it,f)))skipped++;continue}
+    for(const f of fl(it))if(!val(v,it,f))plan.push([it.id,f])}
   return {plan,skipped}}
-export function checkAll(v,items,by){const {plan,skipped}=checkAllPlan(v,items);const undo=[];
+export function checkAll(v,items,by,only){const {plan,skipped}=checkAllPlan(v,items,only);const undo=[];
   for(const [iid,f] of plan){const prev=v.records[iid]?.[f];undo.push([iid,f,prev?structuredClone(prev):null]);S.setField(v,iid,f,true,by)}
   return {ticked:plan.length,skipped,undo,visitId:v.id}}
 export function undoCheckAll(res,by){const v=st().visits.find(x=>x.id===res.visitId);if(!v)return;for(const [iid,f,prev] of res.undo)S.restoreField(v,iid,f,prev,by)}
