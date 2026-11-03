@@ -294,7 +294,7 @@ function route(){return location.hash.replace(/^#\/?/,'').split('?')[0].split('/
 // Visible error panel instead of a blank list if init/render throws. Reset only clears the app's offline cache +
 // service worker; saved PM data (localStorage) is kept.
 function fatal(err){console.error(err);const app=$('#app')||document.body;
- app.innerHTML=`<main class="wrap"><div class="card mt-4" id="fatal" role="alert" style="border-color:#ef4444"><h2 class="red">Something went wrong loading the app</h2>
+ app.innerHTML=`<main class="wrap"><div class="card mt-4" id="fatal" role="alert" style="border-color:#b91c1c"><h2 class="red">Something went wrong loading the app</h2>
   <p class="muted font-bold mt-2">Your saved PM data is still on this phone. Try Reload first; if it keeps happening tap Reset app cache.</p>
   <pre class="text-sm mt-2" style="white-space:pre-wrap;word-break:break-word">${esc(String(err&&err.stack||err)).slice(0,600)}</pre>
   <div class="row mt-4" style="gap:10px"><button class="btn ghost" id="fatalreload">↻ Reload</button><button class="btn primary" id="fatalreset">Reset app cache</button></div></div></main>`;
