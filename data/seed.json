@@ -1,0 +1,4450 @@
+{
+ "version": 10,
+ "generatedAt": "2026-11-03T02:04:40.839Z",
+ "note": "Hills Pet Foods = real data from Zach sheet; all other locations = PLACEHOLDER sample units",
+ "locations": [
+  {
+   "id": "loc_7294209793",
+   "name": "Tyson RVAF + Wastewater",
+   "sub": "Tyson Foods · one site",
+   "placeholder": true,
+   "order": 0,
+   "features": {
+    "condenserCoil": false
+   }
+  },
+  {
+   "id": "loc_d55014b174",
+   "name": "Tyson Feed Mill",
+   "sub": "Tyson Foods",
+   "placeholder": true,
+   "order": 1,
+   "features": {
+    "condenserCoil": false
+   }
+  },
+  {
+   "id": "loc_3cfb012bc8",
+   "name": "Hills Pet Foods",
+   "sub": "Sodexo account · Bowling Green, KY",
+   "placeholder": false,
+   "order": 2,
+   "features": {
+    "condenserCoil": true
+   },
+   "schedule": {
+    "source": "Hills PM schedule, Shawn West, July 2023",
+    "sourceNote": "transcribed from Zach's typed summary, verify against the PDF",
+    "legend": [
+     {
+      "code": "AI",
+      "label": "Annual Inspection"
+     },
+     {
+      "code": "AT",
+      "label": "Acid Test"
+     },
+     {
+      "code": "BC",
+      "label": "Belt Change"
+     },
+     {
+      "code": "CA",
+      "label": "Combustion Analyzation"
+     },
+     {
+      "code": "CC",
+      "label": "Condenser or Coil Cleaning"
+     },
+     {
+      "code": "CS",
+      "label": "Calibration Service"
+     },
+     {
+      "code": "DC",
+      "label": "Descaling"
+     },
+     {
+      "code": "EC*",
+      "label": "Evaporator Cleaning"
+     },
+     {
+      "code": "EDD",
+      "label": "Eddy Current"
+     },
+     {
+      "code": "ET",
+      "label": "Efficiency Testing"
+     },
+     {
+      "code": "FC",
+      "label": "Filter Change"
+     },
+     {
+      "code": "FO",
+      "label": "Field Oil Acid Test"
+     },
+     {
+      "code": "FS",
+      "label": "Filter Service"
+     },
+     {
+      "code": "OA",
+      "label": "Oil Analysis"
+     },
+     {
+      "code": "OC",
+      "label": "Boiler Yearly Teardown"
+     },
+     {
+      "code": "PF",
+      "label": "PM and Filter Change"
+     },
+     {
+      "code": "PM",
+      "label": "Operational Inspection"
+     },
+     {
+      "code": "PT",
+      "label": "Pressure Test"
+     },
+     {
+      "code": "RA",
+      "label": "Refrigerant Analysis"
+     },
+     {
+      "code": "SD",
+      "label": "Shutdown"
+     },
+     {
+      "code": "SU",
+      "label": "Start-Up"
+     },
+     {
+      "code": "TA",
+      "label": "Tube Analysis"
+     },
+     {
+      "code": "TB",
+      "label": "Tube Brushing"
+     }
+    ],
+    "groups": [
+     {
+      "id": "eg_1e5b2e20f3",
+      "name": "Steam Boilers",
+      "order": 0,
+      "notes": [],
+      "months": {
+       "1": [
+        "CA"
+       ],
+       "2": [
+        "CA"
+       ],
+       "3": [
+        "CA"
+       ],
+       "4": [
+        "CA"
+       ],
+       "5": [
+        "CA"
+       ],
+       "6": [
+        "CA",
+        "CS"
+       ],
+       "7": [
+        "CA"
+       ],
+       "8": [
+        "CA"
+       ],
+       "9": [
+        "CA"
+       ],
+       "10": [
+        "CA"
+       ],
+       "11": [
+        "CA"
+       ],
+       "12": [
+        "CA"
+       ]
+      },
+      "archived": false
+     },
+     {
+      "id": "eg_100ed73476",
+      "name": "DA Tank",
+      "order": 1,
+      "notes": [],
+      "months": {
+       "1": [
+        "PM"
+       ],
+       "2": [
+        "PM"
+       ],
+       "3": [
+        "PM"
+       ],
+       "4": [
+        "PM"
+       ],
+       "5": [
+        "PM"
+       ],
+       "6": [
+        "PM"
+       ],
+       "7": [
+        "PM"
+       ],
+       "8": [
+        "PM"
+       ],
+       "9": [
+        "PM"
+       ],
+       "10": [
+        "PM"
+       ],
+       "11": [
+        "PM"
+       ],
+       "12": [
+        "PM"
+       ]
+      },
+      "archived": false
+     },
+     {
+      "id": "eg_136d5d9e2f",
+      "name": "Condensate Return Unit",
+      "order": 2,
+      "notes": [],
+      "months": {
+       "1": [
+        "PM"
+       ],
+       "2": [
+        "PM"
+       ],
+       "3": [
+        "PM"
+       ],
+       "4": [
+        "PM"
+       ],
+       "5": [
+        "PM"
+       ],
+       "6": [
+        "PM"
+       ],
+       "7": [
+        "PM"
+       ],
+       "8": [
+        "PM"
+       ],
+       "9": [
+        "PM"
+       ],
+       "10": [
+        "PM"
+       ],
+       "11": [
+        "PM"
+       ],
+       "12": [
+        "PM"
+       ]
+      },
+      "archived": false
+     },
+     {
+      "id": "eg_e2b9aa0f87",
+      "name": "Water Boiler",
+      "order": 3,
+      "notes": [],
+      "months": {
+       "1": [],
+       "2": [],
+       "3": [
+        "PM",
+        "CA"
+       ],
+       "4": [],
+       "5": [],
+       "6": [
+        "PM",
+        "CA"
+       ],
+       "7": [],
+       "8": [],
+       "9": [
+        "PM",
+        "CA"
+       ],
+       "10": [],
+       "11": [],
+       "12": [
+        "PM",
+        "CA"
+       ]
+      },
+      "archived": false
+     },
+     {
+      "id": "eg_cf129371ad",
+      "name": "Chiller",
+      "order": 4,
+      "notes": [
+       "Evaporator Cleaning Once per Year"
+      ],
+      "months": {
+       "1": [],
+       "2": [],
+       "3": [],
+       "4": [
+        "CC",
+        "PM",
+        "CS"
+       ],
+       "5": [],
+       "6": [],
+       "7": [
+        "PM",
+        "CC"
+       ],
+       "8": [],
+       "9": [],
+       "10": [
+        "PM"
+       ],
+       "11": [
+        "PM"
+       ],
+       "12": []
+      },
+      "archived": false
+     },
+     {
+      "id": "eg_4034f29055",
+      "name": "RTU ALL",
+      "order": 5,
+      "notes": [],
+      "months": {
+       "1": [
+        "PF"
+       ],
+       "2": [],
+       "3": [
+        "PF"
+       ],
+       "4": [
+        "PF",
+        "CC",
+        "CS",
+        "BC"
+       ],
+       "5": [],
+       "6": [],
+       "7": [
+        "PF"
+       ],
+       "8": [],
+       "9": [
+        "PF"
+       ],
+       "10": [],
+       "11": [
+        "PF"
+       ],
+       "12": []
+      },
+      "archived": false
+     },
+     {
+      "id": "eg_dd04c92a6f",
+      "name": "Lab Unit",
+      "order": 6,
+      "notes": [],
+      "months": {
+       "1": [
+        "PF"
+       ],
+       "2": [
+        "PF"
+       ],
+       "3": [
+        "PF"
+       ],
+       "4": [
+        "PF"
+       ],
+       "5": [],
+       "6": [],
+       "7": [
+        "PF"
+       ],
+       "8": [],
+       "9": [
+        "PF"
+       ],
+       "10": [],
+       "11": [
+        "PF"
+       ],
+       "12": []
+      },
+      "archived": false
+     },
+     {
+      "id": "eg_bc53f346ed",
+      "name": "RMT Aaons",
+      "order": 7,
+      "notes": [],
+      "months": {
+       "1": [
+        "PF"
+       ],
+       "2": [
+        "PF"
+       ],
+       "3": [],
+       "4": [
+        "PF"
+       ],
+       "5": [
+        "PF"
+       ],
+       "6": [],
+       "7": [
+        "PF"
+       ],
+       "8": [
+        "PF"
+       ],
+       "9": [],
+       "10": [
+        "PF"
+       ],
+       "11": [
+        "PF"
+       ],
+       "12": []
+      },
+      "archived": false
+     },
+     {
+      "id": "eg_fdd1a46191",
+      "name": "Electrical Rooms 1,2,3,5,6,7,9,10,11,12",
+      "order": 8,
+      "notes": [],
+      "months": {
+       "1": [
+        "PF"
+       ],
+       "2": [
+        "PF"
+       ],
+       "3": [],
+       "4": [
+        "PF"
+       ],
+       "5": [
+        "PF"
+       ],
+       "6": [],
+       "7": [
+        "PF"
+       ],
+       "8": [
+        "PF"
+       ],
+       "9": [],
+       "10": [
+        "PF"
+       ],
+       "11": [
+        "PF"
+       ],
+       "12": []
+      },
+      "archived": false
+     },
+     {
+      "id": "eg_c39ab56063",
+      "name": "RTU maintenance Planner office",
+      "order": 9,
+      "notes": [],
+      "months": {
+       "1": [
+        "PF"
+       ],
+       "2": [
+        "PF"
+       ],
+       "3": [],
+       "4": [
+        "PF"
+       ],
+       "5": [
+        "PF"
+       ],
+       "6": [],
+       "7": [
+        "PF"
+       ],
+       "8": [
+        "PF"
+       ],
+       "9": [],
+       "10": [
+        "PF"
+       ],
+       "11": [
+        "PF"
+       ],
+       "12": []
+      },
+      "archived": false
+     },
+     {
+      "id": "eg_6a8bf265a2",
+      "name": "Gas Fired Make Air Units",
+      "order": 10,
+      "notes": [],
+      "months": {
+       "1": [
+        "PF"
+       ],
+       "2": [],
+       "3": [
+        "PF"
+       ],
+       "4": [],
+       "5": [],
+       "6": [
+        "PF"
+       ],
+       "7": [],
+       "8": [],
+       "9": [],
+       "10": [
+        "PF"
+       ],
+       "11": [
+        "PF",
+        "BC"
+       ],
+       "12": []
+      },
+      "archived": false
+     },
+     {
+      "id": "eg_33d1aa7f48",
+      "name": "Make Air Fans",
+      "order": 11,
+      "notes": [],
+      "months": {
+       "1": [],
+       "2": [
+        "PF"
+       ],
+       "3": [],
+       "4": [],
+       "5": [
+        "PF"
+       ],
+       "6": [],
+       "7": [],
+       "8": [],
+       "9": [],
+       "10": [
+        "PF",
+        "BC"
+       ],
+       "11": [],
+       "12": []
+      },
+      "archived": false
+     },
+     {
+      "id": "eg_3bd8fdcbc9",
+      "name": "Exhaust Fans",
+      "order": 12,
+      "notes": [],
+      "months": {
+       "1": [],
+       "2": [],
+       "3": [
+        "PM"
+       ],
+       "4": [],
+       "5": [],
+       "6": [],
+       "7": [],
+       "8": [
+        "PM"
+       ],
+       "9": [],
+       "10": [
+        "PM",
+        "BC",
+        "AI"
+       ],
+       "11": [],
+       "12": []
+      },
+      "archived": false
+     },
+     {
+      "id": "eg_1eba713b85",
+      "name": "Lab Exhaust Fans",
+      "order": 13,
+      "notes": [],
+      "months": {
+       "1": [
+        "PF"
+       ],
+       "2": [],
+       "3": [],
+       "4": [
+        "PF"
+       ],
+       "5": [],
+       "6": [],
+       "7": [
+        "PF"
+       ],
+       "8": [],
+       "9": [],
+       "10": [
+        "PF",
+        "BC",
+        "AI"
+       ],
+       "11": [],
+       "12": []
+      },
+      "archived": false
+     },
+     {
+      "id": "eg_4726e4fb67",
+      "name": "Quarterly Supply Fans",
+      "order": 14,
+      "notes": [
+       "Default quarterly months (Jan/Apr/Jul/Oct) - confirm with Zach",
+       "Belts + operational check; no filters"
+      ],
+      "months": {
+       "1": [
+        "PM",
+        "BC"
+       ],
+       "2": [],
+       "3": [],
+       "4": [
+        "PM",
+        "BC"
+       ],
+       "5": [],
+       "6": [],
+       "7": [
+        "PM",
+        "BC"
+       ],
+       "8": [],
+       "9": [],
+       "10": [
+        "PM",
+        "BC"
+       ],
+       "11": [],
+       "12": []
+      },
+      "archived": false
+     },
+     {
+      "id": "eg_0d0dbd2808",
+      "name": "Dehumidifiers",
+      "order": 15,
+      "notes": [
+       "Evaporator Cleaning Once per Year",
+       "Hepa Filter Change Not Included"
+      ],
+      "months": {
+       "1": [
+        "PF"
+       ],
+       "2": [],
+       "3": [],
+       "4": [
+        "PF",
+        "CC",
+        "BC",
+        "CS"
+       ],
+       "5": [],
+       "6": [
+        "PF"
+       ],
+       "7": [],
+       "8": [],
+       "9": [
+        "PF"
+       ],
+       "10": [
+        "PF"
+       ],
+       "11": [],
+       "12": []
+      },
+      "archived": false
+     }
+    ]
+   }
+  },
+  {
+   "id": "loc_e4db1d640d",
+   "name": "U.S. Smokeless",
+   "sub": "One site · 4 areas",
+   "placeholder": true,
+   "order": 3,
+   "features": {
+    "condenserCoil": false
+   }
+  },
+  {
+   "id": "loc_8987e08b13",
+   "name": "Delta Faucet",
+   "sub": "Separate customer",
+   "placeholder": true,
+   "order": 4,
+   "features": {
+    "condenserCoil": false
+   }
+  }
+ ],
+ "areas": [
+  {
+   "id": "ar_de5f2a907b",
+   "locationId": "loc_7294209793",
+   "name": "RVAF Processing",
+   "order": 0
+  },
+  {
+   "id": "ar_23f3cb605a",
+   "locationId": "loc_7294209793",
+   "name": "Wastewater",
+   "order": 1
+  },
+  {
+   "id": "ar_e12ca6efbd",
+   "locationId": "loc_d55014b174",
+   "name": "Mill Building",
+   "order": 0
+  },
+  {
+   "id": "ar_27a4ad9b84",
+   "locationId": "loc_d55014b174",
+   "name": "Office / Control Room",
+   "order": 1
+  },
+  {
+   "id": "ar_3d319887ac",
+   "locationId": "loc_3cfb012bc8",
+   "name": "Upper Roof Units",
+   "order": 0
+  },
+  {
+   "id": "ar_27734f95c6",
+   "locationId": "loc_3cfb012bc8",
+   "name": "Lower Roof Units",
+   "order": 1
+  },
+  {
+   "id": "ar_31afa3dfbc",
+   "locationId": "loc_3cfb012bc8",
+   "name": "Dehumidifiers",
+   "order": 2
+  },
+  {
+   "id": "ar_2ecdbe1084",
+   "locationId": "loc_3cfb012bc8",
+   "name": "Meat Cooler",
+   "order": 3
+  },
+  {
+   "id": "ar_8485b10e9d",
+   "locationId": "loc_3cfb012bc8",
+   "name": "Aaons",
+   "order": 4
+  },
+  {
+   "id": "ar_5e06d2c184",
+   "locationId": "loc_3cfb012bc8",
+   "name": "Raw Meat RTUs",
+   "order": 5
+  },
+  {
+   "id": "ar_f614a1b716",
+   "locationId": "loc_3cfb012bc8",
+   "name": "Trane Package Ground",
+   "order": 6
+  },
+  {
+   "id": "ar_3f11895118",
+   "locationId": "loc_3cfb012bc8",
+   "name": "Greenheck LIW",
+   "order": 7
+  },
+  {
+   "id": "ar_55dc3a63f8",
+   "locationId": "loc_3cfb012bc8",
+   "name": "Indoor AHUs",
+   "order": 8
+  },
+  {
+   "id": "ar_118adfb3ef",
+   "locationId": "loc_3cfb012bc8",
+   "name": "Supply Fans",
+   "order": 9
+  },
+  {
+   "id": "ar_eb185fb445",
+   "locationId": "loc_3cfb012bc8",
+   "name": "Other",
+   "order": 10
+  },
+  {
+   "id": "ar_9a3895bdad",
+   "locationId": "loc_3cfb012bc8",
+   "name": "Exhaust Fans",
+   "order": 11
+  },
+  {
+   "id": "ar_e500ba6f57",
+   "locationId": "loc_3cfb012bc8",
+   "name": "Heaters (Fall/Winter)",
+   "order": 12
+  },
+  {
+   "id": "ar_ab722f9328",
+   "locationId": "loc_e4db1d640d",
+   "name": "Dry Flower",
+   "order": 0
+  },
+  {
+   "id": "ar_ce44651ede",
+   "locationId": "loc_e4db1d640d",
+   "name": "Building E",
+   "order": 1
+  },
+  {
+   "id": "ar_dbe3efb3d2",
+   "locationId": "loc_e4db1d640d",
+   "name": "Baker",
+   "order": 2
+  },
+  {
+   "id": "ar_442c6692aa",
+   "locationId": "loc_e4db1d640d",
+   "name": "Eagle",
+   "order": 3
+  },
+  {
+   "id": "ar_0af2189c81",
+   "locationId": "loc_8987e08b13",
+   "name": "Production Floor",
+   "order": 0
+  },
+  {
+   "id": "ar_55e5063bd1",
+   "locationId": "loc_8987e08b13",
+   "name": "Offices",
+   "order": 1
+  }
+ ],
+ "units": [
+  {
+   "id": "u_41e483a13f",
+   "areaId": "ar_de5f2a907b",
+   "order": 0,
+   "name": "AHU-1",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_f75bd6b359",
+   "areaId": "ar_de5f2a907b",
+   "order": 1,
+   "name": "AHU-2",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_50d3e90a00",
+   "areaId": "ar_de5f2a907b",
+   "order": 2,
+   "name": "MAU-1",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_0272847bc6",
+   "areaId": "ar_de5f2a907b",
+   "order": 3,
+   "name": "EF-1",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_51986d2200",
+   "areaId": "ar_23f3cb605a",
+   "order": 0,
+   "name": "EF-WW1",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_06dd497938",
+   "areaId": "ar_23f3cb605a",
+   "order": 1,
+   "name": "EF-WW2",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_d267792fdf",
+   "areaId": "ar_23f3cb605a",
+   "order": 2,
+   "name": "UH-1",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_38f613162c",
+   "areaId": "ar_e12ca6efbd",
+   "order": 0,
+   "name": "RTU-1",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_413de46dca",
+   "areaId": "ar_e12ca6efbd",
+   "order": 1,
+   "name": "RTU-2",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_30b30ad969",
+   "areaId": "ar_e12ca6efbd",
+   "order": 2,
+   "name": "EF-1",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_70852684be",
+   "areaId": "ar_27a4ad9b84",
+   "order": 0,
+   "name": "RTU-3",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_d0c4a17b0f",
+   "areaId": "ar_27a4ad9b84",
+   "order": 1,
+   "name": "Split System SS-1",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_aadfe604a3",
+   "areaId": "ar_3d319887ac",
+   "order": 0,
+   "name": "ELEC ROOM 1 H3",
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_a20118d353"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_e472149269"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_6514fa8a69",
+   "areaId": "ar_3d319887ac",
+   "order": 1,
+   "name": "2ND FLOOR CONFERENCE ROOM H5",
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_658648f539"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_fb1d9b0535"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_06c3b5f936",
+   "areaId": "ar_3d319887ac",
+   "order": 2,
+   "name": "2ND FLOOR TRC/CORRIDOR/IT AREA H7",
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_a20118d353"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_539dfad776"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_34b02550e6",
+   "areaId": "ar_3d319887ac",
+   "order": 3,
+   "name": "ADMIN HUB",
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_cc2eda67bf"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_fb1d9b0535"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_2b4126e1ad",
+   "areaId": "ar_27734f95c6",
+   "order": 0,
+   "name": "GYM ELEC ROOM 6 H11",
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_658648f539"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_5fa151b28e"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_02b9a6a5e0",
+   "areaId": "ar_27734f95c6",
+   "order": 1,
+   "name": "FEMALE LOCKER ROOM RTU 2 H12",
+   "filters": [
+    {
+     "qty": 8,
+     "sizeId": "fs_cc2eda67bf"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_6e8330b268"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_7d5dd9ea12",
+   "areaId": "ar_27734f95c6",
+   "order": 2,
+   "name": "MALE LOCKER ROOM H13",
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_658648f539"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_5fa151b28e"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_ffdbea9bc3",
+   "areaId": "ar_27734f95c6",
+   "order": 3,
+   "name": "CAFETERIA RTU4 H14",
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_a20118d353"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_2ea376696f"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_249adb6f82",
+   "areaId": "ar_27734f95c6",
+   "order": 4,
+   "name": "CORRIDOR H15",
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_658648f539"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_5b15c7f3ad"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_b1dbced866",
+   "areaId": "ar_27734f95c6",
+   "order": 5,
+   "name": "OPTS HUB H16",
+   "filters": [
+    {
+     "qty": 2,
+     "sizeId": "fs_fd25de0f91"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_8311007e79",
+   "areaId": "ar_27734f95c6",
+   "order": 6,
+   "name": "OPTS HUB H18",
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_a20118d353"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_dab82ec47b"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_f9153dda1f",
+   "areaId": "ar_27734f95c6",
+   "order": 7,
+   "name": "OPTS HUB H19",
+   "filters": [
+    {
+     "qty": 1,
+     "sizeId": "fs_d6e17c50b0"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_868cb58c4b",
+   "areaId": "ar_27734f95c6",
+   "order": 8,
+   "name": "OPTS HUB H20",
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_658648f539"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_2b440e4375"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_4e44b6ae47",
+   "areaId": "ar_31afa3dfbc",
+   "order": 0,
+   "name": "LARGE TRANE DEHUMID H41",
+   "filters": [
+    {
+     "qty": 9,
+     "sizeId": "fs_f8ddca5b71"
+    },
+    {
+     "qty": 9,
+     "sizeId": "fs_013a0d9962"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_875d1d0ae3",
+   "areaId": "ar_31afa3dfbc",
+   "order": 1,
+   "name": "LARGE TRANE DEHUMID H42",
+   "filters": [
+    {
+     "qty": 9,
+     "sizeId": "fs_f8ddca5b71"
+    },
+    {
+     "qty": 9,
+     "sizeId": "fs_013a0d9962"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_1755f20594",
+   "areaId": "ar_2ecdbe1084",
+   "order": 0,
+   "name": "RAW MEAT COOLER",
+   "filters": null,
+   "belts": null,
+   "checks": {
+    "filters": false,
+    "belts": false,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_1339d4188e",
+   "areaId": "ar_8485b10e9d",
+   "order": 0,
+   "name": "DRY TOPICALS AAON",
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_6befb0375d"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_f069cefe04",
+   "areaId": "ar_8485b10e9d",
+   "order": 1,
+   "name": "RMT AAON SMALL EAST",
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_658648f539"
+    },
+    {
+     "qty": 4,
+     "sizeId": "fs_19c9239973"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_cd641ce856",
+   "areaId": "ar_8485b10e9d",
+   "order": 2,
+   "name": "BATCHING AAON LARGE BY STAIRS",
+   "filters": [
+    {
+     "qty": 24,
+     "sizeId": "fs_232a65a587"
+    },
+    {
+     "qty": 24,
+     "sizeId": "fs_abdf867573"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_f01e2c72cd",
+   "areaId": "ar_8485b10e9d",
+   "order": 3,
+   "name": "RMT AAON SMALL WEST",
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_658648f539"
+    },
+    {
+     "qty": 4,
+     "sizeId": "fs_19c9239973"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_8546ca6ea3",
+   "areaId": "ar_5e06d2c184",
+   "order": 0,
+   "name": "RAW MEAT CONTROL ROOM",
+   "filters": [
+    {
+     "qty": 2,
+     "sizeId": "fs_fd25de0f91"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_acce8bd312",
+   "areaId": "ar_5e06d2c184",
+   "order": 1,
+   "name": "RAW MEAT ELEC ROOM 8",
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_a20118d353"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_2b440e4375"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_0e39a8dce2",
+   "areaId": "ar_f614a1b716",
+   "order": 0,
+   "name": "TRANE PACKAGE UNIT EAST CORNER",
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_658648f539"
+    },
+    {
+     "qty": 8,
+     "sizeId": "fs_a20118d353"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_d106fe6ad5"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_d0a03a2c05",
+   "areaId": "ar_f614a1b716",
+   "order": 1,
+   "name": "TRANE PACKAGE UNIT WEST CORNER",
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_658648f539"
+    },
+    {
+     "qty": 8,
+     "sizeId": "fs_a20118d353"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_d106fe6ad5"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_b1dc45e850",
+   "areaId": "ar_3f11895118",
+   "order": 0,
+   "name": "GREENHECK LOSS IN WEIGHT m13",
+   "filters": [
+    {
+     "qty": 3,
+     "sizeId": "fs_658648f539"
+    },
+    {
+     "qty": 6,
+     "sizeId": "fs_a20118d353"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_ecebc3b941"
+    },
+    {
+     "qty": 2,
+     "sizeId": "bs_10984d12e5"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_b96e32394f",
+   "areaId": "ar_55dc3a63f8",
+   "order": 0,
+   "name": "SHIPPING LOUNGE THROUGH THE WALL",
+   "filters": [
+    {
+     "qty": 2,
+     "sizeId": "fs_683718e8f2"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_fa8f11306c",
+   "areaId": "ar_55dc3a63f8",
+   "order": 1,
+   "name": "SHIPPING OFFICE",
+   "filters": [
+    {
+     "qty": 1,
+     "sizeId": "fs_d6e17c50b0"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_ec542865f2",
+   "areaId": "ar_55dc3a63f8",
+   "order": 2,
+   "name": "SHIPPING OFFICE CONFERENCE ROOM",
+   "filters": [
+    {
+     "qty": 1,
+     "sizeId": "fs_c07bdc81dc"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_fd881b9ec6",
+   "areaId": "ar_55dc3a63f8",
+   "order": 3,
+   "name": "SHIPPING OFFICE COMPUTER ROOM",
+   "filters": [
+    {
+     "qty": 1,
+     "sizeId": "fs_db89b95aa2"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_c786787055",
+   "areaId": "ar_55dc3a63f8",
+   "order": 4,
+   "name": "OFFICE NEAR MINOR SHIPPING/RECEIVE",
+   "filters": [
+    {
+     "qty": 1,
+     "sizeId": "fs_683718e8f2"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_cbc4131b81",
+   "areaId": "ar_55dc3a63f8",
+   "order": 5,
+   "name": "MINOR RECEIVING WALL UNIT",
+   "filters": [
+    {
+     "qty": 1,
+     "sizeId": "fs_683718e8f2"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_e5ff8b8e4c",
+   "areaId": "ar_55dc3a63f8",
+   "order": 6,
+   "name": "ELEC ROOM 12",
+   "filters": [
+    {
+     "qty": 1,
+     "sizeId": "fs_a20118d353"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_6a4281c639",
+   "areaId": "ar_55dc3a63f8",
+   "order": 7,
+   "name": "PACKAGING SPOT COOLER",
+   "filters": [
+    {
+     "qty": 12,
+     "sizeId": "fs_cc2eda67bf"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 2,
+     "sizeId": "bs_d71f44d7b8"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_c38f3f6feb",
+   "areaId": "ar_55dc3a63f8",
+   "order": 8,
+   "name": "MICRO SAMPLE FOR LAB",
+   "filters": [
+    {
+     "qty": 1,
+     "sizeId": "fs_ec970c3a16"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_033f324b5f",
+   "areaId": "ar_55dc3a63f8",
+   "order": 9,
+   "name": "PACKAGING THROUGH THE WALL",
+   "filters": [
+    {
+     "qty": 2,
+     "sizeId": "fs_683718e8f2"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": [
+    "Sheet col A marked \"x\""
+   ]
+  },
+  {
+   "id": "u_c400c9606f",
+   "areaId": "ar_55dc3a63f8",
+   "order": 10,
+   "name": "IT ROOM 2ND FLOOR",
+   "filters": [
+    {
+     "qty": 1,
+     "sizeId": "fs_013a0d9962"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_afc2019631",
+   "areaId": "ar_55dc3a63f8",
+   "order": 11,
+   "name": "ELEC ROOM 2",
+   "filters": [
+    {
+     "qty": 1,
+     "sizeId": "fs_f803d755a6"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_6fbbdb7f46",
+   "areaId": "ar_55dc3a63f8",
+   "order": 12,
+   "name": "2ND FLOOR ELEC ROOM 3",
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_db89b95aa2"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_84c7ea59df"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_6e40bba0c0",
+   "areaId": "ar_55dc3a63f8",
+   "order": 13,
+   "name": "BOILER ROOM SPOT COOLER",
+   "filters": [
+    {
+     "qty": 6,
+     "sizeId": "fs_20132b2f59"
+    },
+    {
+     "qty": 2,
+     "sizeId": "fs_abdf867573"
+    },
+    {
+     "qty": 1,
+     "sizeId": "fs_35624ec7ce"
+    },
+    {
+     "qty": 2,
+     "sizeId": "fs_6befb0375d"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 2,
+     "sizeId": "bs_c698be9631"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_d123f7a081",
+   "areaId": "ar_55dc3a63f8",
+   "order": 14,
+   "name": "SATELLITE LAB",
+   "filters": [
+    {
+     "qty": 2,
+     "sizeId": "fs_f803d755a6"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_e5a7cbf0ae",
+   "areaId": "ar_55dc3a63f8",
+   "order": 15,
+   "name": "BATCHING OFFICE",
+   "filters": [
+    {
+     "qty": 1,
+     "sizeId": "fs_a20118d353"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_183c522ce0",
+   "areaId": "ar_55dc3a63f8",
+   "order": 16,
+   "name": "ELEC ROOM 7",
+   "filters": [
+    {
+     "qty": 1,
+     "sizeId": "fs_ac35a56d74"
+    },
+    {
+     "qty": 1,
+     "sizeId": "fs_fd25de0f91"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_b501db7c2f",
+   "areaId": "ar_55dc3a63f8",
+   "order": 17,
+   "name": "ELEC ROOM 10&11",
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_658648f539"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_3c27bdb2d7"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_095cadd687",
+   "areaId": "ar_55dc3a63f8",
+   "order": 18,
+   "name": "ELEC ROOM 9",
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_db89b95aa2"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_6095cfcb9b"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_eb2ef8078a",
+   "areaId": "ar_55dc3a63f8",
+   "order": 19,
+   "name": "SECURITY GUARD SHACK",
+   "filters": [
+    {
+     "qty": 2,
+     "sizeId": "fs_683718e8f2"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_1cc27eba4a",
+   "areaId": "ar_55dc3a63f8",
+   "order": 20,
+   "name": "RMC (SCALEHOUSE) UPSTAIRS",
+   "filters": [
+    {
+     "qty": 1,
+     "sizeId": "fs_f803d755a6"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_c6ad6b512b",
+   "areaId": "ar_55dc3a63f8",
+   "order": 21,
+   "name": "RMC (SCALEHOUSE) DOWNSTIARS",
+   "filters": [
+    {
+     "qty": 1,
+     "sizeId": "fs_f803d755a6"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_3c73dc11ba",
+   "areaId": "ar_118adfb3ef",
+   "order": 0,
+   "name": "SUPPLY FANS ABOVE WAREHOUSE",
+   "filters": [
+    {
+     "qty": 96,
+     "sizeId": "fs_cc2eda67bf"
+    },
+    {
+     "qty": 8,
+     "sizeId": "fs_4088af6dfa"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_accabadb0f",
+   "areaId": "ar_eb185fb445",
+   "order": 0,
+   "name": "New lab greenheck",
+   "filters": [
+    {
+     "qty": 9,
+     "sizeId": "fs_d591ead226"
+    },
+    {
+     "qty": 3,
+     "sizeId": "fs_19c9239973"
+    }
+   ],
+   "belts": null,
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_2484c3379a",
+   "areaId": "ar_118adfb3ef",
+   "order": 1,
+   "name": "SF 93010 · Rooftop of warehouse by dock 3",
+   "asset": "93010",
+   "cadence": "quarterly",
+   "sheetRow": 75,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 2,
+     "sizeId": "bs_63672afafd"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ],
+   "equipmentGroupId": "eg_4726e4fb67"
+  },
+  {
+   "id": "u_78b26761f8",
+   "areaId": "ar_118adfb3ef",
+   "order": 2,
+   "name": "SF 93020 · Rooftop of warehouse by dock 7",
+   "asset": "93020",
+   "cadence": "quarterly",
+   "sheetRow": 76,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_8a434611ce"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ],
+   "equipmentGroupId": "eg_4726e4fb67"
+  },
+  {
+   "id": "u_55bc9381dc",
+   "areaId": "ar_118adfb3ef",
+   "order": 3,
+   "name": "SF 93030 · Rooftop of warehouse by dock 14",
+   "asset": "93030",
+   "cadence": "quarterly",
+   "sheetRow": 77,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_6095cfcb9b"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ],
+   "equipmentGroupId": "eg_4726e4fb67"
+  },
+  {
+   "id": "u_939819f555",
+   "areaId": "ar_118adfb3ef",
+   "order": 4,
+   "name": "SF 93910 · Rooftop of warehouse by packaging lines",
+   "asset": "93910",
+   "cadence": "quarterly",
+   "sheetRow": 78,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_755d0ba552"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ],
+   "equipmentGroupId": "eg_4726e4fb67"
+  },
+  {
+   "id": "u_2eea577edd",
+   "areaId": "ar_118adfb3ef",
+   "order": 5,
+   "name": "SF 93920 · Rooftop of warehouse by packaging lines",
+   "asset": "93920",
+   "cadence": "quarterly",
+   "sheetRow": 79,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_755d0ba552"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ],
+   "equipmentGroupId": "eg_4726e4fb67"
+  },
+  {
+   "id": "u_dd8213516e",
+   "areaId": "ar_118adfb3ef",
+   "order": 6,
+   "name": "SF 93930 · Rooftop of warehouse by packaging lines",
+   "asset": "93930",
+   "cadence": "quarterly",
+   "sheetRow": 80,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 2,
+     "sizeId": "bs_63672afafd"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ],
+   "equipmentGroupId": "eg_4726e4fb67"
+  },
+  {
+   "id": "u_b7ab073822",
+   "areaId": "ar_118adfb3ef",
+   "order": 7,
+   "name": "SF 94081 · Rooftop warehouse southeast",
+   "asset": "94081",
+   "cadence": "quarterly",
+   "sheetRow": 81,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 3,
+     "sizeId": "bs_1fb8a6dea6"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ],
+   "equipmentGroupId": "eg_4726e4fb67"
+  },
+  {
+   "id": "u_1fcae604be",
+   "areaId": "ar_118adfb3ef",
+   "order": 8,
+   "name": "SF 94082 · Rooftop warehouse southeast by dock 17",
+   "asset": "94082",
+   "cadence": "quarterly",
+   "sheetRow": 82,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 3,
+     "sizeId": "bs_1fb8a6dea6"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ],
+   "equipmentGroupId": "eg_4726e4fb67"
+  },
+  {
+   "id": "u_89018184bb",
+   "areaId": "ar_9a3895bdad",
+   "order": 0,
+   "name": "EF 62739 · Elect room 9 west wall (in high voltage area)",
+   "asset": "62739",
+   "notes": "Direct drive (no belt)",
+   "sheetRow": 84,
+   "filters": null,
+   "belts": null,
+   "checks": {
+    "filters": false,
+    "belts": false,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_ed6120827b",
+   "areaId": "ar_9a3895bdad",
+   "order": 1,
+   "name": "EF 90220 · Rooftop Liquid bulk unloading room",
+   "asset": "90220",
+   "notes": "Vfd issue",
+   "sheetRow": 85,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 3,
+     "sizeId": "bs_3bb88afc4f"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [
+    "Sheet note: Vfd issue"
+   ],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_95d88bd0e8",
+   "areaId": "ar_9a3895bdad",
+   "order": 2,
+   "name": "EF 91800 · Tank farm boiler room ceiling (above room)",
+   "asset": "91800",
+   "notes": "Direct drive (no belt)",
+   "sheetRow": 88,
+   "filters": null,
+   "belts": null,
+   "checks": {
+    "filters": false,
+    "belts": false,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_e0b47f9259",
+   "areaId": "ar_9a3895bdad",
+   "order": 3,
+   "name": "EF 93040 · Rooftop Bulk unloading",
+   "asset": "93040",
+   "sheetRow": 89,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_3372ac206f"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_69a3797f51",
+   "areaId": "ar_9a3895bdad",
+   "order": 4,
+   "name": "EF 93050 · Rooftop Bulk unloading",
+   "asset": "93050",
+   "sheetRow": 90,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 2,
+     "sizeId": "bs_418e9b483f"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_27bf0391a7",
+   "areaId": "ar_9a3895bdad",
+   "order": 5,
+   "name": "EF 93101 · Rooftop Bulk unloading",
+   "asset": "93101",
+   "sheetRow": 91,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_383541b256"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_946c8c3406",
+   "areaId": "ar_9a3895bdad",
+   "order": 6,
+   "name": "EF 93102 · Rooftop Bulk unloading",
+   "asset": "93102",
+   "sheetRow": 92,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_383541b256"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_895de156bc",
+   "areaId": "ar_9a3895bdad",
+   "order": 7,
+   "name": "EF 93103 · Rooftop Bulk unloading",
+   "asset": "93103",
+   "sheetRow": 93,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_383541b256"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_001b39dcdd",
+   "areaId": "ar_9a3895bdad",
+   "order": 8,
+   "name": "EF 93200 · Fan #20 Mezzanine above Lab",
+   "asset": "93200",
+   "sheetRow": 94,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_6f5a045b5c"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_12e5bee9cc",
+   "areaId": "ar_9a3895bdad",
+   "order": 9,
+   "name": "EF 93217 · Fan #20 Mezzanine above Lab",
+   "asset": "93217",
+   "sheetRow": 95,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_ecebc3b941"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_f36e8d4c59",
+   "areaId": "ar_9a3895bdad",
+   "order": 10,
+   "name": "EF 93218 · Fan #18 Mezzanine above Lab",
+   "asset": "93218",
+   "sheetRow": 96,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_d921e8ceac"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_7767b47224",
+   "areaId": "ar_9a3895bdad",
+   "order": 11,
+   "name": "EF 93220 · Fan #22 Mezzanine above Lab",
+   "asset": "93220",
+   "sheetRow": 97,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_6f5a045b5c"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_d766d42eef",
+   "areaId": "ar_9a3895bdad",
+   "order": 12,
+   "name": "EF 93565 · North Compressor room wall",
+   "asset": "93565",
+   "sheetRow": 98,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_da287184b4"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_f6cc14d6ad",
+   "areaId": "ar_9a3895bdad",
+   "order": 13,
+   "name": "EF 93570 · North Compressor room wall",
+   "asset": "93570",
+   "sheetRow": 99,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_da287184b4"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_dea9f5981b",
+   "areaId": "ar_9a3895bdad",
+   "order": 14,
+   "name": "EF 93601 · Wet Clean room entry wall",
+   "asset": "93601",
+   "notes": "Sheet: Out of service",
+   "sheetRow": 100,
+   "filters": null,
+   "belts": null,
+   "checks": {
+    "filters": false,
+    "belts": false,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [
+    "Marked \"Out of service\" in sheet"
+   ],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_eb94adeefc",
+   "areaId": "ar_9a3895bdad",
+   "order": 15,
+   "name": "EF 93603 · Wet Clean room inside wall",
+   "asset": "93603",
+   "notes": "Direct drive (no belt)",
+   "sheetRow": 101,
+   "filters": null,
+   "belts": null,
+   "checks": {
+    "filters": false,
+    "belts": false,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_fc3a51b227",
+   "areaId": "ar_9a3895bdad",
+   "order": 16,
+   "name": "EF 93605 · Boiler room rooftop",
+   "asset": "93605",
+   "notes": "Direct drive (no belt)",
+   "sheetRow": 102,
+   "filters": null,
+   "belts": null,
+   "checks": {
+    "filters": false,
+    "belts": false,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_d2409a810b",
+   "areaId": "ar_9a3895bdad",
+   "order": 17,
+   "name": "EF 93608 · Screener level/ packaging line 2 Wall",
+   "asset": "93608",
+   "notes": "Direct drive (no belt)",
+   "sheetRow": 103,
+   "filters": null,
+   "belts": null,
+   "checks": {
+    "filters": false,
+    "belts": false,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_b323b4fde2",
+   "areaId": "ar_9a3895bdad",
+   "order": 18,
+   "name": "EF 93610 · Screener level upper 157' level",
+   "asset": "93610",
+   "notes": "Direct drive (no belt)",
+   "sheetRow": 104,
+   "filters": null,
+   "belts": null,
+   "checks": {
+    "filters": false,
+    "belts": false,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_54fd29a1fe",
+   "areaId": "ar_9a3895bdad",
+   "order": 19,
+   "name": "EF 93611 · Processing top 32' level (coffin door)",
+   "asset": "93611",
+   "sheetRow": 105,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 2,
+     "sizeId": "bs_3d09a4b27a"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_6d186b6376",
+   "areaId": "ar_9a3895bdad",
+   "order": 20,
+   "name": "EF 93612 · Processing top 32' level (coffin door)",
+   "asset": "93612",
+   "sheetRow": 106,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 2,
+     "sizeId": "bs_3d09a4b27a"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_937d02fd3a",
+   "areaId": "ar_9a3895bdad",
+   "order": 21,
+   "name": "EF 93615 · Processing top 32' level (coffin door)",
+   "asset": "93615",
+   "sheetRow": 107,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 2,
+     "sizeId": "bs_ea4d886492"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_b4b1c64ac9",
+   "areaId": "ar_9a3895bdad",
+   "order": 22,
+   "name": "EF 93900 · Meat processing cell west wall",
+   "asset": "93900",
+   "notes": "Direct drive (no belt)",
+   "sheetRow": 108,
+   "filters": null,
+   "belts": null,
+   "checks": {
+    "filters": false,
+    "belts": false,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_e9e34d5f52",
+   "areaId": "ar_9a3895bdad",
+   "order": 23,
+   "name": "EF 93905 · Meat processing cell west wall",
+   "asset": "93905",
+   "notes": "Direct drive (no belt)",
+   "sheetRow": 109,
+   "filters": null,
+   "belts": null,
+   "checks": {
+    "filters": false,
+    "belts": false,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_99fe0d4120",
+   "areaId": "ar_9a3895bdad",
+   "order": 24,
+   "name": "EF 93975 · 1st floor warehouse fork lift charge station wall",
+   "asset": "93975",
+   "sheetRow": 110,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_fc4a57df07"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_fa7c0ba2f4",
+   "areaId": "ar_9a3895bdad",
+   "order": 25,
+   "name": "EF 94080 · Rooftop by Maintenance area",
+   "asset": "94080",
+   "sheetRow": 111,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 2,
+     "sizeId": "bs_755d0ba552"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_187b8916b2",
+   "areaId": "ar_9a3895bdad",
+   "order": 26,
+   "name": "EF 94090 · Blower room fan bulk unloading",
+   "asset": "94090",
+   "notes": "Direct drive (no belt)",
+   "sheetRow": 112,
+   "filters": null,
+   "belts": null,
+   "checks": {
+    "filters": false,
+    "belts": false,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_dc70c3cc0e",
+   "areaId": "ar_9a3895bdad",
+   "order": 27,
+   "name": "EF 94095 · Batching Mirco Bins Wall",
+   "asset": "94095",
+   "notes": "Direct drive (no belt)",
+   "sheetRow": 113,
+   "filters": null,
+   "belts": null,
+   "checks": {
+    "filters": false,
+    "belts": false,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_c19fb53f18",
+   "areaId": "ar_9a3895bdad",
+   "order": 28,
+   "name": "EF 94097 · Tank farm south wall",
+   "asset": "94097",
+   "notes": "Direct drive (no belt)",
+   "sheetRow": 114,
+   "filters": null,
+   "belts": null,
+   "checks": {
+    "filters": false,
+    "belts": false,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_6fd7497726",
+   "areaId": "ar_9a3895bdad",
+   "order": 29,
+   "name": "EF 94099 · Tank farm south wall",
+   "asset": "94099",
+   "notes": "Direct drive (no belt)",
+   "sheetRow": 115,
+   "filters": null,
+   "belts": null,
+   "checks": {
+    "filters": false,
+    "belts": false,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_739d50412b",
+   "areaId": "ar_9a3895bdad",
+   "order": 30,
+   "name": "EF EF401 · Rooftop 32 level (coffin door)",
+   "asset": "EF401",
+   "sheetRow": 116,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_6bd3a8a5f4"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_85c0799588",
+   "areaId": "ar_9a3895bdad",
+   "order": 31,
+   "name": "EF EF402 · rooftop 32' level (coffin door)",
+   "asset": "EF402",
+   "sheetRow": 117,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_6bd3a8a5f4"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_567febb4e8",
+   "areaId": "ar_9a3895bdad",
+   "order": 32,
+   "name": "EF · Rooftop 32' level",
+   "asset": null,
+   "notes": "Sheet qty written \"2?\"; Zach confirmed 2",
+   "sheetRow": 118,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 2,
+     "sizeId": "bs_9220c5fa35"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_764abf98f9",
+   "areaId": "ar_9a3895bdad",
+   "order": 33,
+   "name": "EF · West Air compressor room wall",
+   "asset": null,
+   "sheetRow": 119,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_75657988ff"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_966a2a149c",
+   "areaId": "ar_9a3895bdad",
+   "order": 34,
+   "name": "EF · Bakery feeds rooftop",
+   "asset": null,
+   "sheetRow": 120,
+   "filters": null,
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_0bd5b1dcbb"
+    }
+   ],
+   "checks": {
+    "filters": false,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "exhaust-fan-pm"
+   ]
+  },
+  {
+   "id": "u_6d1c1a59ed",
+   "areaId": "ar_e500ba6f57",
+   "order": 0,
+   "name": "GREENHECK WAREHOUSE MAU",
+   "sheetRow": 66,
+   "notes": "Filter: WASHABLE (qty not given in sheet)",
+   "filters": [],
+   "belts": [
+    {
+     "qty": 4,
+     "sizeId": "bs_4cd2df3493"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [
+    "Filter qty blank in sheet"
+   ],
+   "templateOnly": [
+    "fall-heating"
+   ]
+  },
+  {
+   "id": "u_5ab9a66be0",
+   "areaId": "ar_e500ba6f57",
+   "order": 1,
+   "name": "TITAN WAREHOUSE MAU",
+   "sheetRow": 67,
+   "notes": "Filter: WASHABLE (qty not given in sheet)",
+   "filters": [],
+   "belts": [
+    {
+     "qty": 2,
+     "sizeId": "bs_54f0d210a8"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [
+    "Filter qty blank in sheet"
+   ],
+   "templateOnly": [
+    "fall-heating"
+   ]
+  },
+  {
+   "id": "u_653ebd9a97",
+   "areaId": "ar_e500ba6f57",
+   "order": 2,
+   "name": "GREENHECK LIQUID BULK UNLOADING",
+   "sheetRow": 68,
+   "filters": [
+    {
+     "qty": 6,
+     "sizeId": "fs_a20118d353"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 1,
+     "sizeId": "bs_6f878249de"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "templateOnly": [
+    "fall-heating"
+   ]
+  },
+  {
+   "id": "u_8571016eac",
+   "areaId": "ar_e500ba6f57",
+   "order": 3,
+   "name": "Waste Water MAU",
+   "sheetRow": 70,
+   "notes": "Filter: WASHABLE (qty not given in sheet)",
+   "filters": [],
+   "belts": [
+    {
+     "qty": 2,
+     "sizeId": "bs_f99f4abf81"
+    }
+   ],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [
+    "Filter qty blank in sheet"
+   ],
+   "templateOnly": [
+    "fall-heating"
+   ]
+  },
+  {
+   "id": "u_147f21f595",
+   "areaId": "ar_ab722f9328",
+   "order": 0,
+   "name": "AHU-DF1",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_de954699ac",
+   "areaId": "ar_ab722f9328",
+   "order": 1,
+   "name": "AHU-DF2",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_6036057c69",
+   "areaId": "ar_ab722f9328",
+   "order": 2,
+   "name": "EF-DF1",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_c7cedfb8ed",
+   "areaId": "ar_ce44651ede",
+   "order": 0,
+   "name": "RTU-E1",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_0f3e907589",
+   "areaId": "ar_ce44651ede",
+   "order": 1,
+   "name": "RTU-E2",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_e0e3c2e4da",
+   "areaId": "ar_ce44651ede",
+   "order": 2,
+   "name": "UH-E1",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_8a5c849799",
+   "areaId": "ar_dbe3efb3d2",
+   "order": 0,
+   "name": "AHU-B1",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_89c33082e4",
+   "areaId": "ar_dbe3efb3d2",
+   "order": 1,
+   "name": "MAU-B1",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_d075c942ca",
+   "areaId": "ar_442c6692aa",
+   "order": 0,
+   "name": "RTU-EA1",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_e08aa72d5c",
+   "areaId": "ar_442c6692aa",
+   "order": 1,
+   "name": "RTU-EA2",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_10bc42d2a7",
+   "areaId": "ar_442c6692aa",
+   "order": 2,
+   "name": "EF-EA1",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_030c21df32",
+   "areaId": "ar_0af2189c81",
+   "order": 0,
+   "name": "MAU-1",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_a31b547fdf",
+   "areaId": "ar_0af2189c81",
+   "order": 1,
+   "name": "MAU-2",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_58498d51b2",
+   "areaId": "ar_0af2189c81",
+   "order": 2,
+   "name": "EF-1",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_59ac21bb89",
+   "areaId": "ar_0af2189c81",
+   "order": 3,
+   "name": "EF-2",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_ccd1bce1d7",
+   "areaId": "ar_55e5063bd1",
+   "order": 0,
+   "name": "RTU-1",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  },
+  {
+   "id": "u_59a9c7308d",
+   "areaId": "ar_55e5063bd1",
+   "order": 1,
+   "name": "RTU-2",
+   "sample": true,
+   "filters": [],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": true,
+    "coilCondenser": true,
+    "ops": true
+   },
+   "flags": []
+  }
+ ],
+ "sizes": [
+  {
+   "id": "fs_a20118d353",
+   "kind": "filter",
+   "name": "20X20X2"
+  },
+  {
+   "id": "bs_e472149269",
+   "kind": "belt",
+   "name": "AX-49"
+  },
+  {
+   "id": "fs_658648f539",
+   "kind": "filter",
+   "name": "16X20X2"
+  },
+  {
+   "id": "bs_fb1d9b0535",
+   "kind": "belt",
+   "name": "A48"
+  },
+  {
+   "id": "bs_539dfad776",
+   "kind": "belt",
+   "name": "AX-54"
+  },
+  {
+   "id": "fs_cc2eda67bf",
+   "kind": "filter",
+   "name": "20X25X2"
+  },
+  {
+   "id": "bs_5fa151b28e",
+   "kind": "belt",
+   "name": "A52"
+  },
+  {
+   "id": "bs_6e8330b268",
+   "kind": "belt",
+   "name": "B79"
+  },
+  {
+   "id": "bs_2ea376696f",
+   "kind": "belt",
+   "name": "A54"
+  },
+  {
+   "id": "bs_5b15c7f3ad",
+   "kind": "belt",
+   "name": "A46"
+  },
+  {
+   "id": "fs_fd25de0f91",
+   "kind": "filter",
+   "name": "16X25X2"
+  },
+  {
+   "id": "bs_dab82ec47b",
+   "kind": "belt",
+   "name": "A47"
+  },
+  {
+   "id": "fs_d6e17c50b0",
+   "kind": "filter",
+   "name": "20X25X1"
+  },
+  {
+   "id": "bs_2b440e4375",
+   "kind": "belt",
+   "name": "A49"
+  },
+  {
+   "id": "fs_f8ddca5b71",
+   "kind": "filter",
+   "name": "24X24X2"
+  },
+  {
+   "id": "fs_013a0d9962",
+   "kind": "filter",
+   "name": "24X24X4"
+  },
+  {
+   "id": "fs_6befb0375d",
+   "kind": "filter",
+   "name": "20X25X4"
+  },
+  {
+   "id": "fs_19c9239973",
+   "kind": "filter",
+   "name": "16X20X4"
+  },
+  {
+   "id": "fs_232a65a587",
+   "kind": "filter",
+   "name": "12X24X2"
+  },
+  {
+   "id": "fs_abdf867573",
+   "kind": "filter",
+   "name": "12X24X4"
+  },
+  {
+   "id": "bs_d106fe6ad5",
+   "kind": "belt",
+   "name": "BX77"
+  },
+  {
+   "id": "bs_ecebc3b941",
+   "kind": "belt",
+   "name": "A31"
+  },
+  {
+   "id": "bs_10984d12e5",
+   "kind": "belt",
+   "name": "BX63"
+  },
+  {
+   "id": "fs_683718e8f2",
+   "kind": "filter",
+   "name": "WASHABLE"
+  },
+  {
+   "id": "fs_c07bdc81dc",
+   "kind": "filter",
+   "name": "22X22X1"
+  },
+  {
+   "id": "fs_db89b95aa2",
+   "kind": "filter",
+   "name": "16X25X1"
+  },
+  {
+   "id": "bs_d71f44d7b8",
+   "kind": "belt",
+   "name": "5VX780"
+  },
+  {
+   "id": "fs_ec970c3a16",
+   "kind": "filter",
+   "name": "16X25X4"
+  },
+  {
+   "id": "fs_f803d755a6",
+   "kind": "filter",
+   "name": "20X20X1"
+  },
+  {
+   "id": "bs_84c7ea59df",
+   "kind": "belt",
+   "name": "A50"
+  },
+  {
+   "id": "fs_20132b2f59",
+   "kind": "filter",
+   "name": "20X20X4"
+  },
+  {
+   "id": "fs_35624ec7ce",
+   "kind": "filter",
+   "name": "12X25X4"
+  },
+  {
+   "id": "bs_c698be9631",
+   "kind": "belt",
+   "name": "5VX560"
+  },
+  {
+   "id": "fs_ac35a56d74",
+   "kind": "filter",
+   "name": "8X30X1"
+  },
+  {
+   "id": "bs_3c27bdb2d7",
+   "kind": "belt",
+   "name": "A43"
+  },
+  {
+   "id": "bs_6095cfcb9b",
+   "kind": "belt",
+   "name": "A53"
+  },
+  {
+   "id": "fs_4088af6dfa",
+   "kind": "filter",
+   "name": "14X25X2"
+  },
+  {
+   "id": "fs_d591ead226",
+   "kind": "filter",
+   "name": "20X24X4"
+  },
+  {
+   "id": "bs_63672afafd",
+   "kind": "belt",
+   "name": "A60"
+  },
+  {
+   "id": "bs_8a434611ce",
+   "kind": "belt",
+   "name": "B55"
+  },
+  {
+   "id": "bs_755d0ba552",
+   "kind": "belt",
+   "name": "B52"
+  },
+  {
+   "id": "bs_1fb8a6dea6",
+   "kind": "belt",
+   "name": "BX57"
+  },
+  {
+   "id": "bs_3bb88afc4f",
+   "kind": "belt",
+   "name": "B57"
+  },
+  {
+   "id": "bs_3372ac206f",
+   "kind": "belt",
+   "name": "A20"
+  },
+  {
+   "id": "bs_418e9b483f",
+   "kind": "belt",
+   "name": "A62"
+  },
+  {
+   "id": "bs_383541b256",
+   "kind": "belt",
+   "name": "A45"
+  },
+  {
+   "id": "bs_6f5a045b5c",
+   "kind": "belt",
+   "name": "A28"
+  },
+  {
+   "id": "bs_d921e8ceac",
+   "kind": "belt",
+   "name": "A56"
+  },
+  {
+   "id": "bs_da287184b4",
+   "kind": "belt",
+   "name": "A35"
+  },
+  {
+   "id": "bs_3d09a4b27a",
+   "kind": "belt",
+   "name": "5VX710"
+  },
+  {
+   "id": "bs_ea4d886492",
+   "kind": "belt",
+   "name": "BX70"
+  },
+  {
+   "id": "bs_fc4a57df07",
+   "kind": "belt",
+   "name": "A42"
+  },
+  {
+   "id": "bs_6bd3a8a5f4",
+   "kind": "belt",
+   "name": "BP48"
+  },
+  {
+   "id": "bs_9220c5fa35",
+   "kind": "belt",
+   "name": "B118"
+  },
+  {
+   "id": "bs_75657988ff",
+   "kind": "belt",
+   "name": "BP38"
+  },
+  {
+   "id": "bs_0bd5b1dcbb",
+   "kind": "belt",
+   "name": "AX52"
+  },
+  {
+   "id": "bs_4cd2df3493",
+   "kind": "belt",
+   "name": "5VX1080"
+  },
+  {
+   "id": "bs_54f0d210a8",
+   "kind": "belt",
+   "name": "5VX800"
+  },
+  {
+   "id": "bs_6f878249de",
+   "kind": "belt",
+   "name": "BX64"
+  },
+  {
+   "id": "bs_f99f4abf81",
+   "kind": "belt",
+   "name": "A77"
+  }
+ ],
+ "fieldDefs": [
+  {
+   "id": "filters",
+   "label": "Filters",
+   "short": "Filters",
+   "parts": "filter"
+  },
+  {
+   "id": "belts",
+   "label": "Belts",
+   "short": "Belts",
+   "parts": "belt"
+  },
+  {
+   "id": "ops",
+   "label": "Ops Check",
+   "short": "Ops Check"
+  },
+  {
+   "id": "coilCondenser",
+   "label": "Condenser or Coil Cleaning",
+   "short": "Condenser or Coil Cleaning",
+   "feature": "condenserCoil",
+   "code": "CC"
+  }
+ ],
+ "templates": [
+  {
+   "id": "spring",
+   "label": "Spring PM",
+   "locations": [
+    "loc_3cfb012bc8"
+   ],
+   "fields": [
+    "filters",
+    "belts",
+    "ops",
+    "coilCondenser"
+   ],
+   "extra": []
+  },
+  {
+   "id": "exhaust-fan-pm",
+   "label": "Exhaust and Supply Fan PM",
+   "season": "fall",
+   "locations": [
+    "loc_3cfb012bc8"
+   ],
+   "fields": [
+    "filters",
+    "belts",
+    "ops"
+   ],
+   "extra": [],
+   "units": [
+    "u_3c73dc11ba",
+    "u_2484c3379a",
+    "u_78b26761f8",
+    "u_55bc9381dc",
+    "u_939819f555",
+    "u_2eea577edd",
+    "u_dd8213516e",
+    "u_b7ab073822",
+    "u_1fcae604be",
+    "u_89018184bb",
+    "u_ed6120827b",
+    "u_95d88bd0e8",
+    "u_e0b47f9259",
+    "u_69a3797f51",
+    "u_27bf0391a7",
+    "u_946c8c3406",
+    "u_895de156bc",
+    "u_001b39dcdd",
+    "u_12e5bee9cc",
+    "u_f36e8d4c59",
+    "u_7767b47224",
+    "u_d766d42eef",
+    "u_f6cc14d6ad",
+    "u_dea9f5981b",
+    "u_eb94adeefc",
+    "u_fc3a51b227",
+    "u_d2409a810b",
+    "u_b323b4fde2",
+    "u_54fd29a1fe",
+    "u_6d186b6376",
+    "u_937d02fd3a",
+    "u_b4b1c64ac9",
+    "u_e9e34d5f52",
+    "u_99fe0d4120",
+    "u_fa7c0ba2f4",
+    "u_187b8916b2",
+    "u_dc70c3cc0e",
+    "u_c19fb53f18",
+    "u_6fd7497726",
+    "u_739d50412b",
+    "u_85c0799588",
+    "u_567febb4e8",
+    "u_764abf98f9",
+    "u_966a2a149c"
+   ]
+  },
+  {
+   "id": "quarterly",
+   "label": "Quarterly PM",
+   "fields": [
+    "filters",
+    "belts",
+    "ops",
+    "coilCondenser"
+   ],
+   "extra": [
+    "Check condensate drains & pans",
+    "Inspect electrical connections / contactors",
+    "Lubricate motor & fan bearings"
+   ]
+  },
+  {
+   "id": "fall-heating",
+   "label": "Fall Heating Prep",
+   "fields": [
+    "filters",
+    "belts",
+    "ops",
+    "coilCondenser"
+   ],
+   "extra": [
+    "Inspect burners / heat exchangers",
+    "Check gas valves & pressures",
+    "Test ignition / flame sensor",
+    "Check controls & thermostat setpoints",
+    "Verify freeze stats",
+    "Check heat trace / glycol (where relevant)"
+   ]
+  }
+ ],
+ "defaultVisits": {
+  "loc_3cfb012bc8": "spring"
+ },
+ "areaMigration": {
+  "version": 5,
+  "moves": {
+   "u_aadfe604a3": {
+    "from": "ar_4c35fbbae8",
+    "to": "ar_3d319887ac"
+   },
+   "u_6514fa8a69": {
+    "from": "ar_ad1142be7b",
+    "to": "ar_3d319887ac"
+   },
+   "u_06c3b5f936": {
+    "from": "ar_ad1142be7b",
+    "to": "ar_3d319887ac"
+   },
+   "u_34b02550e6": {
+    "from": "ar_ad1142be7b",
+    "to": "ar_3d319887ac"
+   },
+   "u_2b4126e1ad": {
+    "from": "ar_4c35fbbae8",
+    "to": "ar_27734f95c6"
+   },
+   "u_02b9a6a5e0": {
+    "from": "ar_ad1142be7b",
+    "to": "ar_27734f95c6"
+   },
+   "u_7d5dd9ea12": {
+    "from": "ar_ad1142be7b",
+    "to": "ar_27734f95c6"
+   },
+   "u_ffdbea9bc3": {
+    "from": "ar_ad1142be7b",
+    "to": "ar_27734f95c6"
+   },
+   "u_249adb6f82": {
+    "from": "ar_ad1142be7b",
+    "to": "ar_27734f95c6"
+   },
+   "u_b1dbced866": {
+    "from": "ar_ad1142be7b",
+    "to": "ar_27734f95c6"
+   },
+   "u_8311007e79": {
+    "from": "ar_ad1142be7b",
+    "to": "ar_27734f95c6"
+   },
+   "u_f9153dda1f": {
+    "from": "ar_ad1142be7b",
+    "to": "ar_27734f95c6"
+   },
+   "u_868cb58c4b": {
+    "from": "ar_ad1142be7b",
+    "to": "ar_27734f95c6"
+   },
+   "u_4e44b6ae47": {
+    "from": "ar_d838678185",
+    "to": "ar_31afa3dfbc"
+   },
+   "u_875d1d0ae3": {
+    "from": "ar_d838678185",
+    "to": "ar_31afa3dfbc"
+   },
+   "u_1755f20594": {
+    "from": "ar_d838678185",
+    "to": "ar_2ecdbe1084"
+   },
+   "u_1339d4188e": {
+    "from": "ar_d838678185",
+    "to": "ar_8485b10e9d"
+   },
+   "u_f069cefe04": {
+    "from": "ar_d838678185",
+    "to": "ar_8485b10e9d"
+   },
+   "u_cd641ce856": {
+    "from": "ar_d838678185",
+    "to": "ar_8485b10e9d"
+   },
+   "u_f01e2c72cd": {
+    "from": "ar_d838678185",
+    "to": "ar_8485b10e9d"
+   },
+   "u_8546ca6ea3": {
+    "from": "ar_d838678185",
+    "to": "ar_5e06d2c184"
+   },
+   "u_acce8bd312": {
+    "from": "ar_4c35fbbae8",
+    "to": "ar_5e06d2c184"
+   },
+   "u_0e39a8dce2": {
+    "from": "ar_d838678185",
+    "to": "ar_f614a1b716"
+   },
+   "u_d0a03a2c05": {
+    "from": "ar_d838678185",
+    "to": "ar_f614a1b716"
+   },
+   "u_b1dc45e850": {
+    "from": "ar_d838678185",
+    "to": "ar_3f11895118"
+   },
+   "u_b96e32394f": {
+    "from": "ar_c0ec48c012",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_fa8f11306c": {
+    "from": "ar_ad1142be7b",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_ec542865f2": {
+    "from": "ar_ad1142be7b",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_fd881b9ec6": {
+    "from": "ar_ad1142be7b",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_c786787055": {
+    "from": "ar_ad1142be7b",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_cbc4131b81": {
+    "from": "ar_c0ec48c012",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_e5ff8b8e4c": {
+    "from": "ar_4c35fbbae8",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_6a4281c639": {
+    "from": "ar_7fb4d488a7",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_c38f3f6feb": {
+    "from": "ar_4e1f9bebad",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_033f324b5f": {
+    "from": "ar_7fb4d488a7",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_c400c9606f": {
+    "from": "ar_ad1142be7b",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_afc2019631": {
+    "from": "ar_4c35fbbae8",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_6fbbdb7f46": {
+    "from": "ar_4c35fbbae8",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_6e40bba0c0": {
+    "from": "ar_7fb4d488a7",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_d123f7a081": {
+    "from": "ar_4e1f9bebad",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_e5a7cbf0ae": {
+    "from": "ar_d838678185",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_183c522ce0": {
+    "from": "ar_4c35fbbae8",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_b501db7c2f": {
+    "from": "ar_4c35fbbae8",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_095cadd687": {
+    "from": "ar_4c35fbbae8",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_eb2ef8078a": {
+    "from": "ar_ad1142be7b",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_1cc27eba4a": {
+    "from": "ar_c0ec48c012",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_c6ad6b512b": {
+    "from": "ar_c0ec48c012",
+    "to": "ar_55dc3a63f8"
+   },
+   "u_3c73dc11ba": {
+    "from": "ar_7fb4d488a7",
+    "to": "ar_118adfb3ef"
+   },
+   "u_accabadb0f": {
+    "from": "ar_4e1f9bebad",
+    "to": "ar_eb185fb445"
+   }
+  },
+  "retireAreas": [
+   "ar_d838678185",
+   "ar_4c35fbbae8",
+   "ar_ad1142be7b",
+   "ar_4e1f9bebad",
+   "ar_c0ec48c012",
+   "ar_7fb4d488a7"
+  ]
+ },
+ "groupMigration": {
+  "version": 10,
+  "locationId": "loc_3cfb012bc8",
+  "group": {
+   "id": "eg_4726e4fb67",
+   "name": "Quarterly Supply Fans",
+   "order": 14,
+   "notes": [
+    "Default quarterly months (Jan/Apr/Jul/Oct) - confirm with Zach",
+    "Belts + operational check; no filters"
+   ],
+   "months": {
+    "1": [
+     "PM",
+     "BC"
+    ],
+    "2": [],
+    "3": [],
+    "4": [
+     "PM",
+     "BC"
+    ],
+    "5": [],
+    "6": [],
+    "7": [
+     "PM",
+     "BC"
+    ],
+    "8": [],
+    "9": [],
+    "10": [
+     "PM",
+     "BC"
+    ],
+    "11": [],
+    "12": []
+   },
+   "archived": false
+  },
+  "units": [
+   "u_2484c3379a",
+   "u_78b26761f8",
+   "u_55bc9381dc",
+   "u_939819f555",
+   "u_2eea577edd",
+   "u_dd8213516e",
+   "u_b7ab073822",
+   "u_1fcae604be"
+  ]
+ },
+ "retireUnitMigration": {
+  "version": 9,
+  "units": [
+   "u_e6a1b2f7f7"
+  ]
+ },
+ "unitPatchMigration": {
+  "version": 8,
+  "units": {
+   "u_567febb4e8": {
+    "expect": {
+     "name": "EF (no asset) · Rooftop 32' level",
+     "flags": [
+      "No asset number in sheet"
+     ]
+    },
+    "set": {
+     "name": "EF · Rooftop 32' level",
+     "flags": []
+    }
+   },
+   "u_764abf98f9": {
+    "expect": {
+     "name": "EF (no asset) · West Air compressor room wall",
+     "flags": [
+      "No asset number in sheet"
+     ]
+    },
+    "set": {
+     "name": "EF · West Air compressor room wall",
+     "flags": []
+    }
+   },
+   "u_966a2a149c": {
+    "expect": {
+     "name": "EF (no asset) · Bakery feeds rooftop",
+     "flags": [
+      "No asset number in sheet"
+     ]
+    },
+    "set": {
+     "name": "EF · Bakery feeds rooftop",
+     "flags": []
+    }
+   }
+  }
+ },
+ "beltMigration": {
+  "version": 7,
+  "units": {
+   "u_567febb4e8": {
+    "belts": [
+     {
+      "qty": 2,
+      "sizeId": "bs_9220c5fa35"
+     }
+    ],
+    "notes": "Sheet qty written \"2?\"; Zach confirmed 2",
+    "flags": []
+   }
+  }
+ },
+ "templateMigration": {
+  "version": 6,
+  "exhaust-fan-pm": {
+   "fields": [
+    "filters",
+    "belts",
+    "ops"
+   ],
+   "units": [
+    "u_3c73dc11ba",
+    "u_2484c3379a",
+    "u_78b26761f8",
+    "u_55bc9381dc",
+    "u_939819f555",
+    "u_2eea577edd",
+    "u_dd8213516e",
+    "u_b7ab073822",
+    "u_1fcae604be",
+    "u_89018184bb",
+    "u_ed6120827b",
+    "u_95d88bd0e8",
+    "u_e0b47f9259",
+    "u_69a3797f51",
+    "u_27bf0391a7",
+    "u_946c8c3406",
+    "u_895de156bc",
+    "u_001b39dcdd",
+    "u_12e5bee9cc",
+    "u_f36e8d4c59",
+    "u_7767b47224",
+    "u_d766d42eef",
+    "u_f6cc14d6ad",
+    "u_dea9f5981b",
+    "u_eb94adeefc",
+    "u_fc3a51b227",
+    "u_d2409a810b",
+    "u_b323b4fde2",
+    "u_54fd29a1fe",
+    "u_6d186b6376",
+    "u_937d02fd3a",
+    "u_b4b1c64ac9",
+    "u_e9e34d5f52",
+    "u_99fe0d4120",
+    "u_fa7c0ba2f4",
+    "u_187b8916b2",
+    "u_dc70c3cc0e",
+    "u_c19fb53f18",
+    "u_6fd7497726",
+    "u_739d50412b",
+    "u_85c0799588",
+    "u_567febb4e8",
+    "u_764abf98f9",
+    "u_966a2a149c"
+   ]
+  }
+ }
+}

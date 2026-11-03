@@ -1,0 +1,5 @@
+/* West Mechanical brand palette - THE one place to change logo colors.
+   scripts/build-icons.js reads these to (re)generate the recreated SVGs + every icon PNG + the PDF logo.
+   Zach's correction (Nov 2 2026): ring, W and wordmark are WHITE; arrow red-orange; dark background.
+   (UI accent --amb in src/app.src.css is separate and unchanged.) */
+:root{--wm-dark:#0b0d10;--wm-ring:#ffffff;--wm-w:#ffffff;--wm-text:#ffffff;--wm-arrow:#e8531f}
