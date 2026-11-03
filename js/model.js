@@ -96,7 +96,7 @@ export function applySeed(seed,by){let s=st();
   if((s.seedVersion||0)>=seed.version){migrateState(s,seed);return 0}const seen=new Set(s.seenSeedIds);let added=0;
   s.fieldDefs||=[];for(const coll of ['fieldDefs','locations','areas','units','sizes','templates'])for(const e of seed[coll]){const key=coll+':'+e.id;
     if(seen.has(key))continue;seen.add(key);if(!s[coll].some(x=>x.id===e.id)){s[coll].push({nameHistory:[],...structuredClone(e),updatedAt:seed.generatedAt,updatedBy:'seed'});added++}}
-  s.seenSeedIds=[...seen];const first=!s.seedVersion;if(!first){migrateAreas(s,seed);migrateTemplates(s,seed);migrateBelts(s,seed);migrateUnitPatches(s,seed);migrateRetireUnits(s,seed);migrateGroups(s,seed);migrateTags(s,seed);migrateCheckmark(s,seed)}s.seedVersion=seed.version;S.save();
+  s.seenSeedIds=[...seen];const first=!s.seedVersion;if(!first){migrateAreas(s,seed);migrateTemplates(s,seed);migrateBelts(s,seed);migrateUnitPatches(s,seed);migrateRetireUnits(s,seed);migrateGroups(s,seed);migrateTags(s,seed);migrateCheckmark(s,seed);migrateRename(s,seed);migrateTyson(s,seed)}s.seedVersion=seed.version;S.save();
   migrateState(s,seed);
   if(first)for(const l of locations())if(!s.visits.some(v=>v.locationId===l.id))newVisit(l.id,seed.defaultVisits?.[l.id]||'quarterly',null,null,by||'seed');
   return added}
@@ -239,6 +239,22 @@ export function migrateRetireUnits(s,seed){const m=seed.retireUnitMigration;if(!
 // v11: auto-tag Hills units to schedule groups. Only fills groups that are still EMPTY and units that have no group,
 // so anything the owner already tagged/untagged by hand is left alone. Empty open schedule visits pick up the new units.
 // v12: Zach's "just check marks" groups. Only groups the owner never typed AND that have no tagged units are converted.
+// v13: spelling fix (AAON) + Tyson area rename. Only when the name is still the old seed value (owner renames kept). IDs unchanged.
+export function migrateRename(s,seed){const m=seed.renameMigration;if(!m||(s.renameMigrationVersion||0)>=m.version)return;
+  const ren=(e,r,coll)=>{if(e&&e.name===r.from){(e.nameHistory||=[]).push({name:e.name,at:S.now(),by:'seed-migration'});e.name=r.to;S.logChange(coll,e.id,'name',r.to,'seed-migration')}};
+  for(const [id,r] of Object.entries(m.areas||{}))ren(s.areas.find(a=>a.id===id),r,'areas');
+  for(const [id,r] of Object.entries(m.groups||{}))for(const l of s.locations)ren(l.schedule?.groups.find(g=>g.id===id),r,'schedule');
+  for(const v of s.visits)for(const it of v.items)if(it.groupId&&it.check){const g=group(v.locationId,it.groupId);if(g)it.name=g.name}
+  s.renameMigrationVersion=m.version}
+// v13: Tyson RVAF + Wastewater real units. Sample units were retired (untouched only) by migrateRetireUnits. An untouched
+// seed-made sample visit is replaced by a Tyson PM visit; a visit with work in it just gains the real units.
+export function migrateTyson(s,seed){const m=seed.tysonMigration;if(!m||(s.tysonMigrationVersion||0)>=m.version)return;s.tysonMigrationVersion=m.version;
+  const l=s.locations.find(x=>x.id===m.locationId);if(!l)return;if(l.placeholder&&!(l.updatedBy&&l.updatedBy!=='seed'))l.placeholder=false;
+  const t=s.templates.find(x=>x.id===m.templateId);if(!t)return;
+  for(const v of s.visits.filter(x=>x.locationId===l.id&&x.status==='active')){const touched=Object.values(v.records||{}).some(r=>Object.values(r||{}).some(f=>f?.v));
+    if(!touched&&v.createdBy==='seed'&&v.items.every(i=>i.kind!=='unit'||m.sampleUnits.includes(i.unitId))){s.visits.splice(s.visits.indexOf(v),1);if(s.currentVisit[l.id]===v.id)delete s.currentVisit[l.id]}
+    else for(const uid of m.units){const u=s.units.find(x=>x.id===uid);if(u&&!u.archived&&!v.items.some(i=>i.unitId===uid))v.items.push(itemFor(u))}}
+  if(!s.visits.some(x=>x.locationId===l.id&&x.status==='active'))newVisit(l.id,m.templateId,null,null,'seed');S.save()}
 export function migrateCheckmark(s,seed){const m=seed.checkmarkMigration;if(!m||(s.checkmarkMigrationVersion||0)>=m.version)return;
   const l=s.locations.find(x=>x.id===m.locationId);let any=false;
   for(const gid of m.groups){const g=l?.schedule?.groups.find(x=>x.id===gid);if(!g||g.type!==undefined||s.units.some(u=>u.equipmentGroupId===gid&&!u.archived))continue;

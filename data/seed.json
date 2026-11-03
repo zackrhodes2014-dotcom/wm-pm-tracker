@@ -1,13 +1,13 @@
 {
- "version": 12,
- "generatedAt": "2026-11-03T04:21:20.686Z",
+ "version": 13,
+ "generatedAt": "2026-11-03T12:55:44.434Z",
  "note": "Hills Pet Foods = real data from Zach sheet; all other locations = PLACEHOLDER sample units",
  "locations": [
   {
    "id": "loc_7294209793",
    "name": "Tyson RVAF + Wastewater",
    "sub": "Tyson Foods · one site",
-   "placeholder": true,
+   "placeholder": false,
    "order": 0,
    "features": {
     "condenserCoil": false
@@ -411,7 +411,7 @@
      },
      {
       "id": "eg_bc53f346ed",
-      "name": "RMT Aaons",
+      "name": "RMT AAON",
       "order": 7,
       "notes": [],
       "months": {
@@ -741,7 +741,7 @@
   {
    "id": "ar_de5f2a907b",
    "locationId": "loc_7294209793",
-   "name": "RVAF Processing",
+   "name": "RVAF",
    "order": 0
   },
   {
@@ -789,7 +789,7 @@
   {
    "id": "ar_8485b10e9d",
    "locationId": "loc_3cfb012bc8",
-   "name": "Aaons",
+   "name": "AAON",
    "order": 4
   },
   {
@@ -879,116 +879,222 @@
  ],
  "units": [
   {
-   "id": "u_41e483a13f",
+   "id": "u_d4a5489c36",
    "areaId": "ar_de5f2a907b",
    "order": 0,
-   "name": "AHU-1",
-   "sample": true,
-   "filters": [],
-   "belts": [],
+   "name": "Office building RTUs",
+   "pdfNo": 1,
+   "filters": [
+    {
+     "qty": 6,
+     "sizeId": "fs_db89b95aa2"
+    }
+   ],
+   "belts": [
+    {
+     "qty": 2,
+     "sizeId": "bs_5b15c7f3ad"
+    }
+   ],
    "checks": {
     "filters": true,
     "belts": true,
-    "coilCondenser": true,
+    "coilCondenser": false,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)"
   },
   {
-   "id": "u_f75bd6b359",
+   "id": "u_82158f17f5",
    "areaId": "ar_de5f2a907b",
    "order": 1,
-   "name": "AHU-2",
-   "sample": true,
-   "filters": [],
+   "name": "Upstairs closet (break room and upstairs offices)",
+   "pdfNo": 5,
+   "filters": [
+    {
+     "qty": 2,
+     "sizeId": "fs_695d8d01b9"
+    }
+   ],
    "belts": [],
    "checks": {
     "filters": true,
-    "belts": true,
-    "coilCondenser": true,
+    "belts": false,
+    "coilCondenser": false,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)"
   },
   {
-   "id": "u_50d3e90a00",
+   "id": "u_f06738c0c0",
    "areaId": "ar_de5f2a907b",
    "order": 2,
-   "name": "MAU-1",
-   "sample": true,
-   "filters": [],
+   "name": "Control room",
+   "pdfNo": 6,
+   "filters": [
+    {
+     "qty": 1,
+     "sizeId": "fs_695d8d01b9"
+    }
+   ],
    "belts": [],
    "checks": {
     "filters": true,
-    "belts": true,
-    "coilCondenser": true,
+    "belts": false,
+    "coilCondenser": false,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)"
   },
   {
-   "id": "u_0272847bc6",
+   "id": "u_4aab143cb6",
    "areaId": "ar_de5f2a907b",
    "order": 3,
-   "name": "EF-1",
-   "sample": true,
-   "filters": [],
+   "name": "AAON on roof",
+   "pdfNo": 7,
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_cc2eda67bf"
+    }
+   ],
    "belts": [],
    "checks": {
     "filters": true,
-    "belts": true,
-    "coilCondenser": true,
+    "belts": false,
+    "coilCondenser": false,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)"
   },
   {
-   "id": "u_51986d2200",
+   "id": "u_3dd182f19d",
+   "areaId": "ar_de5f2a907b",
+   "order": 4,
+   "name": "AAON on ground",
+   "pdfNo": 8,
+   "filters": [
+    {
+     "qty": 4,
+     "sizeId": "fs_19c9239973"
+    }
+   ],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)"
+  },
+  {
+   "id": "u_a8da42b44c",
+   "areaId": "ar_de5f2a907b",
+   "order": 5,
+   "name": "Main MCC",
+   "pdfNo": 9,
+   "filters": [
+    {
+     "qty": 1,
+     "sizeId": "fs_a20118d353"
+    },
+    {
+     "qty": 1,
+     "sizeId": "fs_cc2eda67bf"
+    },
+    {
+     "qty": 1,
+     "sizeId": "fs_658648f539"
+    },
+    {
+     "qty": 1,
+     "sizeId": "fs_fd25de0f91"
+    }
+   ],
+   "belts": [],
+   "checks": {
+    "filters": true,
+    "belts": false,
+    "coilCondenser": false,
+    "ops": true
+   },
+   "flags": [],
+   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)",
+   "notes": "16x25x2 changed from 14x25x2 · 16x20x2 and 20x20x2 added 2026-11-02"
+  },
+  {
+   "id": "u_602c27f1bb",
    "areaId": "ar_23f3cb605a",
    "order": 0,
-   "name": "EF-WW1",
-   "sample": true,
-   "filters": [],
+   "name": "Wastewater AAON",
+   "pdfNo": 2,
+   "filters": [
+    {
+     "qty": 2,
+     "sizeId": "fs_20132b2f59"
+    }
+   ],
    "belts": [],
    "checks": {
     "filters": true,
-    "belts": true,
-    "coilCondenser": true,
+    "belts": false,
+    "coilCondenser": false,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)"
   },
   {
-   "id": "u_06dd497938",
+   "id": "u_901bcaa747",
    "areaId": "ar_23f3cb605a",
    "order": 1,
-   "name": "EF-WW2",
-   "sample": true,
-   "filters": [],
+   "name": "Wastewater MCC",
+   "pdfNo": 3,
+   "filters": [
+    {
+     "qty": 1,
+     "sizeId": "fs_2f43d4b210"
+    }
+   ],
    "belts": [],
    "checks": {
     "filters": true,
-    "belts": true,
-    "coilCondenser": true,
+    "belts": false,
+    "coilCondenser": false,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)",
+   "notes": "One of the 2× 16x20x1 originally marked \"not checked\""
   },
   {
-   "id": "u_d267792fdf",
+   "id": "u_2ffa3576a0",
    "areaId": "ar_23f3cb605a",
    "order": 2,
-   "name": "UH-1",
-   "sample": true,
-   "filters": [],
+   "name": "Wastewater upstairs office",
+   "pdfNo": 4,
+   "filters": [
+    {
+     "qty": 1,
+     "sizeId": "fs_2f43d4b210"
+    }
+   ],
    "belts": [],
    "checks": {
     "filters": true,
-    "belts": true,
-    "coilCondenser": true,
+    "belts": false,
+    "coilCondenser": false,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)",
+   "notes": "One of the 2× 16x20x1 originally marked \"not checked\""
   },
   {
    "id": "u_38f613162c",
@@ -3709,19 +3815,59 @@
  ],
  "sizes": [
   {
+   "id": "fs_db89b95aa2",
+   "kind": "filter",
+   "name": "16X25X1"
+  },
+  {
+   "id": "bs_5b15c7f3ad",
+   "kind": "belt",
+   "name": "A46"
+  },
+  {
+   "id": "fs_695d8d01b9",
+   "kind": "filter",
+   "name": "20X22X1"
+  },
+  {
+   "id": "fs_cc2eda67bf",
+   "kind": "filter",
+   "name": "20X25X2"
+  },
+  {
+   "id": "fs_19c9239973",
+   "kind": "filter",
+   "name": "16X20X4"
+  },
+  {
    "id": "fs_a20118d353",
    "kind": "filter",
    "name": "20X20X2"
   },
   {
-   "id": "bs_e472149269",
-   "kind": "belt",
-   "name": "AX-49"
-  },
-  {
    "id": "fs_658648f539",
    "kind": "filter",
    "name": "16X20X2"
+  },
+  {
+   "id": "fs_fd25de0f91",
+   "kind": "filter",
+   "name": "16X25X2"
+  },
+  {
+   "id": "fs_20132b2f59",
+   "kind": "filter",
+   "name": "20X20X4"
+  },
+  {
+   "id": "fs_2f43d4b210",
+   "kind": "filter",
+   "name": "16X20X1"
+  },
+  {
+   "id": "bs_e472149269",
+   "kind": "belt",
+   "name": "AX-49"
   },
   {
    "id": "bs_fb1d9b0535",
@@ -3732,11 +3878,6 @@
    "id": "bs_539dfad776",
    "kind": "belt",
    "name": "AX-54"
-  },
-  {
-   "id": "fs_cc2eda67bf",
-   "kind": "filter",
-   "name": "20X25X2"
   },
   {
    "id": "bs_5fa151b28e",
@@ -3752,16 +3893,6 @@
    "id": "bs_2ea376696f",
    "kind": "belt",
    "name": "A54"
-  },
-  {
-   "id": "bs_5b15c7f3ad",
-   "kind": "belt",
-   "name": "A46"
-  },
-  {
-   "id": "fs_fd25de0f91",
-   "kind": "filter",
-   "name": "16X25X2"
   },
   {
    "id": "bs_dab82ec47b",
@@ -3792,11 +3923,6 @@
    "id": "fs_6befb0375d",
    "kind": "filter",
    "name": "20X25X4"
-  },
-  {
-   "id": "fs_19c9239973",
-   "kind": "filter",
-   "name": "16X20X4"
   },
   {
    "id": "fs_232a65a587",
@@ -3834,11 +3960,6 @@
    "name": "22X22X1"
   },
   {
-   "id": "fs_db89b95aa2",
-   "kind": "filter",
-   "name": "16X25X1"
-  },
-  {
    "id": "bs_d71f44d7b8",
    "kind": "belt",
    "name": "5VX780"
@@ -3857,11 +3978,6 @@
    "id": "bs_84c7ea59df",
    "kind": "belt",
    "name": "A50"
-  },
-  {
-   "id": "fs_20132b2f59",
-   "kind": "filter",
-   "name": "20X20X4"
   },
   {
    "id": "fs_35624ec7ce",
@@ -4037,6 +4153,19 @@
  ],
  "templates": [
   {
+   "id": "tyson-pm",
+   "label": "Tyson PM",
+   "locations": [
+    "loc_7294209793"
+   ],
+   "fields": [
+    "filters",
+    "belts",
+    "ops"
+   ],
+   "extra": []
+  },
+  {
    "id": "spring",
    "label": "Spring PM",
    "locations": [
@@ -4145,7 +4274,8 @@
   }
  ],
  "defaultVisits": {
-  "loc_3cfb012bc8": "spring"
+  "loc_3cfb012bc8": "spring",
+  "loc_7294209793": "tyson-pm"
  },
  "areaMigration": {
   "version": 5,
@@ -4496,10 +4626,61 @@
   ]
  },
  "retireUnitMigration": {
-  "version": 9,
+  "version": 13,
   "units": [
-   "u_e6a1b2f7f7"
+   "u_e6a1b2f7f7",
+   "u_41e483a13f",
+   "u_f75bd6b359",
+   "u_50d3e90a00",
+   "u_0272847bc6",
+   "u_51986d2200",
+   "u_06dd497938",
+   "u_d267792fdf"
   ]
+ },
+ "tysonMigration": {
+  "version": 13,
+  "locationId": "loc_7294209793",
+  "templateId": "tyson-pm",
+  "units": [
+   "u_d4a5489c36",
+   "u_82158f17f5",
+   "u_f06738c0c0",
+   "u_4aab143cb6",
+   "u_3dd182f19d",
+   "u_a8da42b44c",
+   "u_602c27f1bb",
+   "u_901bcaa747",
+   "u_2ffa3576a0"
+  ],
+  "sampleUnits": [
+   "u_41e483a13f",
+   "u_f75bd6b359",
+   "u_50d3e90a00",
+   "u_0272847bc6",
+   "u_51986d2200",
+   "u_06dd497938",
+   "u_d267792fdf"
+  ]
+ },
+ "renameMigration": {
+  "version": 13,
+  "areas": {
+   "ar_8485b10e9d": {
+    "from": "Aaons",
+    "to": "AAON"
+   },
+   "ar_de5f2a907b": {
+    "from": "RVAF Processing",
+    "to": "RVAF"
+   }
+  },
+  "groups": {
+   "eg_bc53f346ed": {
+    "from": "RMT Aaons",
+    "to": "RMT AAON"
+   }
+  }
  },
  "unitPatchMigration": {
   "version": 8,
