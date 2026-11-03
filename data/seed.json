@@ -1,6 +1,6 @@
 {
- "version": 11,
- "generatedAt": "2026-11-03T04:02:17.717Z",
+ "version": 12,
+ "generatedAt": "2026-11-03T04:21:20.686Z",
  "note": "Hills Pet Foods = real data from Zach sheet; all other locations = PLACEHOLDER sample units",
  "locations": [
   {
@@ -174,7 +174,8 @@
         "CA"
        ]
       },
-      "archived": false
+      "archived": false,
+      "type": "checkmark"
      },
      {
       "id": "eg_100ed73476",
@@ -219,7 +220,8 @@
         "PM"
        ]
       },
-      "archived": false
+      "archived": false,
+      "type": "checkmark"
      },
      {
       "id": "eg_136d5d9e2f",
@@ -264,7 +266,8 @@
         "PM"
        ]
       },
-      "archived": false
+      "archived": false,
+      "type": "checkmark"
      },
      {
       "id": "eg_e2b9aa0f87",
@@ -297,7 +300,8 @@
         "CA"
        ]
       },
-      "archived": false
+      "archived": false,
+      "type": "checkmark"
      },
      {
       "id": "eg_cf129371ad",
@@ -331,7 +335,8 @@
        ],
        "12": []
       },
-      "archived": false
+      "archived": false,
+      "type": "checkmark"
      },
      {
       "id": "eg_4034f29055",
@@ -4349,6 +4354,17 @@
    "ar_4e1f9bebad",
    "ar_c0ec48c012",
    "ar_7fb4d488a7"
+  ]
+ },
+ "checkmarkMigration": {
+  "version": 12,
+  "locationId": "loc_3cfb012bc8",
+  "groups": [
+   "eg_1e5b2e20f3",
+   "eg_100ed73476",
+   "eg_136d5d9e2f",
+   "eg_e2b9aa0f87",
+   "eg_cf129371ad"
   ]
  },
  "tagMigration": {

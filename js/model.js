@@ -23,7 +23,7 @@ export function itemFor(u){return {id:u.id,unitId:u.id,kind:'unit'}}
 export const unitInTemplate=(u,t)=>t.units?t.units.includes(u.id):(!u.templateOnly||u.templateOnly.includes(t.id));
 export function newVisit(lid,templateId,label,date,by){
   const t=tmpl(templateId),items=[];
-  for(const a of areasOf(lid)){if(!t.noUnits)unitsOf(a.id).filter(u=>unitInTemplate(u,t)).forEach(u=>items.push(itemFor(u)));
+  for(const a of areasOf(lid).filter(a=>!a.system)){if(!t.noUnits)unitsOf(a.id).filter(u=>unitInTemplate(u,t)).forEach(u=>items.push(itemFor(u)));
     t.extra.forEach((x,i)=>items.push({id:a.id+'~'+t.id+'~'+i,kind:'task',areaId:a.id,name:x}))}
   const v={id:rid('v'),locationId:lid,templateId,label:label||t.label,date:date||today(),status:'active',items,records:{},createdBy:by,updatedAt:S.now(),updatedBy:by};
   st().visits.push(v);st().currentVisit[lid]=v.id;S.logChange('visit',v.id,'create',{label:v.label,date:v.date,templateId},by);S.save();return v}
@@ -96,7 +96,7 @@ export function applySeed(seed,by){let s=st();
   if((s.seedVersion||0)>=seed.version){migrateState(s,seed);return 0}const seen=new Set(s.seenSeedIds);let added=0;
   s.fieldDefs||=[];for(const coll of ['fieldDefs','locations','areas','units','sizes','templates'])for(const e of seed[coll]){const key=coll+':'+e.id;
     if(seen.has(key))continue;seen.add(key);if(!s[coll].some(x=>x.id===e.id)){s[coll].push({nameHistory:[],...structuredClone(e),updatedAt:seed.generatedAt,updatedBy:'seed'});added++}}
-  s.seenSeedIds=[...seen];const first=!s.seedVersion;if(!first){migrateAreas(s,seed);migrateTemplates(s,seed);migrateBelts(s,seed);migrateUnitPatches(s,seed);migrateRetireUnits(s,seed);migrateGroups(s,seed);migrateTags(s,seed)}s.seedVersion=seed.version;S.save();
+  s.seenSeedIds=[...seen];const first=!s.seedVersion;if(!first){migrateAreas(s,seed);migrateTemplates(s,seed);migrateBelts(s,seed);migrateUnitPatches(s,seed);migrateRetireUnits(s,seed);migrateGroups(s,seed);migrateTags(s,seed);migrateCheckmark(s,seed)}s.seedVersion=seed.version;S.save();
   migrateState(s,seed);
   if(first)for(const l of locations())if(!s.visits.some(v=>v.locationId===l.id))newVisit(l.id,seed.defaultVisits?.[l.id]||'quarterly',null,null,by||'seed');
   return added}
@@ -143,15 +143,23 @@ export function codeFields(lid,codes){const f=[],extra=[];for(const c of codes){
   if(m&&m.every(x=>featureOn(lid,x)))m.forEach(x=>f.includes(x)||f.push(x));else extra.push(c)}
   return {fields:['filters','belts','ops',MERGED].filter(x=>f.includes(x)),extra}}
 function ensureSchedState(s){s.schedule||=(s.schedule={})}
+// "checkmark" groups (e.g. Steam Boilers): no units - ONE tick per group per visit, codes due listed as its note.
+export const isCheck=g=>g?.type==='checkmark';
+export const checkAreaId=lid=>'ar_chk_'+lid;
+export function ensureCheckArea(lid){const id=checkAreaId(lid);let a=st().areas.find(x=>x.id===id);
+  if(!a){a={id,locationId:lid,name:'Plant equipment (check marks)',order:999,nameHistory:[],system:'checkmark',updatedAt:S.now(),updatedBy:'system'};st().areas.push(a)}
+  if(a.archived)a.archived=false;return a}
+export const checkItemId=gid=>'sch~'+gid+'~check';
 function schedItems(lid,groupCodes){const items=[];
-  for(const g of groupsOf(lid,true)){const codes=groupCodes[g.id];if(!codes?.length)continue;const us=groupUnits(lid,g.id);if(!us.length)continue;
+  for(const g of groupsOf(lid,true)){const codes=groupCodes[g.id];if(!codes?.length)continue;
+    if(isCheck(g)){const a=ensureCheckArea(lid);items.push({id:checkItemId(g.id),kind:'task',check:true,areaId:a.id,groupId:g.id,codes:[...codes],name:g.name,note:'Due: '+codes.map(c=>`${c} (${codeLabel(lid,c)})`).join(', ')});continue}const us=groupUnits(lid,g.id);if(!us.length)continue;
     const {fields:f,extra}=codeFields(lid,codes);
     if(f.length)us.forEach(u=>items.push({id:u.id,unitId:u.id,kind:'unit',groupId:g.id,fields:f,codes:codes.filter(c=>CODE_FIELDS[c])}));
     extra.forEach(c=>items.push({id:'sch~'+g.id+'~'+c,kind:'task',areaId:us[0].areaId,groupId:g.id,code:c,name:`${g.name}: ${codeLabel(lid,c)} (${c})`}))}
   return items}
 // one combined visit per location per month (all due codes stacked); resumes, never duplicates
 export const monthVisit=(lid,mk=monthKey())=>st().visits.find(v=>v.locationId===lid&&v.kind==='month'&&v.month===mk);
-export const hasTagged=lid=>groupsOf(lid).some(g=>groupUnits(lid,g.id).length);
+export const hasTagged=lid=>groupsOf(lid).some(g=>isCheck(g)||groupUnits(lid,g.id).length);
 export function ensureMonthVisit(lid,by,d=new Date()){const l=loc(lid);if(!l?.schedule||!hasTagged(lid))return null;const mk=monthKey(d);
   let v=monthVisit(lid,mk);const gc={};for(const g of groupsOf(lid)){const c=codesIn(g,d.getMonth()+1);if(c.length)gc[g.id]=[...c]}
   // nothing tagged is due this month -> no month visit (and the current visit is left alone)
@@ -183,6 +191,7 @@ export function addGroup(lid,name,by){const l=loc(lid);l.schedule||={source:'',s
   const g={id:rid('eg'),name:name.trim(),order:l.schedule.groups.length,notes:[],months,archived:false,createdBy:by,updatedAt:S.now(),updatedBy:by};l.schedule.groups.push(g);stampE(l,by);S.logChange('schedule',lid+'/'+g.id,'create',g,by);S.save();return g}
 export function updateGroup(lid,gid,patch,by){const g=group(lid,gid);if('name' in patch&&patch.name.trim()&&patch.name.trim()!==g.name)(g.nameHistory||=[]).push({name:g.name,at:S.now(),by});
   if(patch.name!==undefined)patch.name=patch.name.trim()||g.name;Object.assign(g,patch);g.updatedAt=S.now();g.updatedBy=by;if(patch.archived)Object.assign(g,{deletedAt:S.now(),deletedBy:by});
+  if('type' in patch){if(isCheck(g))ensureCheckArea(lid);for(const v of st().visits)if(v.locationId===lid&&v.templateId==='schedule'&&v.status==='active'&&v.groupCodes?.[gid])refreshSchedVisit(v)}
   S.logChange('schedule',lid+'/'+gid,'update',patch,by);S.save();return g}
 export function setMonthCodes(lid,gid,m,codes,by){const legend=new Set((loc(lid).schedule.legend||[]).map(x=>x.code));
   const bad=codes.filter(c=>!legend.has(c));if(bad.length)throw new Error('Unknown code: '+bad.join(', '));
@@ -229,6 +238,12 @@ export function migrateRetireUnits(s,seed){const m=seed.retireUnitMigration;if(!
 // rooftop supply fans - only units still untouched by the owner (updatedBy seed/seed-migration) and untagged.
 // v11: auto-tag Hills units to schedule groups. Only fills groups that are still EMPTY and units that have no group,
 // so anything the owner already tagged/untagged by hand is left alone. Empty open schedule visits pick up the new units.
+// v12: Zach's "just check marks" groups. Only groups the owner never typed AND that have no tagged units are converted.
+export function migrateCheckmark(s,seed){const m=seed.checkmarkMigration;if(!m||(s.checkmarkMigrationVersion||0)>=m.version)return;
+  const l=s.locations.find(x=>x.id===m.locationId);let any=false;
+  for(const gid of m.groups){const g=l?.schedule?.groups.find(x=>x.id===gid);if(!g||g.type!==undefined||s.units.some(u=>u.equipmentGroupId===gid&&!u.archived))continue;
+    g.type='checkmark';any=true;S.logChange('schedule',l.id+'/'+gid,'update',{type:'checkmark'},'seed-migration')}
+  s.checkmarkMigrationVersion=m.version;if(any){ensureCheckArea(l.id);for(const v of s.visits)if(v.locationId===l.id&&v.templateId==='schedule'&&v.status==='active'&&v.groupCodes)refreshSchedVisit(v)}}
 export function migrateTags(s,seed){const m=seed.tagMigration;if(!m||(s.tagMigrationVersion||0)>=m.version)return;
   const l=s.locations.find(x=>x.id===m.locationId);const live=new Set((l?.schedule?.groups||[]).filter(g=>!g.archived).map(g=>g.id));
   const used=new Set(s.units.filter(u=>u.equipmentGroupId&&!u.archived).map(u=>u.equipmentGroupId));
@@ -236,7 +251,9 @@ export function migrateTags(s,seed){const m=seed.tagMigration;if(!m||(s.tagMigra
     u.equipmentGroupId=gid;S.logChange('units',uid,'equipmentGroupId',gid,'seed-migration')}
   s.tagMigrationVersion=m.version;
   for(const v of s.visits)if(v.locationId===m.locationId&&v.templateId==='schedule'&&v.status==='active'&&v.groupCodes)refreshSchedVisit(v)}
-export function refreshSchedVisit(v){for(const it of schedItems(v.locationId,v.groupCodes))if(!v.items.some(x=>x.id===it.id))v.items.push(it)}
+export function refreshSchedVisit(v){const want=schedItems(v.locationId,v.groupCodes);
+  v.items=v.items.filter(x=>!x.groupId||want.some(w=>w.id===x.id)||Object.values(v.records[x.id]||{}).some(r=>r?.v));
+  for(const it of want)if(!v.items.some(x=>x.id===it.id))v.items.push(it)}
 // tag several units to one group at once (Tag units picker). Moves units from another group. Open schedule visits pick them up.
 export function tagUnits(lid,gid,uids,by){for(const uid of uids){const u=unit(uid);if(!u||u.equipmentGroupId===gid)continue;
     u.equipmentGroupId=gid;u.updatedAt=S.now();u.updatedBy=by;S.logChange('units',uid,'equipmentGroupId',gid,by)}

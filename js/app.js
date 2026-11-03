@@ -23,25 +23,29 @@ function header(back,title,sub){const u=user();return `<header class="topbar"><d
 const bar=(p,g)=>`<div class="bar ${g?'g':''}"><i style="width:${p}%"></i></div>`;
 const layoutSeg=()=>`<div class="seg mt-2" role="tablist" aria-label="Layout">${['cards','grid'].map(m=>`<button class="${ui.layout===m?'on':''}" data-layout="${m}" role="tab" aria-selected="${ui.layout===m}">${m==='cards'?'▤ Cards':'▦ Grid'}</button>`).join('')}</div>`;
 // ---------- spreadsheet-style grid (optional; per-device) ----------
-function cellSummary(u,f){if(!u)return '';const fmt=a=>a.map(x=>`${x.qty}× ${M.sizeName(x.sizeId)}`).join(' + ');
+function cellSummary(u,f){if(!u)return '';const fmt=a=>a.map(x=>`${x.qty}×${String(M.sizeName(x.sizeId)).toLowerCase().replace(/\s+/g,'')}`).join(' + ');
  if(f==='filters')return u.filters?.length?fmt(u.filters):'';if(f==='belts')return u.belts?.length?fmt(u.belts):'';return ''}
+const GSHORT={filters:'Fil',belts:'Belt',ops:'Ops',coilCondenser:'Coil',done:'Done'};
+// Grid fits the phone width (no sideways scroll): fixed table layout, short headers, compact cells, no stamps in cells
+// (stamps live in the unit detail sheet). Task / check-mark rows use one tick spanning the field columns.
 function gridHtml(v,areas,items,whole){const its=items.filter(i=>ui.mode==='all'||M.remaining(v,i));
  if(!its.length)return `<div class="card done mt-4 text-center"><h2 class="green">✓ Nothing left</h2></div>`;
- const cols=[];its.forEach(it=>{const tf=it.kind==='unit'?M.tfields(v,it):['done'];tf.forEach(f=>cols.includes(f)||cols.push(f))});
- const order=['filters','belts','ops',M.MERGED,'done'];cols.sort((a,b)=>(order.indexOf(a)+99)%99-(order.indexOf(b)+99)%99);
- const act=v.status==='active';const aid=whole?'':(areas[0]?.id||'');
- const head=`<tr><th class="gsticky gcorner">Unit</th>${cols.map(f=>{const n=M.checkAllPlan(v,its,f).plan.length;const d=M.fieldDef(f);
-   return `<th>${act&&n?`<button class="gcolbtn" data-gcol="${f}" data-garea="${aid}" aria-label="Check all ${esc(d.label)}">${esc(d.short||d.label)}<small>✓ all (${n})</small></button>`:`<span class="gcolh">${esc(d.short||d.label)}</span>`}</th>`}).join('')}<th>Notes / Issue</th><th>Row</th></tr>`;
+ const cols=[];its.forEach(it=>{if(it.kind==='unit')M.tfields(v,it).forEach(f=>cols.includes(f)||cols.push(f))});
+ const order=['filters','belts','ops',M.MERGED];cols.sort((a,b)=>(order.indexOf(a)+99)%99-(order.indexOf(b)+99)%99);
+ const nc=Math.max(cols.length,1);const act=v.status==='active';const aid=whole?'':(areas[0]?.id||'');
+ const colg=`<colgroup><col class="gc-name">${cols.length?cols.map(()=>'<col class="gc-f">').join(''):'<col class="gc-f">'}<col class="gc-x"></colgroup>`;
+ const head=`<tr><th class="gcorner">Unit</th>${cols.length?cols.map(f=>{const n=M.checkAllPlan(v,its,f).plan.length;const d=M.fieldDef(f),sh=GSHORT[f]||(d.short||d.label).slice(0,4);
+   return `<th>${act&&n?`<button class="gcolbtn" data-gcol="${f}" data-garea="${aid}" title="${esc(d.label)}" aria-label="Check all ${esc(d.label)}">${esc(sh)}<small>✓${n}</small></button>`:`<span class="gcolh" title="${esc(d.label)}">${esc(sh)}</span>`}</th>`}).join(''):'<th><span class="gcolh">Done</span></th>'}<th title="Notes / Issue"><span class="gcolh">!</span></th></tr>`;
+ const cell=(it,f,r,ap,ro,u)=>{const na=!ap.includes(f),on=!!r[f]?.v,sum=cellSummary(u,f);
+   if(na&&!on)return `<span class="gcell na" aria-disabled="true">N/A</span>`;
+   return `<button class="gcell ${on?'on':''}" data-item="${esc(it.id)}" data-field="${f}" ${ro?'disabled':''} aria-pressed="${on}" aria-label="${esc(M.itemName(it))} ${esc(M.fieldDef(f).label)}"><span class="gbox">${on?'✓':''}</span>${sum?`<span class="gsum">${esc(sum)}</span>`:''}</button>`};
  const row=it=>{const r=v.records[it.id]||{},u=it.kind==='unit'?M.unit(it.unitId):null,ap=M.fields(v,it),tf=it.kind==='unit'?M.tfields(v,it):['done'],iss=M.itemIssue(v,it),ro=!act||M.itemGone(it),done=M.itemDone(v,it);
-   const cells=cols.map(f=>{if(!tf.includes(f))return '<td class="gnone"></td>';const na=!ap.includes(f),on=!!r[f]?.v,sum=cellSummary(u,f);
-     if(na&&!on)return `<td><span class="gcell na" aria-disabled="true">N/A</span></td>`;
-     return `<td><button class="gcell ${on?'on':''}" data-item="${esc(it.id)}" data-field="${f}" ${ro?'disabled':''} aria-pressed="${on}" aria-label="${esc(M.itemName(it))} ${esc(M.fieldDef(f).label)}"><span class="gbox">${on?'✓':''}</span>${sum?`<span class="gsum">${esc(sum)}</span>`:''}${on?`<span class="gstamp">${r[f].editedAt?'✎ ':''}${esc(first(r[f].by))} ${tfmt(r[f].at)}</span>`:''}</button></td>`}).join('');
+   const cells=it.kind==='unit'?cols.map(f=>tf.includes(f)?`<td>${cell(it,f,r,ap,ro,u)}</td>`:'<td class="gnone"></td>').join(''):`<td colspan="${nc}">${cell(it,'done',r,ap,ro,u)}</td>`;
    const left=ap.filter(f=>!r[f]?.v).length;
-   return `<tr class="grow ${iss?'gissue':done?'gdone':''}" data-grow="${esc(it.id)}"><th class="gsticky"><button class="gname" data-gunit="${esc(it.id)}">${esc(M.itemName(it))}${u?.asset?`<small>Asset ${esc(u.asset)}</small>`:''}${u?.sample?'<small>sample</small>':''}</button></th>${cells}
-    <td><button class="gflag ${iss?'on':''}" data-issue="${esc(it.id)}" ${ro?'disabled':''} aria-pressed="${iss}" aria-label="Issue">⚑</button>${r.note?.v?`<button class="gnote" data-gunit="${esc(it.id)}" aria-label="Note">✎</button>`:''}</td>
-    <td>${!ro&&!iss&&left>1?`<button class="gcheckrow" data-checkall="${esc(it.id)}" aria-label="Check all for ${esc(M.itemName(it))}">✓ all</button>`:''}</td></tr>`};
- const body=areas.map(a=>{const rs=its.filter(i=>M.itemArea(i)===a.id);if(!rs.length)return '';return (whole?`<tr class="gsec"><th class="gsticky" colspan="1">${esc(a.name)}</th><td colspan="${cols.length+2}"></td></tr>`:'')+rs.map(row).join('')}).join('');
- return `<div class="gridwrap" id="grid"><table class="grid"><thead>${head}</thead><tbody>${body}</tbody></table></div><p class="muted text-xs mt-2">Tap a cell to tick/untick · tap a unit name for notes, issue &amp; editing times · column header ✓ all ticks that column (skips ISSUE units).</p>`}
+   return `<tr class="grow ${iss?'gissue':done?'gdone':''}" data-grow="${esc(it.id)}"><th class="gnamecell"><div class="gnamewrap"><button class="gname" data-gunit="${esc(it.id)}"><span class="gn">${it.check?'✓ ':''}${esc(M.itemName(it))}</span>${u?.asset?`<small>#${esc(u.asset)}</small>`:''}${r.note?.v?'<small class="gnotei" aria-label="Has note">✎ note</small>':''}</button>${!ro&&!iss&&left>1?`<button class="gcheckrow" data-checkall="${esc(it.id)}" aria-label="Check all for ${esc(M.itemName(it))}">✓</button>`:''}</div></th>${cells}
+    <td><button class="gflag ${iss?'on':''}" data-issue="${esc(it.id)}" ${ro?'disabled':''} aria-pressed="${iss}" aria-label="Issue">⚑</button></td></tr>`};
+ const body=areas.map(a=>{const rs=its.filter(i=>M.itemArea(i)===a.id);if(!rs.length)return '';return (whole?`<tr class="gsec"><th colspan="${nc+2}">${esc(a.name)}</th></tr>`:'')+rs.map(row).join('')}).join('');
+ return `<div class="gridwrap" id="grid"><table class="gtable">${colg}<thead>${head}</thead><tbody>${body}</tbody></table></div><p class="muted text-xs mt-2">Tap a cell to tick · tap a unit name for notes, issue &amp; who/when (edit times) · ✓ next to a name = check all for that unit · column header ✓ = whole column (skips ISSUE). Fil = Filters, Belt = Belts, Ops = Ops Check, Coil = Condenser or Coil Cleaning, ! = Issue.</p>`}
 const seg=()=>`<div class="seg mt-3" role="tablist">${['all','remaining'].map(m=>`<button class="${ui.mode===m?'on':''}" data-mode="${m}" role="tab" aria-selected="${ui.mode===m}">${m==='all'?'All':'Remaining'}</button>`).join('')}</div>`;
 function specLine(v,it){if(it.kind!=='unit')return '';const u=M.unit(it.unitId);if(!u)return '';const tf=M.tfields(v,it),p=[];
   const fmt=a=>a.map(x=>`${x.qty} x ${M.sizeName(x.sizeId)}`).join(' + ');
@@ -57,7 +61,7 @@ function itemCard(v,it){const done=M.itemDone(v,it),iss=M.itemIssue(v,it),r=v.re
     return `<div class="cell"><button class="chk ${on?'on':''} ${na&&!hidden?'na':''}" data-item="${esc(it.id)}" data-field="${f}" ${na||ro?'disabled':''} aria-pressed="${on}"><span class="box">${na&&!on?'–':'✓'}</span><span class="lbl">${esc(d.short||d.label)}${na&&!on?' N/A':''}${hidden?' (off)':''}</span></button>${on?`<button class="tstamp" data-edit="${esc(it.id)}|${f}" aria-label="Edit time">${r[f].editedAt?'✎ ':''}${esc(first(r[f].by))}, ${tfmt(r[f].at)}</button>`:''}</div>`}).join('');
   const lr=done&&lastRec(v,it,r);
   return `<article class="card item ${iss?'issue':done?'done':''}" data-id="${esc(it.id)}">
-   <div class="row sb" style="align-items:flex-start;gap:10px"><div style="min-width:0"><h2>${esc(M.itemName(it))}</h2>${it.kind==='task'?`<div class="tag">${esc(M.tmpl(v.templateId).label)} item</div>`:''}${u?.sample?`<div class="tag">sample unit</div>`:''}${u?.asset?`<div class="tag" data-asset>Asset ${esc(u.asset)}</div>`:''}${u?.cadence?`<div class="tag" data-cadence>${esc(u.cadence)}</div>`:''}${u?.notes?`<div class="muted text-sm" data-unotes>${esc(u.notes)}</div>`:''}${(u?.flags||[]).map(f=>`<div class="tag warn">⚠ ${esc(f)}</div>`).join('')}</div>
+   <div class="row sb" style="align-items:flex-start;gap:10px"><div style="min-width:0"><h2>${esc(M.itemName(it))}</h2>${it.check?`<div class="tag" data-checkmark>✓ Check mark · ${esc(M.group(v.locationId,it.groupId)?.name||'')}</div><div class="muted text-sm font-bold" data-chknote>${esc(it.note||'')}</div>`:it.kind==='task'?`<div class="tag">${esc(M.tmpl(v.templateId).label)} item</div>`:''}${u?.sample?`<div class="tag">sample unit</div>`:''}${u?.asset?`<div class="tag" data-asset>Asset ${esc(u.asset)}</div>`:''}${u?.cadence?`<div class="tag" data-cadence>${esc(u.cadence)}</div>`:''}${u?.notes?`<div class="muted text-sm" data-unotes>${esc(u.notes)}</div>`:''}${(u?.flags||[]).map(f=>`<div class="tag warn">⚠ ${esc(f)}</div>`).join('')}</div>
    <button class="flag ${iss?'on':''}" data-issue="${esc(it.id)}" ${ro?'disabled':''} aria-pressed="${iss}">⚑ ISSUE</button></div>
    ${specLine(v,it)}<div class="chks">${chk}</div>${!ro&&!done&&!iss&&ap.length>1&&ap.some(f=>!r[f]?.v)?`<button class="btn ghost sm checkall" data-checkall="${esc(it.id)}">✓ Check all (${ap.filter(f=>!r[f]?.v).length})</button>`:''}
    <textarea class="note" rows="2" placeholder="Add note…" data-note="${esc(it.id)}" ${ro?'disabled':''}>${esc(r.note?.v||'')}</textarea>
@@ -142,17 +146,18 @@ function scheduleView(l){const sc=l.schedule,cm=M.curMonth(),od=M.overdue(l.id),
  <p class="muted text-sm mt-2">Source: ${esc(sc.source)}${sc.sourceNote?` — <span class="amber">${esc(sc.sourceNote)}</span>`:''}</p>
  ${mv?`<a class="btn primary mt-2" href="#/l/${l.id}">▶ Resume ${esc(mv.label)} (${M.stats(mv,M.visibleItems(mv)).pct}%)</a>`:''}
  ${od.map(o=>`<div class="card issue" data-overdue="${o.visit.id}"><b class="red">⚠ Overdue: ${esc(o.visit.label)}</b><div class="text-sm">${o.open.length} item(s) open · ${o.groups.map(g=>esc(M.group(l.id,g)?.name||'')).join(', ')}</div><button class="btn ghost sm mt-2" data-openv="${o.visit.id}">Open overdue visit</button></div>`).join('')}
- <div id="sched">${M.groupsOf(l.id).map(g=>{const c=M.codesIn(g,cm),n=M.groupUnits(l.id,g.id).length;
-  return `<button class="card sgroup ${c.length?'due':'notdue'}" data-group="${g.id}"><div class="row sb"><h2>${esc(g.name)}</h2><span class="muted text-sm">${n} unit${n==1?'':'s'}</span></div>
+ <div id="sched">${M.groupsOf(l.id).map(g=>{const c=M.codesIn(g,cm),n=M.groupUnits(l.id,g.id).length,ck=M.isCheck(g);
+  return `<button class="card sgroup ${c.length?'due':'notdue'}" data-group="${g.id}"><div class="row sb"><h2>${esc(g.name)}</h2><span class="muted text-sm">${ck?'✓ check mark':`${n} unit${n==1?'':'s'}`}</span></div>
   ${c.length?`<div class="codes">${c.map(x=>`<span class="code">${esc(x)} · ${esc(M.codeLabel(l.id,x))}</span>`).join('')}</div>`:`<div class="nothing">Nothing due this month</div>`}
   ${M.groupOverdue(l.id,g.id).length?'<div class="red font-bold text-sm">⚠ Overdue items</div>':''}
   ${monthGrid(l,g,cm)}${g.notes.map(x=>`<div class="muted text-sm">Note: ${esc(x)}</div>`).join('')}</button>`}).join('')}</div>
  <details class="mt-4"><summary class="muted font-bold">Code legend</summary>${sc.legend.map(x=>`<div class="text-sm"><b>${esc(x.code)}</b> = ${esc(x.label)}</div>`).join('')}</details></main>`}
 function settingsGroups(l){const gs=(l.schedule?.groups||[]).slice().sort((a,b)=>(a.order??0)-(b.order??0));return header('#/settings/l/'+l.id,'Equipment groups',esc(l.name)+' · schedule')+`<main class="wrap"><div class="card">
  <div class="row" style="gap:8px"><input id="newgroup" class="inp" style="margin:0" placeholder="New group name"><button class="btn primary mini2" data-addgroup="${l.id}">＋ Add</button></div>
- ${gs.map(g=>`<div class="srow" data-grow="${g.id}"><a class="sname" href="#/settings/l/${l.id}/g/${g.id}">${esc(g.name)}${g.archived?' (archived)':''}<small class="muted"> · ${M.groupUnits(l.id,g.id).length} units</small></a>${g.archived?`<button class="btn primary mini2" data-garch="${g.id}|0">Restore</button>`:`<button class="btn ghost mini2" data-garch="${g.id}|1">Archive</button>`}</div>`).join('')||'<p class="muted">No groups yet.</p>'}</div></main>`}
+ ${gs.map(g=>`<div class="srow" data-grow="${g.id}"><a class="sname" href="#/settings/l/${l.id}/g/${g.id}">${esc(g.name)}${g.archived?' (archived)':''}<small class="muted"> · ${M.isCheck(g)?'✓ check mark':M.groupUnits(l.id,g.id).length+' units'}</small></a>${g.archived?`<button class="btn primary mini2" data-garch="${g.id}|0">Restore</button>`:`<button class="btn ghost mini2" data-garch="${g.id}|1">Archive</button>`}</div>`).join('')||'<p class="muted">No groups yet.</p>'}</div></main>`}
 function settingsGroup(l,g){const cm=M.curMonth();return header('#/settings/l/'+l.id+'/groups',g.name,'Group editor · codes per month')+`<main class="wrap"><div class="card">
  <label class="lab">Group name<input class="inp" id="gname" value="${esc(g.name)}"></label><label class="lab">Notes (one per line)<textarea class="inp" id="gnotes" rows="2">${esc(g.notes.join('\n'))}</textarea></label>
+ <label class="row mt-3" style="gap:10px;min-height:44px"><input type="checkbox" id="gtype" ${M.isCheck(g)?'checked':''} style="width:24px;height:24px;flex:none"><span class="font-bold">Check marks only <small class="muted">— one tick per visit for the whole group, no units/filters/belts</small></span></label>
  <button class="btn primary mt-3" data-savegroup="${g.id}">Save</button>${g.updatedBy?`<p class="stampline">Last edit: ${esc(g.updatedBy)}, ${dtfmt(g.updatedAt)}</p>`:''}</div>
  <h3 class="grp">Month grid</h3><div class="card"><p class="muted text-sm">Codes separated by commas, e.g. PF, BC. Blank = nothing due.</p>${M.MONTHS.map((n,i)=>`<div class="row" style="gap:8px"><b style="width:44px" class="${i+1===cm?'amber':''}">${n}</b><input class="inp" style="margin:4px 0" data-gmonth="${g.id}|${i+1}" value="${esc(M.codesIn(g,i+1).join(', '))}"></div>`).join('')}<div id="gerr" class="red font-bold"></div></div>
  <details class="mt-3"><summary class="muted font-bold">Code legend</summary>${l.schedule.legend.map(x=>`<div class="text-sm"><b>${esc(x.code)}</b> = ${esc(x.label)}</div>`).join('')}</details></main>`}
@@ -336,7 +341,7 @@ document.addEventListener('click',async e=>{const t=e.target.closest('button,[da
  if(t.dataset.restore){const [c,id]=t.dataset.restore.split('|');M.restore(c,id,u);rerender();return}
  if(t.dataset.addgroup){const n=$('#newgroup').value.trim();if(n){M.addGroup(t.dataset.addgroup,n,u);rerender()}return}
  if(t.dataset.garch){const [gid,a]=t.dataset.garch.split('|');M.updateGroup(route()[2],gid,{archived:a==='1'},u);rerender();return}
- if(t.dataset.savegroup){M.updateGroup(route()[2],t.dataset.savegroup,{name:$('#gname').value,notes:$('#gnotes').value.split('\n').map(x=>x.trim()).filter(Boolean)},u);rerender();return}
+ if(t.dataset.savegroup){M.updateGroup(route()[2],t.dataset.savegroup,{name:$('#gname').value,notes:$('#gnotes').value.split('\n').map(x=>x.trim()).filter(Boolean),...((!!$('#gtype')?.checked)!==M.isCheck(M.group(route()[2],t.dataset.savegroup))?{type:$('#gtype').checked?'checkmark':'units'}:{})},u);rerender();return}
  if(t.dataset.addsize){const n=$('#newsize').value.trim();if(n){M.addSize(t.dataset.addsize,n,u);rerender()}return}
  if(t.dataset.addrow){readDraft();const k=t.dataset.addrow,kind=k==='filters'?'filter':'belt';if(ui.draft[k]===null)ui.draft[k]=[];ui.draft[k].push({qty:1,sizeId:M.sizes(kind)[0]?.id});rerender();return}
  if(t.dataset.rmrow){readDraft();const [k,i]=t.dataset.rmrow.split('|');ui.draft[k].splice(+i,1);rerender();return}
