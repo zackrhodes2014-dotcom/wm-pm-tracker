@@ -76,8 +76,12 @@ function home(){return header(null,null)+`<main class="wrap"><div class="muted f
  <div class="tiles">${M.locations().map(l=>{const v=M.currentVisit(l.id),s=v?M.stats(v,M.visibleItems(v)):{pct:0,done:0,total:0,issues:0},dn=s.total&&s.done===s.total;
   return `<a class="card tile ${dn?'done':''}" href="#/l/${l.id}" data-loc="${l.id}"><div class="row sb"><h2>${esc(l.name)}</h2>${s.issues?`<span class="badge">⚑ ${s.issues}</span>`:dn?'<span class="green font-black">✓ DONE</span>':''}</div>
    <div class="muted text-sm font-bold">${esc(l.sub||'')}${l.placeholder?' · <span class="amber">sample units</span>':''}</div>${bar(s.pct,dn)}
-   <div class="row sb muted text-sm font-bold mt-2"><span>${v?esc(v.label)+' · ':''}${s.done}/${s.total} items · ${s.pct}%</span><span class="${s.issues?'red':''}">${s.issues} issue${s.issues==1?'':'s'}</span></div></a>`}).join('')}</div>
+   ${schedBadge(l)}<div class="row sb muted text-sm font-bold mt-2"><span>${v?esc(v.label)+' · ':''}${s.done}/${s.total} items · ${s.pct}%</span><span class="${s.issues?'red':''}">${s.issues} issue${s.issues==1?'':'s'}</span></div></a>`}).join('')}</div>
  <a class="btn ghost mt-6" href="#/import">⇪ Import units (CSV)</a></main>`}
+// tile badge for scheduled locations: overdue months + this month's PM due/done
+function schedBadge(l){if(!l.schedule||!M.hasTagged(l.id))return '';const od=M.overdue(l.id),mv=M.monthVisit(l.id),cm=M.curMonth();const due=M.groupsOf(l.id).some(g=>M.codesIn(g,cm).length);
+ const x=mv&&M.stats(mv,M.visibleItems(mv)),dn=x&&x.total&&x.done===x.total;
+ return `<div class="text-sm font-bold mt-1" data-schedbadge>${od.length?`<span class="red">⚠ Overdue: ${od.map(o=>esc(o.visit.label.replace(' scheduled PM',''))).join(', ')}</span> `:''}${due?(dn?`<span class="green">✓ ${M.MONTHS[cm-1]} PM done</span>`:`<span class="amber">🗓 ${M.MONTHS[cm-1]} PM due${x?` · ${x.done}/${x.total}`:''}</span>`):''}</div>`}
 function areasForVisit(v){const all=M.areasOf(v.locationId,true);return all.filter(a=>v.status==='active'?!a.archived:v.items.some(i=>M.itemArea(i)===a.id))}
 // schedule visit with nothing tagged: never a dead end -> tag units here, or start a regular all-areas visit
 function emptySched(l,v){const gs=Object.keys(v.groupCodes||{}).map(id=>M.group(l.id,id)).filter(Boolean);const reg=M.templatesFor(l).filter(t=>t.id!=='schedule');
@@ -320,7 +324,7 @@ document.addEventListener('click',async e=>{const t=e.target.closest('button,[da
   ui.sheet={type:'group',lid:l.id,gid:g.id,codes:due.length?[...due]:M.defaultCodes(g)};rerender();return}
  if(t.id==='startgroup'){const s=ui.sheet,codes=[...document.querySelectorAll('[data-gcode]')].filter(x=>x.checked).map(x=>x.dataset.gcode);if(!codes.length)return;
   M.startGroupVisit(s.lid,s.gid,codes,u);ui.sheet=null;ui.noAuto=true;location.hash='#/l/'+s.lid;return}
- if(t.dataset.openv){M.st().currentVisit[l.id]=t.dataset.openv;S.save();ui.noAuto=true;location.hash='#/l/'+l.id;return}
+ if(t.dataset.openv){M.st().currentVisit[l.id]=t.dataset.openv;S.save();ui.noAuto=true;if(location.hash==='#/l/'+l.id){ui.noAuto=false;render();scrollTo(0,0)}else location.hash='#/l/'+l.id;return}
  if(t.dataset.kind){ui.reportKind=t.dataset.kind;rerender();return}
  if(t.id==='mkpdf'){const area=ui.reportArea==='all'?null:M.area(ui.reportArea);
   const {blob,name,meta}=buildReport({loc:l,area,visit:v,tech:u,kind:ui.reportKind,includeParts:ui.parts,includeLog:ui.log});

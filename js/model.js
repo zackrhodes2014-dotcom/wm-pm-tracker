@@ -96,7 +96,7 @@ export function applySeed(seed,by){let s=st();
   if((s.seedVersion||0)>=seed.version){migrateState(s,seed);return 0}const seen=new Set(s.seenSeedIds);let added=0;
   s.fieldDefs||=[];for(const coll of ['fieldDefs','locations','areas','units','sizes','templates'])for(const e of seed[coll]){const key=coll+':'+e.id;
     if(seen.has(key))continue;seen.add(key);if(!s[coll].some(x=>x.id===e.id)){s[coll].push({nameHistory:[],...structuredClone(e),updatedAt:seed.generatedAt,updatedBy:'seed'});added++}}
-  s.seenSeedIds=[...seen];const first=!s.seedVersion;if(!first){migrateAreas(s,seed);migrateTemplates(s,seed);migrateBelts(s,seed);migrateUnitPatches(s,seed);migrateRetireUnits(s,seed);migrateGroups(s,seed);migrateTags(s,seed);migrateCheckmark(s,seed);migrateRename(s,seed);migrateTyson(s,seed)}s.seedVersion=seed.version;S.save();
+  s.seenSeedIds=[...seen];const first=!s.seedVersion;if(!first){migrateAreas(s,seed);migrateTemplates(s,seed);migrateBelts(s,seed);migrateUnitPatches(s,seed);migrateRetireUnits(s,seed);migrateGroups(s,seed);migrateTags(s,seed);migrateCheckmark(s,seed);migrateRename(s,seed);migrateTyson(s,seed);migrateTags(s,seed,'tysonTagMigration')}s.seedVersion=seed.version;S.save();
   migrateState(s,seed);
   if(first)for(const l of locations())if(!s.visits.some(v=>v.locationId===l.id))newVisit(l.id,seed.defaultVisits?.[l.id]||'quarterly',null,null,by||'seed');
   return added}
@@ -260,12 +260,16 @@ export function migrateCheckmark(s,seed){const m=seed.checkmarkMigration;if(!m||
   for(const gid of m.groups){const g=l?.schedule?.groups.find(x=>x.id===gid);if(!g||g.type!==undefined||s.units.some(u=>u.equipmentGroupId===gid&&!u.archived))continue;
     g.type='checkmark';any=true;S.logChange('schedule',l.id+'/'+gid,'update',{type:'checkmark'},'seed-migration')}
   s.checkmarkMigrationVersion=m.version;if(any){ensureCheckArea(l.id);for(const v of s.visits)if(v.locationId===l.id&&v.templateId==='schedule'&&v.status==='active'&&v.groupCodes)refreshSchedVisit(v)}}
-export function migrateTags(s,seed){const m=seed.tagMigration;if(!m||(s.tagMigrationVersion||0)>=m.version)return;
-  const l=s.locations.find(x=>x.id===m.locationId);const live=new Set((l?.schedule?.groups||[]).filter(g=>!g.archived).map(g=>g.id));
+export function migrateTags(s,seed,key='tagMigration'){const m=seed[key];if(!m||(s[key+'Version']||0)>=m.version)return;
+  const l=s.locations.find(x=>x.id===m.locationId);
+  // the location's schedule must exist first (added only if it has none and was never seeded before)
+  const sl=(seed.locations||[]).find(x=>x.id===m.locationId),sk='schedule:'+m.locationId;if(l&&!l.schedule&&sl?.schedule&&!(s.seenSeedIds||[]).includes(sk)){l.schedule=structuredClone(sl.schedule);s.seenSeedIds.push(sk);S.logChange('schedule',l.id,'create',{groups:sl.schedule.groups.length},'seed-migration')}const live=new Set((l?.schedule?.groups||[]).filter(g=>!g.archived).map(g=>g.id));
   const used=new Set(s.units.filter(u=>u.equipmentGroupId&&!u.archived).map(u=>u.equipmentGroupId));
+  // units the seed just added carrying a group this install doesn't have (owner has their own schedule) -> untagged
+  for(const [uid,gid] of Object.entries(m.tags||{})){const u=s.units.find(x=>x.id===uid);if(u&&u.equipmentGroupId===gid&&!live.has(gid)&&u.updatedBy==='seed'){delete u.equipmentGroupId}}
   for(const [uid,gid] of Object.entries(m.tags||{})){const u=s.units.find(x=>x.id===uid);if(!u||u.equipmentGroupId||!live.has(gid)||used.has(gid))continue;
     u.equipmentGroupId=gid;S.logChange('units',uid,'equipmentGroupId',gid,'seed-migration')}
-  s.tagMigrationVersion=m.version;
+  s[key+'Version']=m.version;
   for(const v of s.visits)if(v.locationId===m.locationId&&v.templateId==='schedule'&&v.status==='active'&&v.groupCodes)refreshSchedVisit(v)}
 export function refreshSchedVisit(v){const want=schedItems(v.locationId,v.groupCodes);
   v.items=v.items.filter(x=>!x.groupId||want.some(w=>w.id===x.id)||Object.values(v.records[x.id]||{}).some(r=>r?.v));

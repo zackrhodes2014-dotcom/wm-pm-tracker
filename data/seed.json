@@ -1,6 +1,6 @@
 {
- "version": 13,
- "generatedAt": "2026-11-03T12:55:44.434Z",
+ "version": 14,
+ "generatedAt": "2026-11-03T13:04:13.685Z",
  "note": "Hills Pet Foods = real data from Zach sheet; all other locations = PLACEHOLDER sample units",
  "locations": [
   {
@@ -11,6 +11,81 @@
    "order": 0,
    "features": {
     "condenserCoil": false
+   },
+   "schedule": {
+    "source": "Zach, Nov 3 2026: Tyson is on a monthly schedule",
+    "sourceNote": "",
+    "legend": [
+     {
+      "code": "PF",
+      "label": "Filter change + Operational check"
+     },
+     {
+      "code": "BC",
+      "label": "Belt Change"
+     }
+    ],
+    "groups": [
+     {
+      "id": "eg_3ca2eb03f8",
+      "name": "Tyson monthly PM",
+      "order": 0,
+      "notes": [
+       "Every month: filters, belts (where the unit has them) and ops check"
+      ],
+      "months": {
+       "1": [
+        "PF",
+        "BC"
+       ],
+       "2": [
+        "PF",
+        "BC"
+       ],
+       "3": [
+        "PF",
+        "BC"
+       ],
+       "4": [
+        "PF",
+        "BC"
+       ],
+       "5": [
+        "PF",
+        "BC"
+       ],
+       "6": [
+        "PF",
+        "BC"
+       ],
+       "7": [
+        "PF",
+        "BC"
+       ],
+       "8": [
+        "PF",
+        "BC"
+       ],
+       "9": [
+        "PF",
+        "BC"
+       ],
+       "10": [
+        "PF",
+        "BC"
+       ],
+       "11": [
+        "PF",
+        "BC"
+       ],
+       "12": [
+        "PF",
+        "BC"
+       ]
+      },
+      "archived": false
+     }
+    ]
    }
   },
   {
@@ -903,7 +978,8 @@
     "ops": true
    },
    "flags": [],
-   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)"
+   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)",
+   "equipmentGroupId": "eg_3ca2eb03f8"
   },
   {
    "id": "u_82158f17f5",
@@ -925,7 +1001,8 @@
     "ops": true
    },
    "flags": [],
-   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)"
+   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)",
+   "equipmentGroupId": "eg_3ca2eb03f8"
   },
   {
    "id": "u_f06738c0c0",
@@ -947,7 +1024,8 @@
     "ops": true
    },
    "flags": [],
-   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)"
+   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)",
+   "equipmentGroupId": "eg_3ca2eb03f8"
   },
   {
    "id": "u_4aab143cb6",
@@ -969,7 +1047,8 @@
     "ops": true
    },
    "flags": [],
-   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)"
+   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)",
+   "equipmentGroupId": "eg_3ca2eb03f8"
   },
   {
    "id": "u_3dd182f19d",
@@ -991,7 +1070,8 @@
     "ops": true
    },
    "flags": [],
-   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)"
+   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)",
+   "equipmentGroupId": "eg_3ca2eb03f8"
   },
   {
    "id": "u_a8da42b44c",
@@ -1026,7 +1106,8 @@
    },
    "flags": [],
    "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)",
-   "notes": "16x25x2 changed from 14x25x2 · 16x20x2 and 20x20x2 added 2026-11-02"
+   "notes": "16x25x2 changed from 14x25x2 · 16x20x2 and 20x20x2 added 2026-11-02",
+   "equipmentGroupId": "eg_3ca2eb03f8"
   },
   {
    "id": "u_602c27f1bb",
@@ -1048,7 +1129,8 @@
     "ops": true
    },
    "flags": [],
-   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)"
+   "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)",
+   "equipmentGroupId": "eg_3ca2eb03f8"
   },
   {
    "id": "u_901bcaa747",
@@ -1071,7 +1153,8 @@
    },
    "flags": [],
    "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)",
-   "notes": "One of the 2× 16x20x1 originally marked \"not checked\""
+   "notes": "One of the 2× 16x20x1 originally marked \"not checked\"",
+   "equipmentGroupId": "eg_3ca2eb03f8"
   },
   {
    "id": "u_2ffa3576a0",
@@ -1094,7 +1177,8 @@
    },
    "flags": [],
    "source": "Tyson HVAC PM - Where Each Filter & Belt Goes (PDF, 2026-11-03)",
-   "notes": "One of the 2× 16x20x1 originally marked \"not checked\""
+   "notes": "One of the 2× 16x20x1 originally marked \"not checked\"",
+   "equipmentGroupId": "eg_3ca2eb03f8"
   },
   {
    "id": "u_38f613162c",
@@ -4496,6 +4580,21 @@
    "eg_e2b9aa0f87",
    "eg_cf129371ad"
   ]
+ },
+ "tysonTagMigration": {
+  "version": 14,
+  "locationId": "loc_7294209793",
+  "tags": {
+   "u_d4a5489c36": "eg_3ca2eb03f8",
+   "u_82158f17f5": "eg_3ca2eb03f8",
+   "u_f06738c0c0": "eg_3ca2eb03f8",
+   "u_4aab143cb6": "eg_3ca2eb03f8",
+   "u_3dd182f19d": "eg_3ca2eb03f8",
+   "u_a8da42b44c": "eg_3ca2eb03f8",
+   "u_602c27f1bb": "eg_3ca2eb03f8",
+   "u_901bcaa747": "eg_3ca2eb03f8",
+   "u_2ffa3576a0": "eg_3ca2eb03f8"
+  }
  },
  "tagMigration": {
   "version": 11,
