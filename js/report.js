@@ -32,9 +32,9 @@ export function buildReport({loc,area,visit,tech,kind,includeParts,includeLog=tr
   if(!s.issues){y+=6;text('No flagged issues.',M,11,'normal',[60,60,60])}
   const quirks=items.filter(i=>fl(i).length);
   if(quirks.length){y+=10;text('DATA REVIEW NOTES (from source sheet)',M,10,'bold',[180,83,9]);quirks.forEach(i=>text(`• ${MD.itemName(i)}: ${fl(i).join('; ')}`,M+6,9))}
-  if(includeParts){const p=helpers.partsList(visit,items.filter(i=>!MD.itemGone(i)||visit.status!=='active'));if(p.filters.length||p.belts.length){y+=10;need(60);text('PARTS LIST (qty × size, all units in scope)',M,11,'bold',[180,83,9]);
+  if(includeParts){const p=helpers.partsList(visit,items.filter(i=>!MD.itemGone(i)||visit.status!=='active'));if(p.filters.length||p.belts.length||p.filtersSpecial?.length){y+=10;need(60);text('PARTS LIST (qty × size, all units in scope)',M,11,'bold',[180,83,9]);
     const col=(t,rows,left)=>{if(!rows.length)return;text(t,M+6,10,'bold');rows.forEach(([k,n])=>text(`${k}: ${n} total${left[k]?` · ${left[k]} still to change`:''}`,M+16,9))};
-    col('Filters',p.filters,p.filtersLeft);col('Belts',p.belts,p.beltsLeft)}}
+    col('Filters',p.filters,p.filtersLeft);col('Filters — washable / qty not given (listed separately)',p.filtersSpecial||[],{});col('Belts',p.belts,p.beltsLeft);col('Belts — qty not given',p.beltsSpecial||[],{})}}
   if(includeLog){const rows=[];for(const i of items)for(const [f,r] of Object.entries(visit.records[i.id]||{}))if(f!=='note'&&f!=='issue'&&r.v)rows.push({i,f,r});
     if(rows.length){y+=10;need(40);text('CHECK LOG (who / when)',M,11,'bold',[180,83,9]);
       for(const {i,f,r} of rows){const line=`${MD.itemName(i)} — ${MD.fieldDef(f).label} — ${r.by}, ${new Date(r.at).toLocaleString()}${r.editedAt?' (edited; logged '+new Date(r.originalLoggedAt).toLocaleString()+')':''}`;

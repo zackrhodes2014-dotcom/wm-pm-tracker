@@ -11,7 +11,7 @@ const first=n=>(n||'').split(' ')[0];
 const tfmt=iso=>new Date(iso).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
 const dtfmt=iso=>new Date(iso).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
 const dfmt=d=>new Date(d+'T12:00').toLocaleDateString([], {month:'short',day:'numeric',year:'numeric'});
-const ui={layout:localStorage.getItem('wmpm.layout')==='grid'?'grid':'cards',mode:'all',reportArea:'all',reportKind:'Mid-PM',parts:true,log:true,sheet:null,draft:null};
+const ui={layout:localStorage.getItem('wmpm.layout')==='cards'?'cards':'grid',mode:'all',reportArea:'all',reportKind:'Mid-PM',parts:true,log:true,sheet:null,draft:null};
 const user=()=>S.getUser(), isOwner=()=>user()===M.OWNER;
 const pad=n=>String(n).padStart(2,'0');
 const localParts=iso=>{const d=new Date(iso);return [`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`,`${pad(d.getHours())}:${pad(d.getMinutes())}`]};
@@ -28,30 +28,33 @@ function cellSummary(u,f){if(!u)return '';const fmt=a=>a.map(x=>`${x.qty}×${Str
 const GSHORT={filters:'Fil',belts:'Belt',ops:'Ops',coilCondenser:'Coil',done:'Done'};
 // Grid fits the phone width (no sideways scroll): fixed table layout, short headers, compact cells, no stamps in cells
 // (stamps live in the unit detail sheet). Task / check-mark rows use one tick spanning the field columns.
+// Grid = spreadsheet rows, readable: each unit is a name line (full width: name, asset, ✓ all) over a row of cells
+// (Fil | Belt | Ops | Coil | !). Filter/Belt cells list every size on its own line (13px). Fits the width: no sideways scroll.
 function gridHtml(v,areas,items,whole){const its=items.filter(i=>ui.mode==='all'||M.remaining(v,i));
  if(!its.length)return `<div class="card done mt-4 text-center"><h2 class="green">✓ Nothing left</h2></div>`;
  const cols=[];its.forEach(it=>{if(it.kind==='unit')M.tfields(v,it).forEach(f=>cols.includes(f)||cols.push(f))});
  const order=['filters','belts','ops',M.MERGED];cols.sort((a,b)=>(order.indexOf(a)+99)%99-(order.indexOf(b)+99)%99);
  const nc=Math.max(cols.length,1);const act=v.status==='active';const aid=whole?'':(areas[0]?.id||'');
- const colg=`<colgroup><col class="gc-name">${cols.length?cols.map(()=>'<col class="gc-f">').join(''):'<col class="gc-f">'}<col class="gc-x"></colgroup>`;
- const head=`<tr><th class="gcorner">Unit</th>${cols.length?cols.map(f=>{const n=M.checkAllPlan(v,its,f).plan.length;const d=M.fieldDef(f),sh=GSHORT[f]||(d.short||d.label).slice(0,4);
-   return `<th>${act&&n?`<button class="gcolbtn" data-gcol="${f}" data-garea="${aid}" title="${esc(d.label)}" aria-label="Check all ${esc(d.label)}">${esc(sh)}<small>✓${n}</small></button>`:`<span class="gcolh" title="${esc(d.label)}">${esc(sh)}</span>`}</th>`}).join(''):'<th><span class="gcolh">Done</span></th>'}<th title="Notes / Issue"><span class="gcolh">!</span></th></tr>`;
- const cell=(it,f,r,ap,ro,u)=>{const na=!ap.includes(f),on=!!r[f]?.v,sum=cellSummary(u,f);
+ const colg=`<colgroup>${cols.length?cols.map(f=>`<col class="gc-${f==='filters'?'fil':f==='belts'?'belt':'f'}">`).join(''):'<col class="gc-fil">'}<col class="gc-x"></colgroup>`;
+ const head=`<tr>${cols.length?cols.map(f=>{const n=M.checkAllPlan(v,its,f).plan.length;const d=M.fieldDef(f),sh=GSHORT[f]||(d.short||d.label).slice(0,4);
+   return `<th>${act&&n?`<button class="gcolbtn" data-gcol="${f}" data-garea="${aid}" title="${esc(d.label)}" aria-label="Check all ${esc(d.label)}">${esc(sh)}<small>✓ all ${n}</small></button>`:`<span class="gcolh" title="${esc(d.label)}">${esc(sh)}</span>`}</th>`}).join(''):'<th><span class="gcolh">Done</span></th>'}<th title="Notes / Issue"><span class="gcolh">!</span></th></tr>`;
+ const lines=(u,f)=>{const a=u&&(f==='filters'?u.filters:f==='belts'?u.belts:null);return a&&a.length?`<span class="gsizes">${a.map(x=>`<span class="gsz"><b>${esc(String(M.sizeName(x.sizeId)).toLowerCase())}</b> ×${esc(x.qty)}</span>`).join('')}</span>`:''};
+ const cell=(it,f,r,ap,ro,u)=>{const na=!ap.includes(f),on=!!r[f]?.v;
    if(na&&!on)return `<span class="gcell na" aria-disabled="true">N/A</span>`;
-   return `<button class="gcell ${on?'on':''}" data-item="${esc(it.id)}" data-field="${f}" ${ro?'disabled':''} aria-pressed="${on}" aria-label="${esc(M.itemName(it))} ${esc(M.fieldDef(f).label)}"><span class="gbox">${on?'✓':''}</span>${sum?`<span class="gsum">${esc(sum)}</span>`:''}</button>`};
+   return `<button class="gcell ${on?'on':''}" data-item="${esc(it.id)}" data-field="${f}" ${ro?'disabled':''} aria-pressed="${on}" aria-label="${esc(M.itemName(it))} ${esc(M.fieldDef(f).label)}"><span class="gbox">${on?'✓':''}</span>${lines(u,f)}</button>`};
  const row=it=>{const r=v.records[it.id]||{},u=it.kind==='unit'?M.unit(it.unitId):null,ap=M.fields(v,it),tf=it.kind==='unit'?M.tfields(v,it):['done'],iss=M.itemIssue(v,it),ro=!act||M.itemGone(it),done=M.itemDone(v,it);
    const cells=it.kind==='unit'?cols.map(f=>tf.includes(f)?`<td>${cell(it,f,r,ap,ro,u)}</td>`:'<td class="gnone"></td>').join(''):`<td colspan="${nc}">${cell(it,'done',r,ap,ro,u)}</td>`;
-   const left=ap.filter(f=>!r[f]?.v).length;
-   return `<tr class="grow ${iss?'gissue':done?'gdone':''}" data-grow="${esc(it.id)}"><th class="gnamecell"><div class="gnamewrap"><button class="gname" data-gunit="${esc(it.id)}"><span class="gn">${it.check?'✓ ':''}${esc(M.itemName(it))}</span>${u?.asset?`<small>#${esc(u.asset)}</small>`:''}${r.note?.v?'<small class="gnotei" aria-label="Has note">✎ note</small>':''}</button>${!ro&&!iss&&left>1?`<button class="gcheckrow" data-checkall="${esc(it.id)}" aria-label="Check all for ${esc(M.itemName(it))}">✓</button>`:''}</div></th>${cells}
-    <td><button class="gflag ${iss?'on':''}" data-issue="${esc(it.id)}" ${ro?'disabled':''} aria-pressed="${iss}" aria-label="Issue">⚑</button></td></tr>`};
- const body=areas.map(a=>{const rs=its.filter(i=>M.itemArea(i)===a.id);if(!rs.length)return '';return (whole?`<tr class="gsec"><th colspan="${nc+2}">${esc(a.name)}</th></tr>`:'')+rs.map(row).join('')}).join('');
- return `<div class="gridwrap" id="grid"><table class="gtable">${colg}<thead>${head}</thead><tbody>${body}</tbody></table></div><p class="muted text-xs mt-2">Tap a cell to tick · tap a unit name for notes, issue &amp; who/when (edit times) · ✓ next to a name = check all for that unit · column header ✓ = whole column (skips ISSUE). Fil = Filters, Belt = Belts, Ops = Ops Check, Coil = Condenser or Coil Cleaning, ! = Issue.</p>`}
+   const left=ap.filter(f=>!r[f]?.v).length,cls=`grow ${iss?'gissue':done?'gdone':''}`;
+   return `<tr class="${cls} gnamerow" data-grow="${esc(it.id)}"><th colspan="${nc+1}" class="gnamecell"><div class="gnamewrap"><button class="gname" data-gunit="${esc(it.id)}"><span class="gn">${done?'✓ ':''}${it.check?'☑ ':''}${esc(M.itemName(it))}</span>${u?.asset?`<small>#${esc(u.asset)}</small>`:''}${r.note?.v?'<small class="gnotei" aria-label="Has note">✎ note</small>':''}</button>${!ro&&!iss&&left>1?`<button class="gcheckrow" data-checkall="${esc(it.id)}" aria-label="Check all for ${esc(M.itemName(it))}">✓ all</button>`:''}</div></th></tr>
+    <tr class="${cls.replace('grow ','')} gcellrow" data-gcells="${esc(it.id)}">${cells}<td><button class="gflag ${iss?'on':''}" data-issue="${esc(it.id)}" ${ro?'disabled':''} aria-pressed="${iss}" aria-label="Issue">⚑</button></td></tr>`};
+ const body=areas.map(a=>{const rs=its.filter(i=>M.itemArea(i)===a.id);if(!rs.length)return '';return (whole?`<tr class="gsec"><th colspan="${nc+1}">${esc(a.name)}</th></tr>`:'')+rs.map(row).join('')}).join('');
+ return `<div class="gridwrap" id="grid"><table class="gtable">${colg}<thead>${head}</thead><tbody>${body}</tbody></table></div><p class="muted text-xs mt-2">Tap a cell to tick · tap a unit name for notes, issue &amp; who/when (edit times) · "✓ all" on a unit = check that unit · column header ✓ all = whole column (skips ISSUE). Fil = Filters, Belt = Belts, Ops = Ops Check, Coil = Condenser or Coil Cleaning, ! = Issue.</p>`}
 const seg=()=>`<div class="seg mt-3" role="tablist">${['all','remaining'].map(m=>`<button class="${ui.mode===m?'on':''}" data-mode="${m}" role="tab" aria-selected="${ui.mode===m}">${m==='all'?'All':'Remaining'}</button>`).join('')}</div>`;
-function specLine(v,it){if(it.kind!=='unit')return '';const u=M.unit(it.unitId);if(!u)return '';const tf=M.tfields(v,it),p=[];
-  const fmt=a=>a.map(x=>`${x.qty} x ${M.sizeName(x.sizeId)}`).join(' + ');
-  if(tf.includes('filters'))p.push(!u.filters?'Filters N/A':u.filters.length?'Filters: '+fmt(u.filters):'');
-  if(tf.includes('belts'))p.push(!u.belts?'Belts N/A':u.belts.length?'Belts: '+fmt(u.belts):'');
-  return p.filter(Boolean).length?`<div class="spec">${p.filter(Boolean).map(esc).join(' · ')}</div>`:''}
+// size chips: each size on its own chip (size over ×qty), wrapping to the card width. Green when that field is ticked.
+function specLine(v,it){if(it.kind!=='unit')return '';const u=M.unit(it.unitId);if(!u)return '';const tf=M.tfields(v,it),r=v.records[it.id]||{};
+  const grp=(f,lab,arr)=>{if(!tf.includes(f))return '';if(!arr)return `<div class="chipgrp"><span class="chiplab">${lab}</span><span class="chip na">N/A</span></div>`;if(!arr.length)return '';
+    return `<div class="chipgrp" data-chips="${f}"><span class="chiplab">${lab}</span><div class="chips">${arr.map(x=>`<span class="chip ${r[f]?.v?'on':''}"><b>${esc(M.sizeName(x.sizeId))}</b><small>×${esc(x.qty)}</small></span>`).join('')}</div></div>`};
+  const h=grp('filters','Filters',u.filters)+grp('belts','Belts',u.belts);return h?`<div class="spec">${h}</div>`:''}
 const lastRec=(v,it,r)=>M.fields(v,it).map(f=>r[f]).filter(Boolean).sort((a,b)=>a.at<b.at?1:-1)[0];
 function itemCard(v,it){const done=M.itemDone(v,it),iss=M.itemIssue(v,it),r=v.records[it.id]||{},ro=v.status!=='active'||M.itemGone(it),ap=M.fields(v,it);
   const u=it.kind==='unit'?M.unit(it.unitId):null;const tf=M.tfields(v,it);
@@ -89,6 +92,10 @@ function emptySched(l,v){const gs=Object.keys(v.groupCodes||{}).map(id=>M.group(
   <p class="muted mt-2 font-bold">Pick which units belong to the group and they'll show up here to check off.</p>
   <div class="mt-3" style="display:grid;gap:8px">${gs.map(g=>`<button class="btn primary" data-tagpick="${g.id}">🏷 Tag units to ${esc(g.name)}</button>`).join('')}
   ${reg.map(t=>`<button class="btn ghost" data-startreg="${t.id}">▶ Start ${esc(t.label)} instead (all areas)</button>`).join('')}</div></div>`}
+// Hills: quarterly PM picker is the primary scheduling UI (Tyson has no quarterPlan -> monthly engine, no picker)
+function quarterPicker(l){if(!l.quarterPlan)return '';const now=new Date(),y=now.getFullYear(),cq=M.quarterOf(now),cur=M.currentVisit(l.id);
+ return `<div class="card mt-3" id="qpicker"><div class="row sb"><h2>Quarterly PM ${y}</h2><span class="muted text-sm font-bold">tap a quarter</span></div><div class="qgrid mt-2">${M.QUARTERS.map(Q=>{const v=M.quarterVisit(l.id,y,Q.q),x=v&&M.stats(v,M.visibleItems(v)),dn=x&&x.total&&x.done===x.total,od=M.quarterOverdue(v,now);
+  return `<button class="qbtn ${Q.q===cq?'cur':''} ${dn?'done':''} ${od?'overdue':''} ${cur&&v&&cur.id===v.id?'open':''}" data-quarter="${y}|${Q.q}" aria-current="${Q.q===cq}"><b>${dn?'✓ ':''}${Q.mon} · ${Q.name}</b><small>${v?`${x.done}/${x.total} · ${x.pct}%`:Q.q===cq?'Start now':Q.q<cq?'Not started':'Upcoming'}</small>${od?'<small class="red">⚠ Overdue</small>':''}${Q.q===cq?'<small class="amber">Current quarter</small>':''}</button>`}).join('')}</div>${cur?.kind==='quarter'?`<a class="btn ghost sm mt-2" id="qtotals" href="#/l/${l.id}/totals/both/-/${cur.id}">🧮 Filter totals for ${esc(cur.label)}</a>`:''}</div>`}
 function locView(l){const v=M.currentVisit(l.id);if(!v)return header('#/',l.name)+`<main class="wrap"><a class="btn primary" href="#/l/${l.id}/visits">Start a visit</a></main>`;
  const items=M.visibleItems(v),s=M.stats(v,items),t=M.tmpl(v.templateId);let body='';
  if(!items.length)body=v.templateId==='schedule'?emptySched(l,v):`<div class="card mt-4 empty"><h2>No units in this visit</h2><p class="muted mt-2 font-bold">${esc(t.emptyText||'No units yet.')}</p></div>`;
@@ -98,20 +105,20 @@ function locView(l){const v=M.currentVisit(l.id);if(!v)return header('#/',l.name
    <div class="row sb muted text-sm font-bold mt-2"><span>${x.done}/${x.total} items</span><span>${x.last?esc(first(x.last.by))+', '+tfmt(x.last.at):''}</span></div></a>`}).join('');
  else body=remainingList(v,areasForVisit(v),items);
  return header('#/',l.name,`${esc(v.label)} · ${dfmt(v.date)}${v.status!=='active'?' · <span class="green">COMPLETED (history)</span>':''}`)+`<main class="wrap has-bottom">
-  <div class="row mt-3" style="gap:8px"><a class="btn ghost sm" href="#/l/${l.id}/visits">📋 Visits (${M.st().visits.filter(x=>x.locationId===l.id).length})</a><a class="btn ghost sm" href="#/l/${l.id}/history">🕘 History log</a>${l.schedule?`<a class="btn ghost sm" id="schedbtn" href="#/l/${l.id}/schedule">🗓 Schedule</a>`:''}</div>${(()=>{const mv=M.monthVisit(l.id);return mv&&mv.id!==v.id&&mv.status==='active'&&mv.items.length?`<button class="card mt-3" id="monthbanner" data-openv="${mv.id}" style="width:100%;text-align:left;border-color:#e8a33d"><div class="amber font-black">🗓 ${esc(mv.label)} is ready (${mv.items.length} items)</div><div class="muted font-bold text-sm">Tap to open it · you're on ${esc(v.label)}</div></button>`:''})()}${v.outOfSeason?'<span class="tag" id="oostag">Out of season</span>':''}${v.kind==='month'?`<span class="tag" id="monthtag">Monthly visit · stays open all month</span>`:''}${l.schedule&&M.overdue(l.id).length?`<a class="card issue mt-3" style="display:block" id="overduebanner" href="#/l/${l.id}/schedule"><b class="red">⚠ Overdue from ${M.overdue(l.id).map(o=>esc(o.visit.label)).join(', ')}</b><div class="muted text-sm">${M.overdue(l.id).reduce((n,o)=>n+o.open.length,0)} item(s) still open · tap for Schedule</div></a>`:''}
+  <div class="row mt-3" style="gap:8px"><a class="btn ghost sm" href="#/l/${l.id}/visits">📋 Visits (${M.st().visits.filter(x=>x.locationId===l.id).length})</a><a class="btn ghost sm" href="#/l/${l.id}/history">🕘 History log</a>${l.schedule?`<a class="btn ghost sm" id="schedbtn" href="#/l/${l.id}/schedule">${l.quarterPlan?'🗓 Monthly schedule':'🗓 Schedule'}</a>`:''}</div>${quarterPicker(l)}${(()=>{const mv=M.monthVisit(l.id);return !l.quarterPlan&&mv&&mv.id!==v.id&&mv.status==='active'&&mv.items.length?`<button class="card mt-3" id="monthbanner" data-openv="${mv.id}" style="width:100%;text-align:left;border-color:#e8a33d"><div class="amber font-black">🗓 ${esc(mv.label)} is ready (${mv.items.length} items)</div><div class="muted font-bold text-sm">Tap to open it · you're on ${esc(v.label)}</div></button>`:''})()}${v.outOfSeason?'<span class="tag" id="oostag">Out of season</span>':''}${v.kind==='month'?`<span class="tag" id="monthtag">Monthly visit · stays open all month</span>`:''}${l.schedule&&M.overdue(l.id).length?`<a class="card issue mt-3" style="display:block" id="overduebanner" href="#/l/${l.id}/schedule"><b class="red">⚠ Overdue from ${M.overdue(l.id).map(o=>esc(o.visit.label)).join(', ')}</b><div class="muted text-sm">${M.overdue(l.id).reduce((n,o)=>n+o.open.length,0)} item(s) still open · tap for Schedule</div></a>`:''}
   <div class="card prog"><div class="row sb"><div><div class="muted font-bold text-sm">OVERALL PROGRESS</div><div class="big">${s.done}<span class="muted text-xl">/${s.total} items</span></div></div><div class="text-right"><div class="big amber">${s.pct}%</div><div class="red font-bold">${s.issues} issue${s.issues==1?'':'s'}</div></div></div>${bar(s.pct)}</div>
   ${seg()}${layoutSeg()}<div id="list">${body}</div></main>
-  <nav class="bottom"><div class="row" style="gap:10px"><a class="btn primary" href="#/l/${l.id}/report">📄 Issue Report</a><a class="btn ghost" style="width:40%" href="#/l/${l.id}/parts">🧰 Parts</a></div></nav>`}
+  <nav class="bottom"><div class="row" style="gap:10px"><a class="btn primary" href="#/l/${l.id}/report">📄 Issue Report</a><a class="btn ghost" style="width:28%" href="#/l/${l.id}/parts">🧰 Parts</a><a class="btn ghost" style="width:28%" href="#/l/${l.id}/totals/account/-/cur" id="totloc" aria-label="Filter totals">🧮 Totals</a></div></nav>`}
 function remainingList(v,areas,items){const rem=items.filter(i=>M.remaining(v,i));
  if(!rem.length)return `<div class="card done mt-4 text-center"><h2 class="green">✓ Nothing left</h2><p class="muted">All items checked, no open issues.</p></div>`;
  return `<div class="muted font-bold mt-3" id="remcount">${rem.length} remaining</div>`+areas.map(a=>{const r=rem.filter(i=>M.itemArea(i)===a.id).sort((x,y)=>M.itemIssue(v,y)-M.itemIssue(v,x));return r.length?`<h3 class="grp">${esc(a.name)} <span class="muted">(${r.length})</span></h3>`+r.map(i=>itemCard(v,i)).join(''):''}).join('')}
 function areaView(l,a){const v=M.currentVisit(l.id),its=M.visibleItems(v,a.id),x=M.stats(v,its);
  const shown=ui.layout==='grid'?gridHtml(v,[a],its,false):ui.mode==='all'?its.map(i=>itemCard(v,i)).join(''):remainingList(v,[a],its);
  const cp=v.status==='active'?M.checkAllPlan(v,its):{plan:[]};
- return header('#/l/'+l.id,a.name,`<div class="row sb"><span>${x.done}/${x.total} items complete</span><span class="red">${x.issues} issue${x.issues==1?'':'s'}</span></div>`)+`<main class="wrap has-bottom">${bar(x.pct)}${cp.plan.length?`<button class="btn ghost mt-3" id="checkarea" data-checkarea="${a.id}">✓ Check all in ${esc(a.name)} (${cp.plan.length})</button>`:''}${seg()}${layoutSeg()}<div id="list">${shown}</div></main>
+ return header('#/l/'+l.id,a.name,`<div class="row sb"><span>${x.done}/${x.total} items complete</span><span class="red">${x.issues} issue${x.issues==1?'':'s'}</span></div>`)+`<main class="wrap has-bottom">${bar(x.pct)}<a class="btn ghost sm mt-3" id="totarea_btn" href="#/l/${l.id}/totals/area/${a.id}/cur">🧮 Filter totals for ${esc(a.name)}</a>${cp.plan.length?`<button class="btn ghost mt-3" id="checkarea" data-checkarea="${a.id}">✓ Check all in ${esc(a.name)} (${cp.plan.length})</button>`:''}${seg()}${layoutSeg()}<div id="list">${shown}</div></main>
  <nav class="bottom stats"><span class="green">✓ ${x.done} done</span><span class="amber">● ${x.prog} in prog</span><span class="red">⚑ ${x.issues} issues</span><span class="muted">○ ${x.left} left</span></nav>`}
 function visitsView(l){const vs=M.st().visits.filter(x=>x.locationId===l.id).slice().reverse(),cur=M.currentVisit(l.id);
- return header('#/l/'+l.id,'Visits',esc(l.name))+`<main class="wrap"><div class="card"><h2>Start new visit from template</h2>
+ return header('#/l/'+l.id,'Visits',esc(l.name))+`<main class="wrap"><a class="btn ghost mt-3" id="totvisits" href="#/l/${l.id}/totals/both/-/all">🧮 Filter totals (account + by area)</a><div class="card"><h2>Start new visit from template</h2>
  <label class="lab">Template<select id="tpl" class="inp">${M.templatesFor(l).map(t=>`<option value="${t.id}">${esc(t.label)}${t.extra.length?` (+${t.extra.length} items/area)`:''}${t.noUnits?' (empty for now)':''}</option>`).join('')}</select></label>
  <label class="lab">Label<input id="vlabel" class="inp" placeholder="e.g. Fall Heating Prep 2026"></label>
  <label class="lab">Date<input id="vdate" type="date" class="inp" value="${M.today()}"></label>
@@ -122,9 +129,32 @@ function historyView(l){const rows=[];for(const v of M.st().visits.filter(x=>x.l
  rows.sort((a,b)=>a.r.at<b.r.at?1:-1);
  return header('#/l/'+l.id,'History log',esc(l.name)+' · names shown are current names')+`<main class="wrap"><div id="hist">${rows.map(({v,it,f,r})=>`<div class="hrow" data-h="${esc(it.id)}"><div class="row sb"><b>${esc(M.itemName(it))}</b><span class="muted text-sm">${esc(v.label)}</span></div>
   <div class="text-sm">${f==='note'?'Note: '+esc(r.v):f==='issue'?(r.v?'⚑ Issue flagged':'Issue cleared'):(r.v?'✓ ':'○ unchecked ')+esc(M.fieldDef(f).label)} · ${esc(r.by)} · ${dtfmt(r.at)}${r.editedAt?` <span class="amber">✎ time edited (logged ${dtfmt(r.originalLoggedAt)})</span>`:''}</div></div>`).join('')||'<p class="muted mt-4">No entries yet.</p>'}</div></main>`}
+const specialList=rows=>rows?.length?`<div class="mt-2" data-special><div class="muted font-bold text-sm">Listed separately (washable / qty not given)</div>${rows.map(([k,n])=>`<div class="row sb text-sm font-bold"><span>${esc(k)}</span><span>${n||'—'}</span></div>`).join('')}</div>`:'';
+// ---- Filter totals: scope = one area | the account (location, all areas) | both (account + per-area breakdown).
+// Basis: all active units at the location ("whole PM", default) or only units in the current visit (same as the Parts list).
+function totalsText(l,blocks){return blocks.map(b=>[`${b.title}`,...b.p.filters.map(([k,n])=>`  ${k}: ${n}`),`  Filters total: ${b.p.totals.filters}`,...b.p.filtersSpecial.map(([k,n])=>`  ${k}: ${n||'qty not given'} (separate)`),
+  ...b.p.belts.map(([k,n])=>`  Belt ${k}: ${n}`),`  Belts total: ${b.p.totals.belts}`].join('\n')).join('\n\n')}
+function totalsBlocks(l,scope,aid,pm){const v=pm&&M.st().visits.find(x=>x.id===pm&&x.locationId===l.id),vis=!!v;const its=a=>vis?M.visibleItems(v,a).filter(i=>i.kind==='unit'):M.unitItems(l.id,a);
+ const areas=M.areasOf(l.id).filter(a=>!a.system);const blk=(title,a)=>({title,area:a||null,p:M.partsList(vis?v:null,its(a))});
+ if(scope==='area'){const a=M.area(aid)||areas[0];return a?[blk(`${l.name} › ${a.name}${v?' · '+v.label:''}`,a.id)]:[]}
+ const pmT=v?` · ${v.label}`:'';const acc=blk(`${l.name} (account total)${pmT}`);return scope==='both'?[acc,...areas.map(a=>blk(a.name,a.id)).filter(b=>b.p.units)]:[acc]}
+const totHash=(l,scope,aid,pm)=>`#/l/${l.id}/totals/${scope}/${aid||'-'}/${pm||'all'}`;
+function totalsView(l,scope,aid,pm){scope=['area','account','both'].includes(scope)?scope:'account';const areas=M.areasOf(l.id).filter(a=>!a.system);if(scope==='area'&&!M.area(aid))aid=areas[0]?.id;if(pm==='cur')pm=M.currentVisit(l.id)?.id;if(pm==='all'||!M.st().visits.some(x=>x.id===pm))pm=null;ui.totCtx={l:l.id,scope,aid,pm};
+ const bl=totalsBlocks(l,scope,aid,pm),v=pm&&M.st().visits.find(x=>x.id===pm);ui.totText=totalsText(l,bl);
+ const tbl=(rows,unit,tot)=>rows.length?`<table class="parts tot2"><tr><th>Size</th><th>Qty</th></tr>${rows.map(([k,n])=>`<tr><td>${esc(k)}</td><td>${n}</td></tr>`).join('')}<tr class="tot"><td>Total ${unit}</td><td>${tot}</td></tr></table>`:`<p class="muted text-sm">No ${unit} listed.</p>`;
+ const card=(b,i)=>`<div class="card totblock" data-totblock="${b.area||'account'}"><div class="row sb"><h2>${esc(b.title)}</h2><span class="muted text-sm font-bold">${b.p.units} unit${b.p.units==1?'':'s'}</span></div>
+  <div class="row sb mt-1 font-black"><span>🧰 ${b.p.totals.filters} filters${b.p.totals.filtersSpecial?` + ${b.p.totals.filtersSpecial} washable/other`:''}</span><span>${b.p.totals.belts} belts</span></div>
+  <h3 class="grp" style="margin-top:10px">Filters by size</h3>${tbl(b.p.filters,'filters',b.p.totals.filters)}${specialList(b.p.filtersSpecial)}<h3 class="grp" style="margin-top:10px">Belts by size</h3>${tbl(b.p.belts,'belts',b.p.totals.belts)}${specialList(b.p.beltsSpecial)}</div>`;
+ const segs=[['area','One area'],['account','Account'],['both','Both']];
+ return header('#/l/'+l.id,'Filter totals',esc(l.name))+`<main class="wrap"><div class="seg mt-3" role="tablist" aria-label="Scope">${segs.map(([k,t])=>`<button class="${scope===k?'on':''}" data-totscope="${k}" role="tab" aria-selected="${scope===k}">${t}</button>`).join('')}</div>
+  ${scope==='area'?`<label class="lab">Area<select class="inp" id="totarea">${areas.map(a=>`<option value="${a.id}" ${a.id===aid?'selected':''}>${esc(a.name)}</option>`).join('')}</select></label>`:''}
+  <label class="lab">PM / visit<select class="inp" id="totpm"><option value="all" ${!pm?'selected':''}>All units (whole location, no PM filter)</option>${M.st().visits.filter(x=>x.locationId===l.id).slice().reverse().sort((a,b)=>(a.status==='active'?0:1)-(b.status==='active'?0:1)).map(x=>`<option value="${x.id}" ${x.id===pm?'selected':''}>${esc(x.label)} · ${dfmt(x.date)}${x.status!=='active'?' (completed)':''}</option>`).join('')}</select></label>
+  <p class="muted text-xs mt-1" id="totbasis">${v?`Only units in ${esc(v.label)}${scope==='area'?' in this area':''} (group tags respected; check-mark items have no parts).`:'Every active unit at this location. Archived units excluded.'} Washable / no-qty filters are listed separately.</p>
+  <div class="row mt-2" style="gap:8px"><button class="btn ghost" id="totshare">⇪ Share / copy totals</button></div><div id="totmsg" class="green font-bold text-sm"></div>
+  ${bl.map(card).join('')}</main>`}
 function partsView(l){const v=M.currentVisit(l.id),p=M.partsList(v,M.visibleItems(v));
  const tbl=(rows,left,unit)=>rows.length?`<table class="parts"><tr><th>Size</th><th>Total</th><th>Still to change</th></tr>${rows.map(([k,n])=>`<tr><td>${esc(k)}</td><td>${n}</td><td class="${left[k]?'amber':'green'}">${left[k]||'✓ 0'}</td></tr>`).join('')}<tr class="tot"><td>Total ${unit}</td><td>${rows.reduce((s,r)=>s+r[1],0)}</td><td>${Object.values(left).reduce((s,n)=>s+n,0)}</td></tr></table>`:'<p class="muted mt-2">No sizes listed for these units yet.</p>';
- return header('#/l/'+l.id,'Parts list',`${esc(l.name)} · ${esc(v.label)}`)+`<main class="wrap"><div class="card"><h2>Filters by size</h2>${tbl(p.filters,p.filtersLeft,'filters')}</div><div class="card"><h2>Belts by size</h2>${tbl(p.belts,p.beltsLeft,'belts')}</div><p class="muted text-sm mt-3">Totals = qty × size summed across all units in this visit. "Still to change" counts units whose Filters/Belts box is not checked yet.</p></main>`}
+ return header('#/l/'+l.id,'Parts list',`${esc(l.name)} · ${esc(v.label)}`)+`<main class="wrap"><a class="btn primary mt-3" id="totbtn" href="#/l/${l.id}/totals/both/-/cur">🧮 Filter totals by area / account</a><div class="card"><h2>Filters by size</h2>${tbl(p.filters,p.filtersLeft,'filters')}${specialList(p.filtersSpecial)}</div><div class="card"><h2>Belts by size</h2>${tbl(p.belts,p.beltsLeft,'belts')}</div><p class="muted text-sm mt-3">Totals = qty × size summed across all units in this visit. "Still to change" counts units whose Filters/Belts box is not checked yet.</p></main>`}
 function reportView(l){const v=M.currentVisit(l.id),ar=ui.reportArea==='all'?null:M.area(ui.reportArea);
  return header('#/l/'+l.id,'Issue Report',esc(l.name))+`<main class="wrap has-bottom"><div class="seg">${['Mid-PM','End-of-PM'].map(k=>`<button class="${ui.reportKind===k?'on':''}" data-kind="${k}">${k}</button>`).join('')}</div>
  <label class="lab mt-3">Areas<select id="rarea" class="inp"><option value="all">All areas (whole location)</option>${areasForVisit(v).map(a=>`<option value="${a.id}" ${ui.reportArea===a.id?'selected':''}>${esc(a.name)}</option>`).join('')}</select></label>
@@ -148,10 +178,10 @@ function monthGrid(l,g,cm){return `<div class="mgrid">${M.MONTHS.map((n,i)=>{con
 function scheduleView(l){const sc=l.schedule,cm=M.curMonth(),od=M.overdue(l.id),mv=M.monthVisit(l.id);
  return header('#/l/'+l.id,'Schedule',`${esc(l.name)} · ${M.MONTHS[cm-1]} highlighted`)+`<main class="wrap">
  <p class="muted text-sm mt-2">Source: ${esc(sc.source)}${sc.sourceNote?` — <span class="amber">${esc(sc.sourceNote)}</span>`:''}</p>
- ${mv?`<a class="btn primary mt-2" href="#/l/${l.id}">▶ Resume ${esc(mv.label)} (${M.stats(mv,M.visibleItems(mv)).pct}%)</a>`:''}
+ ${mv?`<button class="btn primary mt-2" id="resumemonth" data-openv="${mv.id}">▶ Open ${esc(mv.label)} (${M.stats(mv,M.visibleItems(mv)).pct}%)</button>`:''}
  ${od.map(o=>`<div class="card issue" data-overdue="${o.visit.id}"><b class="red">⚠ Overdue: ${esc(o.visit.label)}</b><div class="text-sm">${o.open.length} item(s) open · ${o.groups.map(g=>esc(M.group(l.id,g)?.name||'')).join(', ')}</div><button class="btn ghost sm mt-2" data-openv="${o.visit.id}">Open overdue visit</button></div>`).join('')}
- <div id="sched">${M.groupsOf(l.id).map(g=>{const c=M.codesIn(g,cm),n=M.groupUnits(l.id,g.id).length,ck=M.isCheck(g);
-  return `<button class="card sgroup ${c.length?'due':'notdue'}" data-group="${g.id}"><div class="row sb"><h2>${esc(g.name)}</h2><span class="muted text-sm">${ck?'✓ check mark':`${n} unit${n==1?'':'s'}`}</span></div>
+ <div id="sched">${M.groupsOf(l.id).map(g=>{const c=M.codesIn(g,cm),n=M.groupUnits(l.id,g.id).length,ck=M.isCheck(g),gi=mv?M.visibleItems(mv).filter(i=>i.groupId===g.id):[],gd=gi.length&&gi.every(i=>M.itemDone(mv,i));
+  return `<button class="card sgroup ${c.length?'due':'notdue'} ${gd?'done':''}" data-group="${g.id}"><div class="row sb"><h2>${gd?'✓ ':''}${esc(g.name)}</h2><span class="muted text-sm">${ck?'✓ check mark':`${n} unit${n==1?'':'s'}`}</span></div>
   ${c.length?`<div class="codes">${c.map(x=>`<span class="code">${esc(x)} · ${esc(M.codeLabel(l.id,x))}</span>`).join('')}</div>`:`<div class="nothing">Nothing due this month</div>`}
   ${M.groupOverdue(l.id,g.id).length?'<div class="red font-bold text-sm">⚠ Overdue items</div>':''}
   ${monthGrid(l,g,cm)}${g.notes.map(x=>`<div class="muted text-sm">Note: ${esc(x)}</div>`).join('')}</button>`}).join('')}</div>
@@ -277,7 +307,7 @@ function render0(){const y=scrollY,app=$('#app'),gw=$('#grid'),gs=gw&&render.kee
  const p=route();let h;
  if(p[0]==='l'&&M.loc(p[1])){const l=M.loc(p[1]);
   if(p[2]==='a'){const a=M.area(p[3]);h=a?areaView(l,a):locView(l)}else if(p[2]==='visits')h=visitsView(l);else if(p[2]==='report')h=reportView(l);
-  else if(p[2]==='parts')h=partsView(l);else if(p[2]==='history')h=historyView(l);else if(p[2]==='schedule'&&l.schedule)h=scheduleView(l);else h=locView(l)}
+  else if(p[2]==='parts')h=partsView(l);else if(p[2]==='totals')h=p[3]==='a'?totalsView(l,'area',p[4],p[5]):totalsView(l,p[3],p[4]==='-'?null:p[4],p[5]);else if(p[2]==='history')h=historyView(l);else if(p[2]==='schedule'&&l.schedule)h=scheduleView(l);else h=locView(l)}
  else if(p[0]==='settings'){if(!isOwner())h=home();
   else if(p[1]==='l'&&M.loc(p[2])&&p[3]==='groups')h=settingsGroups(M.loc(p[2]));else if(p[1]==='l'&&M.loc(p[2])&&p[3]==='g'&&M.group(p[2],p[4]))h=settingsGroup(M.loc(p[2]),M.group(p[2],p[4]));else if(p[1]==='l'&&M.loc(p[2]))h=settingsLoc(M.loc(p[2]));else if(p[1]==='a'&&M.area(p[2]))h=settingsArea(M.area(p[2]));
   else if(p[1]==='u'){const aid=new URLSearchParams(location.hash.split('?')[1]).get('area')||M.unit(p[2])?.areaId;h=settingsArea(M.area(ui.draft&&ui.draft._for?.startsWith(p[2])?ui.draft.areaId:aid)||M.area(aid))+settingsUnit(p[2],aid)}
@@ -297,6 +327,8 @@ document.addEventListener('click',async e=>{const t=e.target.closest('button,[da
  if(t.dataset.name){S.setUser(t.dataset.name);render();return}
  if(t.dataset.close!==undefined){ui.sheet=null;rerender();return}
  if(t.id==='userchip'){S.setUser(null);render();return}
+ if(t.dataset.totscope){const c=ui.totCtx,l=M.loc(c.l);location.hash=totHash(l,t.dataset.totscope,t.dataset.totscope==='area'?(c.aid||M.areasOf(l.id).filter(a=>!a.system)[0]?.id):c.aid,c.pm);return}
+ if(t.id==='totshare'){const txt='West Mechanical PM – filter totals\n'+ui.totText;try{if(navigator.share)await navigator.share({title:'Filter totals',text:txt});else{await navigator.clipboard.writeText(txt)}$('#totmsg').textContent='✓ Totals shared / copied'}catch(err){try{await navigator.clipboard.writeText(txt);$('#totmsg').textContent='✓ Copied to clipboard'}catch(e2){$('#totmsg').innerHTML=`<textarea class="inp" rows="8" readonly>${esc(txt)}</textarea>`}}return}
  if(t.dataset.mode){ui.mode=t.dataset.mode;rerender();return}
  const l=ctxLoc(),v=l&&M.currentVisit(l.id);
  if(t.dataset.field){const cur=v.records[t.dataset.item]?.[t.dataset.field]?.v;S.setField(v,t.dataset.item,t.dataset.field,!cur,u);if(navigator.vibrate)navigator.vibrate(10);rerender();return}
@@ -324,6 +356,7 @@ document.addEventListener('click',async e=>{const t=e.target.closest('button,[da
   ui.sheet={type:'group',lid:l.id,gid:g.id,codes:due.length?[...due]:M.defaultCodes(g)};rerender();return}
  if(t.id==='startgroup'){const s=ui.sheet,codes=[...document.querySelectorAll('[data-gcode]')].filter(x=>x.checked).map(x=>x.dataset.gcode);if(!codes.length)return;
   M.startGroupVisit(s.lid,s.gid,codes,u);ui.sheet=null;ui.noAuto=true;location.hash='#/l/'+s.lid;return}
+ if(t.dataset.quarter){const [y,q]=t.dataset.quarter.split('|').map(Number);M.startQuarterVisit(l.id,y,q,u);ui.noAuto=true;ui.mode='all';render();scrollTo(0,0);return}
  if(t.dataset.openv){M.st().currentVisit[l.id]=t.dataset.openv;S.save();ui.noAuto=true;if(location.hash==='#/l/'+l.id){ui.noAuto=false;render();scrollTo(0,0)}else location.hash='#/l/'+l.id;return}
  if(t.dataset.kind){ui.reportKind=t.dataset.kind;rerender();return}
  if(t.id==='mkpdf'){const area=ui.reportArea==='all'?null:M.area(ui.reportArea);
@@ -357,6 +390,8 @@ document.addEventListener('click',async e=>{const t=e.target.closest('button,[da
   const blob=new Blob([JSON.stringify(data,null,1)],{type:'application/json'});const name=`WM-PM-backup-${M.today()}.json`;window.__lastBackup=data;await shareFile(blob,name);$('#bkresult').innerHTML=`<span class="green">✓ ${name}</span>`;return}
 });
 document.addEventListener('change',async e=>{const t=e.target;const l=ctxLoc(),u=user();
+ if(t.id==='totarea'){const c=ui.totCtx;location.hash=totHash(l,'area',t.value,c.pm);return}
+ if(t.id==='totpm'){const c=ui.totCtx;location.hash=totHash(l,c.scope,c.aid,t.value);return}
  if(t.dataset.note!==undefined){const v=M.currentVisit(l.id);const cur=v.records[t.dataset.note]?.note?.v||'';if(t.value!==cur)S.setField(v,t.dataset.note,'note',t.value,u)}
  if(t.id==='rarea'){ui.reportArea=t.value;rerender()}
  if(t.id==='rparts')ui.parts=t.checked;if(t.id==='rlog')ui.log=t.checked;

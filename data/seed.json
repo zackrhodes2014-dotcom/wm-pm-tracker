@@ -1,6 +1,6 @@
 {
- "version": 14,
- "generatedAt": "2026-11-03T13:04:13.685Z",
+ "version": 15,
+ "generatedAt": "2026-11-03T17:26:06.337Z",
  "note": "Hills Pet Foods = real data from Zach sheet; all other locations = PLACEHOLDER sample units",
  "locations": [
   {
@@ -789,6 +789,25 @@
       "archived": false
      }
     ]
+   },
+   "quarterPlan": {
+    "1": {
+     "schedule": true
+    },
+    "2": {
+     "templates": [
+      "spring"
+     ]
+    },
+    "3": {
+     "schedule": true
+    },
+    "4": {
+     "templates": [
+      "fall-heating",
+      "exhaust-fan-pm"
+     ]
+    }
    }
   },
   {

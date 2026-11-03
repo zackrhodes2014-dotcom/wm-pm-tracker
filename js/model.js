@@ -48,12 +48,21 @@ export function stats(v,items){let done=0,issues=0,prog=0,last=null;
   for(const it of items){if(itemDone(v,it))done++;else if(itemStarted(v,it))prog++;if(itemIssue(v,it))issues++;
     for(const r of Object.values(v.records[it.id]||{}))if(!last||r.at>last.at)last=r}
   return {total:items.length,done,issues,prog,left:items.length-done-prog,pct:items.length?Math.round(done*100/items.length):0,last}}
-export function partsList(v,items){const f={},b={},ff={},bb={};
-  for(const it of items){if(it.kind!=='unit')continue;const u=unit(it.unitId);if(!u)continue;const fl=fields(v,it);
-    const openF=fl.includes(partsField('filter')||'filters')&&!val(v,it,'filters'),openB=fl.includes(partsField('belt')||'belts')&&!val(v,it,'belts');
-    (u.filters||[]).forEach(x=>{const k=sizeName(x.sizeId);f[k]=(f[k]||0)+ +x.qty;if(openF)ff[k]=(ff[k]||0)+ +x.qty});
-    (u.belts||[]).forEach(x=>{const k=sizeName(x.sizeId);b[k]=(b[k]||0)+ +x.qty;if(openB)bb[k]=(bb[k]||0)+ +x.qty})}
-  const srt=o=>Object.entries(o).sort((a,b)=>b[1]-a[1]);return {filters:srt(f),belts:srt(b),filtersLeft:ff,beltsLeft:bb}}
+// Parts totals (ONE implementation: used by the Parts list and the Filter totals screen).
+// Washable / unspecified-qty entries are listed separately (not mixed into the per-size counts).
+export const specialSize=name=>/wash|unspec|unknown|\?/i.test(String(name||''));
+const natSort=(a,b)=>String(a[0]).localeCompare(String(b[0]),undefined,{numeric:true});
+export function partsList(v,items){const f={},b={},ff={},bb={},fs={},bs={};let units=0;
+  for(const it of items){if(it.kind!=='unit')continue;const u=unit(it.unitId);if(!u||u.archived)continue;units++;const fl=v?fields(v,it):[];
+    const openF=v&&fl.includes(partsField('filter')||'filters')&&!val(v,it,'filters'),openB=v&&fl.includes(partsField('belt')||'belts')&&!val(v,it,'belts');
+    const add=(x,main,spec,left,open)=>{const k=sizeName(x.sizeId),q=+x.qty;if(specialSize(k)||!(q>0)){const key=specialSize(k)?k:`${k} (qty not given)`;spec[key]=(spec[key]||0)+(q>0?q:0);return}
+      main[k]=(main[k]||0)+q;if(open)left[k]=(left[k]||0)+q};
+    (u.filters||[]).forEach(x=>add(x,f,fs,ff,openF));(u.belts||[]).forEach(x=>add(x,b,bs,bb,openB))}
+  const srt=o=>Object.entries(o).sort((a,b)=>b[1]-a[1]||natSort(a,b));const sum=o=>Object.values(o).reduce((s,n)=>s+n,0);
+  return {filters:srt(f),belts:srt(b),filtersLeft:ff,beltsLeft:bb,filtersSpecial:srt(fs),beltsSpecial:srt(bs),units,
+    totals:{filters:sum(f),belts:sum(b),filtersSpecial:sum(fs),beltsSpecial:sum(bs)}}}
+// every active unit at a location (or one area) as items - "whole PM" basis for totals
+export function unitItems(lid,aid){return areasOf(lid).filter(a=>!a.system&&(!aid||a.id===aid)).flatMap(a=>unitsOf(a.id)).map(itemFor)}
 export function logCount(kind,id){let n=0;const ids=new Set();
   if(kind==='units')ids.add(id);if(kind==='areas'){ids.add(id);st().units.filter(u=>u.areaId===id).forEach(u=>ids.add(u.id))}
   if(kind==='locations'){st().areas.filter(a=>a.locationId===id).forEach(a=>{ids.add(a.id);st().units.filter(u=>u.areaId===a.id).forEach(u=>ids.add(u.id))})}
@@ -96,7 +105,7 @@ export function applySeed(seed,by){let s=st();
   if((s.seedVersion||0)>=seed.version){migrateState(s,seed);return 0}const seen=new Set(s.seenSeedIds);let added=0;
   s.fieldDefs||=[];for(const coll of ['fieldDefs','locations','areas','units','sizes','templates'])for(const e of seed[coll]){const key=coll+':'+e.id;
     if(seen.has(key))continue;seen.add(key);if(!s[coll].some(x=>x.id===e.id)){s[coll].push({nameHistory:[],...structuredClone(e),updatedAt:seed.generatedAt,updatedBy:'seed'});added++}}
-  s.seenSeedIds=[...seen];const first=!s.seedVersion;if(!first){migrateAreas(s,seed);migrateTemplates(s,seed);migrateBelts(s,seed);migrateUnitPatches(s,seed);migrateRetireUnits(s,seed);migrateGroups(s,seed);migrateTags(s,seed);migrateCheckmark(s,seed);migrateRename(s,seed);migrateTyson(s,seed);migrateTags(s,seed,'tysonTagMigration')}s.seedVersion=seed.version;S.save();
+  s.seenSeedIds=[...seen];const first=!s.seedVersion;if(!first){migrateAreas(s,seed);migrateTemplates(s,seed);migrateBelts(s,seed);migrateUnitPatches(s,seed);migrateRetireUnits(s,seed);migrateGroups(s,seed);migrateTags(s,seed);migrateCheckmark(s,seed);migrateRename(s,seed);migrateTyson(s,seed);migrateTags(s,seed,'tysonTagMigration');migrateState(s,seed)}s.seedVersion=seed.version;S.save();
   migrateState(s,seed);
   if(first)for(const l of locations())if(!s.visits.some(v=>v.locationId===l.id))newVisit(l.id,seed.defaultVisits?.[l.id]||'quarterly',null,null,by||'seed');
   return added}
@@ -123,9 +132,32 @@ export function migrateState(s,seed){s=s||st();if(!s)return {};const out={record
     s.schemaVersion=2}
   // schedules: add to existing locations that never received one (seed only ADDS; never overwrite owner edits)
   if(seed)for(const sl of seed.locations||[]){const l=s.locations.find(x=>x.id===sl.id);const key='schedule:'+sl.id;
-    if(sl.schedule&&l&&!l.schedule&&!(s.seenSeedIds||[]).includes(key)){l.schedule=structuredClone(sl.schedule);s.seenSeedIds.push(key);out.schedule=true}}
+    if(sl.schedule&&l&&!l.schedule&&!(s.seenSeedIds||[]).includes(key)){l.schedule=structuredClone(sl.schedule);s.seenSeedIds.push(key);out.schedule=true}
+    const qk='quarterPlan:'+sl.id;if(sl.quarterPlan&&l&&!l.quarterPlan&&!(s.seenSeedIds||[]).includes(qk)){l.quarterPlan=structuredClone(sl.quarterPlan);s.seenSeedIds.push(qk);out.quarterPlan=true}}
   S.save();return out}
 
+
+// ---- Quarterly PM picker (Hills only: location.quarterPlan). Jan Winter / Apr Spring / Jul Summer / Oct Fall.
+// Each quarter = one visit (kind 'quarter') built from that quarter's templates and/or the groups the monthly schedule has
+// due in that month. The month-by-month schedule engine is untouched (secondary "Monthly schedule" screen).
+export const QUARTERS=[{q:1,m:1,name:'Winter',mon:'Jan'},{q:2,m:4,name:'Spring',mon:'Apr'},{q:3,m:7,name:'Summer',mon:'Jul'},{q:4,m:10,name:'Fall',mon:'Oct'}];
+export const quarterOf=(d=new Date())=>Math.floor(d.getMonth()/3)+1;
+export const quarterKey=(y,q)=>`${y}-Q${q}`;
+export const quarterVisit=(lid,y,q)=>st().visits.find(v=>v.locationId===lid&&v.kind==='quarter'&&v.quarter===quarterKey(y,q));
+export function quarterItems(lid,q){const l=loc(lid),plan=l?.quarterPlan?.[q]||{},items=[],seen=new Set(),push=it=>{if(!seen.has(it.id)){seen.add(it.id);items.push(it)}};
+  for(const tid of plan.templates||[]){const t=tmpl(tid);if(!t)continue;for(const a of areasOf(lid).filter(a=>!a.system)){
+    if(!t.noUnits)unitsOf(a.id).filter(u=>unitInTemplate(u,t)).forEach(u=>push({...itemFor(u),fields:[...t.fields],tpl:t.id}));
+    t.extra.forEach((x,i)=>push({id:a.id+'~'+t.id+'~'+i,kind:'task',areaId:a.id,name:x,tpl:t.id}))}}
+  let gc={};if(plan.schedule&&l.schedule){const m=QUARTERS[q-1].m;for(const g of groupsOf(lid)){const c=codesIn(g,m);if(c.length)gc[g.id]=[...c]}schedItems(lid,gc).forEach(push)}
+  return {items,groupCodes:gc}}
+export function startQuarterVisit(lid,y,q,by){let v=quarterVisit(lid,y,q);
+  if(!v){const Q=QUARTERS[q-1],plan=loc(lid).quarterPlan[q],{items,groupCodes}=quarterItems(lid,q);
+    v={id:rid('v'),kind:'quarter',quarter:quarterKey(y,q),locationId:lid,templateId:(plan.templates||[])[0]||'schedule',label:`${Q.name} PM ${y}`,date:`${y}-${String(Q.m).padStart(2,'0')}-01`,status:'active',items,groupCodes,records:{},createdBy:by,updatedAt:S.now(),updatedBy:by};
+    st().visits.push(v);S.logChange('visit',v.id,'create',{kind:'quarter',quarter:v.quarter},by)}
+  st().currentVisit[lid]=v.id;S.save();return v}
+// quarter visit not finished after its quarter ended -> overdue (carry-over badge)
+export function quarterOverdue(v,d=new Date()){if(!v||v.status!=='active')return false;const [y,q]=v.quarter.split('-Q').map(Number);const it=visibleItems(v);
+  return (d.getFullYear()*4+quarterOf(d))>(y*4+q)&&!it.every(i=>itemDone(v,i))}
 // ---- schedule (per location, optional): {source, sourceNote, legend:[{code,label}], groups:[{id,name,order,notes[],months:{1..12:[codes]},archived}]} ----
 export const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 export const curMonth=()=>new Date().getMonth()+1;
