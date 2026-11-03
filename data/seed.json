@@ -1,6 +1,6 @@
 {
- "version": 10,
- "generatedAt": "2026-11-03T02:04:40.839Z",
+ "version": 11,
+ "generatedAt": "2026-11-03T04:02:17.717Z",
  "note": "Hills Pet Foods = real data from Zach sheet; all other locations = PLACEHOLDER sample units",
  "locations": [
   {
@@ -1088,7 +1088,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_fdd1a46191"
   },
   {
    "id": "u_6514fa8a69",
@@ -1113,7 +1114,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_4034f29055"
   },
   {
    "id": "u_06c3b5f936",
@@ -1138,7 +1140,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_4034f29055"
   },
   {
    "id": "u_34b02550e6",
@@ -1163,7 +1166,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_4034f29055"
   },
   {
    "id": "u_2b4126e1ad",
@@ -1188,7 +1192,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_fdd1a46191"
   },
   {
    "id": "u_02b9a6a5e0",
@@ -1213,7 +1218,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_4034f29055"
   },
   {
    "id": "u_7d5dd9ea12",
@@ -1238,7 +1244,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_4034f29055"
   },
   {
    "id": "u_ffdbea9bc3",
@@ -1263,7 +1270,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_4034f29055"
   },
   {
    "id": "u_249adb6f82",
@@ -1288,7 +1296,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_4034f29055"
   },
   {
    "id": "u_b1dbced866",
@@ -1308,7 +1317,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_4034f29055"
   },
   {
    "id": "u_8311007e79",
@@ -1333,7 +1343,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_4034f29055"
   },
   {
    "id": "u_f9153dda1f",
@@ -1353,7 +1364,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_4034f29055"
   },
   {
    "id": "u_868cb58c4b",
@@ -1378,7 +1390,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_4034f29055"
   },
   {
    "id": "u_4e44b6ae47",
@@ -1402,7 +1415,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_0d0dbd2808"
   },
   {
    "id": "u_875d1d0ae3",
@@ -1426,7 +1440,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_0d0dbd2808"
   },
   {
    "id": "u_1755f20594",
@@ -1461,7 +1476,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_bc53f346ed"
   },
   {
    "id": "u_f069cefe04",
@@ -1485,7 +1501,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_bc53f346ed"
   },
   {
    "id": "u_cd641ce856",
@@ -1509,7 +1526,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_bc53f346ed"
   },
   {
    "id": "u_f01e2c72cd",
@@ -1533,7 +1551,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_bc53f346ed"
   },
   {
    "id": "u_8546ca6ea3",
@@ -1553,7 +1572,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_4034f29055"
   },
   {
    "id": "u_acce8bd312",
@@ -1578,7 +1598,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_4034f29055"
   },
   {
    "id": "u_0e39a8dce2",
@@ -1607,7 +1628,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_4034f29055"
   },
   {
    "id": "u_d0a03a2c05",
@@ -1636,7 +1658,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_4034f29055"
   },
   {
    "id": "u_b1dc45e850",
@@ -1809,7 +1832,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_fdd1a46191"
   },
   {
    "id": "u_6a4281c639",
@@ -1854,7 +1878,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_dd04c92a6f"
   },
   {
    "id": "u_033f324b5f",
@@ -1916,7 +1941,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_fdd1a46191"
   },
   {
    "id": "u_6fbbdb7f46",
@@ -1941,7 +1967,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_fdd1a46191"
   },
   {
    "id": "u_6e40bba0c0",
@@ -1998,7 +2025,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_dd04c92a6f"
   },
   {
    "id": "u_e5a7cbf0ae",
@@ -2042,7 +2070,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_fdd1a46191"
   },
   {
    "id": "u_b501db7c2f",
@@ -2067,7 +2096,8 @@
     "coilCondenser": false,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_fdd1a46191"
   },
   {
    "id": "u_095cadd687",
@@ -2092,7 +2122,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_fdd1a46191"
   },
   {
    "id": "u_eb2ef8078a",
@@ -2176,7 +2207,8 @@
     "coilCondenser": false,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_33d1aa7f48"
   },
   {
    "id": "u_accabadb0f",
@@ -2200,7 +2232,8 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": []
+   "flags": [],
+   "equipmentGroupId": "eg_dd04c92a6f"
   },
   {
    "id": "u_2484c3379a",
@@ -2437,7 +2470,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_ed6120827b",
@@ -2465,7 +2499,8 @@
    ],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_95d88bd0e8",
@@ -2486,7 +2521,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_e0b47f9259",
@@ -2511,7 +2547,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_69a3797f51",
@@ -2536,7 +2573,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_27bf0391a7",
@@ -2561,7 +2599,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_946c8c3406",
@@ -2586,7 +2625,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_895de156bc",
@@ -2611,7 +2651,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_001b39dcdd",
@@ -2636,7 +2677,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_12e5bee9cc",
@@ -2661,7 +2703,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_f36e8d4c59",
@@ -2686,7 +2729,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_7767b47224",
@@ -2711,7 +2755,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_d766d42eef",
@@ -2736,7 +2781,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_f6cc14d6ad",
@@ -2761,7 +2807,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_dea9f5981b",
@@ -2784,7 +2831,8 @@
    ],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_eb94adeefc",
@@ -2805,7 +2853,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_fc3a51b227",
@@ -2826,7 +2875,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_d2409a810b",
@@ -2847,7 +2897,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_b323b4fde2",
@@ -2868,7 +2919,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_54fd29a1fe",
@@ -2893,7 +2945,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_6d186b6376",
@@ -2918,7 +2971,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_937d02fd3a",
@@ -2943,7 +2997,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_b4b1c64ac9",
@@ -2964,7 +3019,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_e9e34d5f52",
@@ -2985,7 +3041,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_99fe0d4120",
@@ -3010,7 +3067,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_fa7c0ba2f4",
@@ -3035,7 +3093,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_187b8916b2",
@@ -3056,7 +3115,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_dc70c3cc0e",
@@ -3077,7 +3137,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_c19fb53f18",
@@ -3098,7 +3159,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_6fd7497726",
@@ -3119,7 +3181,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_739d50412b",
@@ -3144,7 +3207,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_85c0799588",
@@ -3169,7 +3233,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_567febb4e8",
@@ -3195,7 +3260,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_764abf98f9",
@@ -3220,7 +3286,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_966a2a149c",
@@ -3245,7 +3312,8 @@
    "flags": [],
    "templateOnly": [
     "exhaust-fan-pm"
-   ]
+   ],
+   "equipmentGroupId": "eg_3bd8fdcbc9"
   },
   {
    "id": "u_6d1c1a59ed",
@@ -3272,7 +3340,8 @@
    ],
    "templateOnly": [
     "fall-heating"
-   ]
+   ],
+   "equipmentGroupId": "eg_6a8bf265a2"
   },
   {
    "id": "u_5ab9a66be0",
@@ -3299,7 +3368,8 @@
    ],
    "templateOnly": [
     "fall-heating"
-   ]
+   ],
+   "equipmentGroupId": "eg_6a8bf265a2"
   },
   {
    "id": "u_653ebd9a97",
@@ -3328,7 +3398,8 @@
    "flags": [],
    "templateOnly": [
     "fall-heating"
-   ]
+   ],
+   "equipmentGroupId": "eg_6a8bf265a2"
   },
   {
    "id": "u_8571016eac",
@@ -3355,7 +3426,8 @@
    ],
    "templateOnly": [
     "fall-heating"
-   ]
+   ],
+   "equipmentGroupId": "eg_6a8bf265a2"
   },
   {
    "id": "u_147f21f595",
@@ -4278,6 +4350,84 @@
    "ar_c0ec48c012",
    "ar_7fb4d488a7"
   ]
+ },
+ "tagMigration": {
+  "version": 11,
+  "locationId": "loc_3cfb012bc8",
+  "tags": {
+   "u_aadfe604a3": "eg_fdd1a46191",
+   "u_6514fa8a69": "eg_4034f29055",
+   "u_06c3b5f936": "eg_4034f29055",
+   "u_34b02550e6": "eg_4034f29055",
+   "u_2b4126e1ad": "eg_fdd1a46191",
+   "u_02b9a6a5e0": "eg_4034f29055",
+   "u_7d5dd9ea12": "eg_4034f29055",
+   "u_ffdbea9bc3": "eg_4034f29055",
+   "u_249adb6f82": "eg_4034f29055",
+   "u_b1dbced866": "eg_4034f29055",
+   "u_8311007e79": "eg_4034f29055",
+   "u_f9153dda1f": "eg_4034f29055",
+   "u_868cb58c4b": "eg_4034f29055",
+   "u_4e44b6ae47": "eg_0d0dbd2808",
+   "u_875d1d0ae3": "eg_0d0dbd2808",
+   "u_1339d4188e": "eg_bc53f346ed",
+   "u_f069cefe04": "eg_bc53f346ed",
+   "u_cd641ce856": "eg_bc53f346ed",
+   "u_f01e2c72cd": "eg_bc53f346ed",
+   "u_8546ca6ea3": "eg_4034f29055",
+   "u_acce8bd312": "eg_4034f29055",
+   "u_0e39a8dce2": "eg_4034f29055",
+   "u_d0a03a2c05": "eg_4034f29055",
+   "u_e5ff8b8e4c": "eg_fdd1a46191",
+   "u_c38f3f6feb": "eg_dd04c92a6f",
+   "u_afc2019631": "eg_fdd1a46191",
+   "u_6fbbdb7f46": "eg_fdd1a46191",
+   "u_d123f7a081": "eg_dd04c92a6f",
+   "u_183c522ce0": "eg_fdd1a46191",
+   "u_b501db7c2f": "eg_fdd1a46191",
+   "u_095cadd687": "eg_fdd1a46191",
+   "u_3c73dc11ba": "eg_33d1aa7f48",
+   "u_accabadb0f": "eg_dd04c92a6f",
+   "u_89018184bb": "eg_3bd8fdcbc9",
+   "u_ed6120827b": "eg_3bd8fdcbc9",
+   "u_95d88bd0e8": "eg_3bd8fdcbc9",
+   "u_e0b47f9259": "eg_3bd8fdcbc9",
+   "u_69a3797f51": "eg_3bd8fdcbc9",
+   "u_27bf0391a7": "eg_3bd8fdcbc9",
+   "u_946c8c3406": "eg_3bd8fdcbc9",
+   "u_895de156bc": "eg_3bd8fdcbc9",
+   "u_001b39dcdd": "eg_3bd8fdcbc9",
+   "u_12e5bee9cc": "eg_3bd8fdcbc9",
+   "u_f36e8d4c59": "eg_3bd8fdcbc9",
+   "u_7767b47224": "eg_3bd8fdcbc9",
+   "u_d766d42eef": "eg_3bd8fdcbc9",
+   "u_f6cc14d6ad": "eg_3bd8fdcbc9",
+   "u_dea9f5981b": "eg_3bd8fdcbc9",
+   "u_eb94adeefc": "eg_3bd8fdcbc9",
+   "u_fc3a51b227": "eg_3bd8fdcbc9",
+   "u_d2409a810b": "eg_3bd8fdcbc9",
+   "u_b323b4fde2": "eg_3bd8fdcbc9",
+   "u_54fd29a1fe": "eg_3bd8fdcbc9",
+   "u_6d186b6376": "eg_3bd8fdcbc9",
+   "u_937d02fd3a": "eg_3bd8fdcbc9",
+   "u_b4b1c64ac9": "eg_3bd8fdcbc9",
+   "u_e9e34d5f52": "eg_3bd8fdcbc9",
+   "u_99fe0d4120": "eg_3bd8fdcbc9",
+   "u_fa7c0ba2f4": "eg_3bd8fdcbc9",
+   "u_187b8916b2": "eg_3bd8fdcbc9",
+   "u_dc70c3cc0e": "eg_3bd8fdcbc9",
+   "u_c19fb53f18": "eg_3bd8fdcbc9",
+   "u_6fd7497726": "eg_3bd8fdcbc9",
+   "u_739d50412b": "eg_3bd8fdcbc9",
+   "u_85c0799588": "eg_3bd8fdcbc9",
+   "u_567febb4e8": "eg_3bd8fdcbc9",
+   "u_764abf98f9": "eg_3bd8fdcbc9",
+   "u_966a2a149c": "eg_3bd8fdcbc9",
+   "u_6d1c1a59ed": "eg_6a8bf265a2",
+   "u_5ab9a66be0": "eg_6a8bf265a2",
+   "u_653ebd9a97": "eg_6a8bf265a2",
+   "u_8571016eac": "eg_6a8bf265a2"
+  }
  },
  "groupMigration": {
   "version": 10,

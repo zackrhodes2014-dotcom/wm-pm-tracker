@@ -96,7 +96,7 @@ export function applySeed(seed,by){let s=st();
   if((s.seedVersion||0)>=seed.version){migrateState(s,seed);return 0}const seen=new Set(s.seenSeedIds);let added=0;
   s.fieldDefs||=[];for(const coll of ['fieldDefs','locations','areas','units','sizes','templates'])for(const e of seed[coll]){const key=coll+':'+e.id;
     if(seen.has(key))continue;seen.add(key);if(!s[coll].some(x=>x.id===e.id)){s[coll].push({nameHistory:[],...structuredClone(e),updatedAt:seed.generatedAt,updatedBy:'seed'});added++}}
-  s.seenSeedIds=[...seen];const first=!s.seedVersion;if(!first){migrateAreas(s,seed);migrateTemplates(s,seed);migrateBelts(s,seed);migrateUnitPatches(s,seed);migrateRetireUnits(s,seed);migrateGroups(s,seed)}s.seedVersion=seed.version;S.save();
+  s.seenSeedIds=[...seen];const first=!s.seedVersion;if(!first){migrateAreas(s,seed);migrateTemplates(s,seed);migrateBelts(s,seed);migrateUnitPatches(s,seed);migrateRetireUnits(s,seed);migrateGroups(s,seed);migrateTags(s,seed)}s.seedVersion=seed.version;S.save();
   migrateState(s,seed);
   if(first)for(const l of locations())if(!s.visits.some(v=>v.locationId===l.id))newVisit(l.id,seed.defaultVisits?.[l.id]||'quarterly',null,null,by||'seed');
   return added}
@@ -156,11 +156,13 @@ export function ensureMonthVisit(lid,by,d=new Date()){const l=loc(lid);if(!l?.sc
   let v=monthVisit(lid,mk);const gc={};for(const g of groupsOf(lid)){const c=codesIn(g,d.getMonth()+1);if(c.length)gc[g.id]=[...c]}
   // nothing tagged is due this month -> no month visit (and the current visit is left alone)
   if(!v&&!schedItems(lid,gc).length)return null;
-  if(!v){const items=schedItems(lid,gc);v={id:rid('v'),kind:'month',month:mk,locationId:lid,templateId:'schedule',label:`${MONTHS[d.getMonth()]} ${d.getFullYear()} scheduled PM`,date:mk+'-01',status:'active',groupCodes:gc,items,records:{},createdBy:by,updatedAt:S.now(),updatedBy:by};
+  let made=false;if(!v){made=true;const items=schedItems(lid,gc);v={id:rid('v'),kind:'month',month:mk,locationId:lid,templateId:'schedule',label:`${MONTHS[d.getMonth()]} ${d.getFullYear()} scheduled PM`,date:mk+'-01',status:'active',groupCodes:gc,items,records:{},createdBy:by,updatedAt:S.now(),updatedBy:by};
     st().visits.push(v);S.logChange('visit',v.id,'create',{kind:'month',month:mk},by)}
   else if(v.status==='active'){// newly tagged units join the open month visit
     for(const it of schedItems(lid,v.groupCodes))if(!v.items.some(x=>x.id===it.id))v.items.push(it)}
-  st().currentVisit[lid]=v.id;S.save();return v}
+  // never hijack an open regular visit (e.g. Spring PM): the month visit becomes current only when nothing active is open
+  // or the open one is an older schedule visit. Otherwise the location screen shows a banner to open it.
+  const cur=currentVisit(lid);if(!cur||cur.status!=='active'||(made&&cur.templateId==='schedule'))st().currentVisit[lid]=v.id;S.save();return v}
 // out-of-season / any-month group visit (no restriction)
 export function startGroupVisit(lid,gid,codes,by,d=new Date()){const g=group(lid,gid);const due=codesIn(g,d.getMonth()+1);
   const oos=!codes.every(c=>due.includes(c));const items=schedItems(lid,{[gid]:codes});
@@ -225,6 +227,20 @@ export function migrateRetireUnits(s,seed){const m=seed.retireUnitMigration;if(!
 
 // ---- group migration (seed v10): add "Quarterly Supply Fans" to an existing Hills schedule (add-only) and tag the 8
 // rooftop supply fans - only units still untouched by the owner (updatedBy seed/seed-migration) and untagged.
+// v11: auto-tag Hills units to schedule groups. Only fills groups that are still EMPTY and units that have no group,
+// so anything the owner already tagged/untagged by hand is left alone. Empty open schedule visits pick up the new units.
+export function migrateTags(s,seed){const m=seed.tagMigration;if(!m||(s.tagMigrationVersion||0)>=m.version)return;
+  const l=s.locations.find(x=>x.id===m.locationId);const live=new Set((l?.schedule?.groups||[]).filter(g=>!g.archived).map(g=>g.id));
+  const used=new Set(s.units.filter(u=>u.equipmentGroupId&&!u.archived).map(u=>u.equipmentGroupId));
+  for(const [uid,gid] of Object.entries(m.tags||{})){const u=s.units.find(x=>x.id===uid);if(!u||u.equipmentGroupId||!live.has(gid)||used.has(gid))continue;
+    u.equipmentGroupId=gid;S.logChange('units',uid,'equipmentGroupId',gid,'seed-migration')}
+  s.tagMigrationVersion=m.version;
+  for(const v of s.visits)if(v.locationId===m.locationId&&v.templateId==='schedule'&&v.status==='active'&&v.groupCodes)refreshSchedVisit(v)}
+export function refreshSchedVisit(v){for(const it of schedItems(v.locationId,v.groupCodes))if(!v.items.some(x=>x.id===it.id))v.items.push(it)}
+// tag several units to one group at once (Tag units picker). Moves units from another group. Open schedule visits pick them up.
+export function tagUnits(lid,gid,uids,by){for(const uid of uids){const u=unit(uid);if(!u||u.equipmentGroupId===gid)continue;
+    u.equipmentGroupId=gid;u.updatedAt=S.now();u.updatedBy=by;S.logChange('units',uid,'equipmentGroupId',gid,by)}
+  for(const v of st().visits)if(v.locationId===lid&&v.templateId==='schedule'&&v.status==='active'&&v.groupCodes)refreshSchedVisit(v);S.save()}
 export function migrateGroups(s,seed){const m=seed.groupMigration;if(!m||(s.groupMigrationVersion||0)>=m.version)return;
   const l=s.locations.find(x=>x.id===m.locationId),key='group:'+m.group.id;
   if(l?.schedule&&!l.schedule.groups.some(g=>g.id===m.group.id)&&!s.seenSeedIds.includes(key)){l.schedule.groups.push({...structuredClone(m.group),order:l.schedule.groups.length});s.seenSeedIds.push(key);S.logChange('schedule',l.id+'/'+m.group.id,'create',m.group,'seed-migration')}

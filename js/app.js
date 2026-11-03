@@ -75,16 +75,22 @@ function home(){return header(null,null)+`<main class="wrap"><div class="muted f
    <div class="row sb muted text-sm font-bold mt-2"><span>${v?esc(v.label)+' · ':''}${s.done}/${s.total} items · ${s.pct}%</span><span class="${s.issues?'red':''}">${s.issues} issue${s.issues==1?'':'s'}</span></div></a>`}).join('')}</div>
  <a class="btn ghost mt-6" href="#/import">⇪ Import units (CSV)</a></main>`}
 function areasForVisit(v){const all=M.areasOf(v.locationId,true);return all.filter(a=>v.status==='active'?!a.archived:v.items.some(i=>M.itemArea(i)===a.id))}
+// schedule visit with nothing tagged: never a dead end -> tag units here, or start a regular all-areas visit
+function emptySched(l,v){const gs=Object.keys(v.groupCodes||{}).map(id=>M.group(l.id,id)).filter(Boolean);const reg=M.templatesFor(l).filter(t=>t.id!=='schedule');
+ return `<div class="card mt-4 empty" id="emptysched"><h2>No units tagged to ${gs.length==1?esc(gs[0].name):'these equipment groups'} yet</h2>
+  <p class="muted mt-2 font-bold">Pick which units belong to the group and they'll show up here to check off.</p>
+  <div class="mt-3" style="display:grid;gap:8px">${gs.map(g=>`<button class="btn primary" data-tagpick="${g.id}">🏷 Tag units to ${esc(g.name)}</button>`).join('')}
+  ${reg.map(t=>`<button class="btn ghost" data-startreg="${t.id}">▶ Start ${esc(t.label)} instead (all areas)</button>`).join('')}</div></div>`}
 function locView(l){const v=M.currentVisit(l.id);if(!v)return header('#/',l.name)+`<main class="wrap"><a class="btn primary" href="#/l/${l.id}/visits">Start a visit</a></main>`;
  const items=M.visibleItems(v),s=M.stats(v,items),t=M.tmpl(v.templateId);let body='';
- if(!items.length)body=`<div class="card mt-4 empty"><h2>No units in this visit</h2><p class="muted mt-2 font-bold">${esc(t.emptyText||(v.templateId==='schedule'?'No units are tagged with this equipment group yet. Tag units in Settings → unit editor.':'No units yet.'))}</p></div>`;
+ if(!items.length)body=v.templateId==='schedule'?emptySched(l,v):`<div class="card mt-4 empty"><h2>No units in this visit</h2><p class="muted mt-2 font-bold">${esc(t.emptyText||'No units yet.')}</p></div>`;
  else if(ui.layout==='grid')body=gridHtml(v,areasForVisit(v),items,true);
  else if(ui.mode==='all')body=areasForVisit(v).map(a=>{const its=M.visibleItems(v,a.id);if(!its.length)return '';const x=M.stats(v,its),dn=x.total&&x.done===x.total;
   return `<a class="card area ${dn?'done':''}" href="#/l/${l.id}/a/${a.id}" data-area="${a.id}"><div class="row sb"><h2>${esc(a.name)}${a.archived?' (removed)':''}</h2>${x.issues?`<span class="badge">⚑ ${x.issues}</span>`:dn?'<span class="green font-black">✓ DONE</span>':''}</div>${bar(x.pct,dn)}
    <div class="row sb muted text-sm font-bold mt-2"><span>${x.done}/${x.total} items</span><span>${x.last?esc(first(x.last.by))+', '+tfmt(x.last.at):''}</span></div></a>`}).join('');
  else body=remainingList(v,areasForVisit(v),items);
  return header('#/',l.name,`${esc(v.label)} · ${dfmt(v.date)}${v.status!=='active'?' · <span class="green">COMPLETED (history)</span>':''}`)+`<main class="wrap has-bottom">
-  <div class="row mt-3" style="gap:8px"><a class="btn ghost sm" href="#/l/${l.id}/visits">📋 Visits (${M.st().visits.filter(x=>x.locationId===l.id).length})</a><a class="btn ghost sm" href="#/l/${l.id}/history">🕘 History log</a>${l.schedule?`<a class="btn ghost sm" id="schedbtn" href="#/l/${l.id}/schedule">🗓 Schedule</a>`:''}</div>${v.outOfSeason?'<span class="tag" id="oostag">Out of season</span>':''}${v.kind==='month'?`<span class="tag" id="monthtag">Monthly visit · stays open all month</span>`:''}${l.schedule&&M.overdue(l.id).length?`<a class="card issue mt-3" style="display:block" id="overduebanner" href="#/l/${l.id}/schedule"><b class="red">⚠ Overdue from ${M.overdue(l.id).map(o=>esc(o.visit.label)).join(', ')}</b><div class="muted text-sm">${M.overdue(l.id).reduce((n,o)=>n+o.open.length,0)} item(s) still open · tap for Schedule</div></a>`:''}
+  <div class="row mt-3" style="gap:8px"><a class="btn ghost sm" href="#/l/${l.id}/visits">📋 Visits (${M.st().visits.filter(x=>x.locationId===l.id).length})</a><a class="btn ghost sm" href="#/l/${l.id}/history">🕘 History log</a>${l.schedule?`<a class="btn ghost sm" id="schedbtn" href="#/l/${l.id}/schedule">🗓 Schedule</a>`:''}</div>${(()=>{const mv=M.monthVisit(l.id);return mv&&mv.id!==v.id&&mv.status==='active'&&mv.items.length?`<button class="card mt-3" id="monthbanner" data-openv="${mv.id}" style="width:100%;text-align:left;border-color:#e8a33d"><div class="amber font-black">🗓 ${esc(mv.label)} is ready (${mv.items.length} items)</div><div class="muted font-bold text-sm">Tap to open it · you're on ${esc(v.label)}</div></button>`:''})()}${v.outOfSeason?'<span class="tag" id="oostag">Out of season</span>':''}${v.kind==='month'?`<span class="tag" id="monthtag">Monthly visit · stays open all month</span>`:''}${l.schedule&&M.overdue(l.id).length?`<a class="card issue mt-3" style="display:block" id="overduebanner" href="#/l/${l.id}/schedule"><b class="red">⚠ Overdue from ${M.overdue(l.id).map(o=>esc(o.visit.label)).join(', ')}</b><div class="muted text-sm">${M.overdue(l.id).reduce((n,o)=>n+o.open.length,0)} item(s) still open · tap for Schedule</div></a>`:''}
   <div class="card prog"><div class="row sb"><div><div class="muted font-bold text-sm">OVERALL PROGRESS</div><div class="big">${s.done}<span class="muted text-xl">/${s.total} items</span></div></div><div class="text-right"><div class="big amber">${s.pct}%</div><div class="red font-bold">${s.issues} issue${s.issues==1?'':'s'}</div></div></div>${bar(s.pct)}</div>
   ${seg()}${layoutSeg()}<div id="list">${body}</div></main>
   <nav class="bottom"><div class="row" style="gap:10px"><a class="btn primary" href="#/l/${l.id}/report">📄 Issue Report</a><a class="btn ghost" style="width:40%" href="#/l/${l.id}/parts">🧰 Parts</a></div></nav>`}
@@ -220,6 +226,12 @@ function sheetHtml(){const s=ui.sheet;if(!s)return '';
   <div class="row mt-3" style="gap:10px"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" id="startgroup">Start visit</button></div></section>`}
  if(s.type==='unit'){const v=M.st().visits.find(x=>x.id===s.visit),it=v.items.find(i=>i.id===s.item);if(!it)return '';
   return `<div class="sheet-back" data-close></div><section class="sheet unitsheet" role="dialog" aria-label="Unit detail"><div class="grab"></div><div class="row sb"><h2>Unit detail</h2><button class="btn ghost mini2" data-close>Close</button></div>${itemCard(v,it)}</section>`}
+ if(s.type==='tagpick'){const l=M.loc(s.loc),g=M.group(l.id,s.group);
+  return `<div class="sheet-back" data-close></div><section class="sheet" role="dialog" aria-label="Tag units"><div class="grab"></div><h2>Tag units to ${esc(g.name)}</h2>
+  <p class="muted font-bold mt-1">Tick every unit in this group. Units already in another group are moved.</p><div id="tagpicklist" style="max-height:55vh;overflow:auto" class="mt-2">
+  ${M.areasOf(l.id).map(a=>{const us=M.unitsOf(a.id);if(!us.length)return '';return `<div class="muted font-black text-sm mt-3">${esc(a.name)}</div>`+us.map(u=>{const o=u.equipmentGroupId&&u.equipmentGroupId!==g.id?M.group(l.id,u.equipmentGroupId):null;
+   return `<label class="row" style="gap:10px;min-height:44px"><input type="checkbox" data-tagu="${u.id}" ${u.equipmentGroupId===g.id?'checked':''} style="width:24px;height:24px;flex:none"><span class="font-bold">${esc(u.name)}${o?` <small class="muted">(in ${esc(o.name)})</small>`:''}</span></label>`}).join('')}).join('')}</div>
+  <div class="row mt-4" style="gap:10px"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" id="savetags">Save tags</button></div></section>`}
  if(s.type==='checkcol'){const v=M.st().visits.find(x=>x.id===s.visit),a=s.area?M.area(s.area):null,its=M.visibleItems(v,a?.id).filter(i=>ui.mode==='all'||M.remaining(v,i)),{plan,skipped}=M.checkAllPlan(v,its,s.field),d=M.fieldDef(s.field);
   return `<div class="sheet-back" data-close></div><section class="sheet" role="alertdialog" aria-label="Confirm check column"><div class="grab"></div><h2>Check ${esc(d.label)} on ${plan.length} unit${plan.length==1?'':'s'} in ${esc(a?a.name:M.loc(v.locationId).name)}?</h2>
   <p class="muted font-bold mt-2">Each is stamped ${esc(user())}, now. Already-checked cells keep their stamp.${skipped?` <span class="red">${skipped} unit${skipped==1?'':'s'} flagged ISSUE will be skipped.</span>`:''}</p>
@@ -240,7 +252,18 @@ function doCheckAll(v,items,label){const r=M.checkAll(v,items,user());if(navigat
 
 // ---------- router / render ----------
 function route(){return location.hash.replace(/^#\/?/,'').split('?')[0].split('/')}
-function render(){const y=scrollY,app=$('#app'),gw=$('#grid'),gs=gw&&render.keep?[gw.scrollLeft,gw.scrollTop]:null;
+// Visible error panel instead of a blank list if init/render throws. Reset only clears the app's offline cache +
+// service worker; saved PM data (localStorage) is kept.
+function fatal(err){console.error(err);const app=$('#app')||document.body;
+ app.innerHTML=`<main class="wrap"><div class="card mt-4" id="fatal" role="alert" style="border-color:#ef4444"><h2 class="red">Something went wrong loading the app</h2>
+  <p class="muted font-bold mt-2">Your saved PM data is still on this phone. Try Reload first; if it keeps happening tap Reset app cache.</p>
+  <pre class="text-sm mt-2" style="white-space:pre-wrap;word-break:break-word">${esc(String(err&&err.stack||err)).slice(0,600)}</pre>
+  <div class="row mt-4" style="gap:10px"><button class="btn ghost" id="fatalreload">↻ Reload</button><button class="btn primary" id="fatalreset">Reset app cache</button></div></div></main>`;
+ $('#fatalreload').onclick=()=>location.reload();
+ $('#fatalreset').onclick=async()=>{try{for(const r of await navigator.serviceWorker?.getRegistrations?.()||[])await r.unregister();for(const k of await caches.keys())await caches.delete(k)}catch(e){}location.reload()}}
+window.addEventListener('error',e=>{if(!$('#app')?.children.length)fatal(e.error||e.message)});
+function render(){try{render0()}catch(e){fatal(e)}}
+function render0(){const y=scrollY,app=$('#app'),gw=$('#grid'),gs=gw&&render.keep?[gw.scrollLeft,gw.scrollTop]:null;
  if(!user()){app.innerHTML=login();return}
  const p=route();let h;
  if(p[0]==='l'&&M.loc(p[1])){const l=M.loc(p[1]);
@@ -274,6 +297,9 @@ document.addEventListener('click',async e=>{const t=e.target.closest('button,[da
  if(t.dataset.layout){ui.layout=t.dataset.layout;localStorage.setItem('wmpm.layout',ui.layout);rerender();return}
  if(t.dataset.gunit){ui.sheet={type:'unit',visit:v.id,item:t.dataset.gunit};rerender();return}
  if(t.dataset.gcol){ui.sheet={type:'checkcol',visit:v.id,field:t.dataset.gcol,area:t.dataset.garea||null};rerender();return}
+ if(t.dataset.tagpick){ui.sheet={type:'tagpick',loc:l.id,group:t.dataset.tagpick};rerender();return}
+ if(t.id==='savetags'){const s=ui.sheet;const ids=[...document.querySelectorAll('[data-tagu]:checked')].map(e=>e.dataset.tagu);ui.sheet=null;M.tagUnits(s.loc,s.group,ids,u);rerender();toast(`🏷 ${ids.length} unit${ids.length==1?'':'s'} tagged to ${M.group(s.loc,s.group).name}`);return}
+ if(t.dataset.startreg){M.newVisit(l.id,t.dataset.startreg,null,null,u);rerender();return}
  if(t.id==='confirmcheckcol'){const s=ui.sheet;ui.sheet=null;const vv=M.st().visits.find(x=>x.id===s.visit);const its=M.visibleItems(vv,s.area||undefined).filter(i=>ui.mode==='all'||M.remaining(vv,i));
   const r=M.checkAll(vv,its,u,s.field);window.__lastCheckAll=r;rerender();toast(`✓ ${M.fieldDef(s.field).label}: ${r.ticked} checked${r.skipped?` · ${r.skipped} ISSUE unit${r.skipped==1?'':'s'} skipped`:''}`,r.ticked?r:null);return}
  if(t.dataset.checkall){const it=v.items.find(i=>i.id===t.dataset.checkall);window.__lastCheckAll=doCheckAll(v,[it],M.itemName(it));return}
@@ -339,11 +365,11 @@ function autoMonth(){const p=route();if(p[0]==='l'&&!p[2]&&M.loc(p[1])&&!ui.noAu
 addEventListener('hashchange',()=>{document.querySelector('.toast')?.remove();autoMonth();ui.mode='all';ui.sheet=null;if(!location.hash.includes('/report'))ui.reportArea='all';if(!location.hash.includes('/settings/u/'))ui.draft=null;render();scrollTo(0,0)});
 addEventListener('online',()=>{Sync.syncNow(S.outbox,S.clearOutbox).finally(rerender)});addEventListener('offline',rerender);
 
-export async function boot(){S.load();
- try{const seed=await (await fetch('data/seed.json')).json();const fresh=!M.st();const n=M.applySeed(seed,user()||'seed');if(fresh)localStorage.setItem('wmpm.outbox.v1','[]')}catch(e){if(!M.st())throw e}
- M.migrateState();if(user())autoMonth();render()}
+export async function boot(){try{S.load();
+ try{const seed=await (await fetch('data/seed.json')).json();const fresh=!M.st();const n=M.applySeed(seed,user()||'seed');if(fresh)localStorage.setItem('wmpm.outbox.v1','[]')}catch(e){console.error('seed/migration failed',e);if(!M.st())throw e}
+ M.migrateState();if(user())autoMonth();render()}catch(e){fatal(e)}}
 window.WM={S,Sync,M,render,ui};
-boot();
+boot().catch(fatal);
 
 if('serviceWorker' in navigator&&location.protocol!=='file:'){navigator.serviceWorker.register('sw.js').then(reg=>{
  const show=w=>{const b=document.createElement('button');b.className='update';b.textContent='Update ready — tap to reload';b.onclick=()=>w.postMessage('SKIP_WAITING');document.body.appendChild(b)};
