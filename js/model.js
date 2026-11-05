@@ -105,7 +105,7 @@ export function applySeed(seed,by){let s=st();
   if((s.seedVersion||0)>=seed.version){migrateState(s,seed);return 0}const seen=new Set(s.seenSeedIds);let added=0;
   s.fieldDefs||=[];for(const coll of ['fieldDefs','locations','areas','units','sizes','templates'])for(const e of seed[coll]){const key=coll+':'+e.id;
     if(seen.has(key))continue;seen.add(key);if(!s[coll].some(x=>x.id===e.id)){s[coll].push({nameHistory:[],...structuredClone(e),updatedAt:seed.generatedAt,updatedBy:'seed'});added++}}
-  s.seenSeedIds=[...seen];const first=!s.seedVersion;if(!first){migrateAreas(s,seed);migrateTemplates(s,seed);migrateBelts(s,seed);migrateUnitPatches(s,seed);migrateRetireUnits(s,seed);migrateGroups(s,seed);migrateTags(s,seed);migrateCheckmark(s,seed);migrateRename(s,seed);migrateTyson(s,seed);migrateTags(s,seed,'tysonTagMigration');migrateState(s,seed)}s.seedVersion=seed.version;S.save();
+  s.seenSeedIds=[...seen];const first=!s.seedVersion;if(!first){migrateAreas(s,seed);migrateTemplates(s,seed);migrateBelts(s,seed);migrateUnitPatches(s,seed);migrateRetireUnits(s,seed);migrateGroups(s,seed);migrateTags(s,seed);migrateCheckmark(s,seed);migrateRename(s,seed);migrateTyson(s,seed);migrateTags(s,seed,'tysonTagMigration');migrateGroupRemove(s,seed);migrateState(s,seed)}s.seedVersion=seed.version;S.save();
   migrateState(s,seed);
   if(first)for(const l of locations())if(!s.visits.some(v=>v.locationId===l.id))newVisit(l.id,seed.defaultVisits?.[l.id]||'quarterly',null,null,by||'seed');
   return added}
@@ -272,6 +272,19 @@ export function migrateRetireUnits(s,seed){const m=seed.retireUnitMigration;if(!
 // so anything the owner already tagged/untagged by hand is left alone. Empty open schedule visits pick up the new units.
 // v12: Zach's "just check marks" groups. Only groups the owner never typed AND that have no tagged units are converted.
 // v13: spelling fix (AAON) + Tyson area rename. Only when the name is still the old seed value (owner renames kept). IDs unchanged.
+// v16 (Nov 5 2026, Zach): remove 6 Hills schedule groups once, by id. Units are untagged (only equipmentGroupId cleared),
+// the group record is kept in location.removedGroups for history. Safe if already deleted; a group Zach re-creates later
+// gets a new id, so it is never removed again. Also archives EMPTY Hills areas whose names are not among the 13 real ones.
+export function migrateGroupRemove(s,seed){const m=seed.groupRemoveMigration;if(!m)return;const l=s.locations.find(x=>x.id===m.locationId);if(!l)return;
+  s.seenSeedIds||=[];const out={groups:[],untagged:0,areas:[]};
+  for(const [gid,name] of Object.entries(m.groups)){const key='groupRemove:'+gid;if(s.seenSeedIds.includes(key))continue;s.seenSeedIds.push(key);
+    const gs=l.schedule?.groups||[],i=gs.findIndex(g=>g.id===gid);
+    if(i>=0){const [g]=gs.splice(i,1);(l.removedGroups||=[]).push({...g,removedAt:S.now(),removedBy:'seed-migration'});gs.forEach((x,k)=>x.order=k);out.groups.push(g.name);S.logChange('schedule',l.id+'/'+gid,'remove',{name:g.name},'seed-migration')}
+    for(const u of s.units)if(u.equipmentGroupId===gid){u.equipmentGroupId=null;out.untagged++;S.logChange('units',u.id,'equipmentGroupId',null,'seed-migration')}
+    for(const v of s.visits){if(v.locationId!==l.id)continue;if(v.groupCodes&&v.groupCodes[gid]){delete v.groupCodes[gid];if(v.status==='active')refreshSchedVisit(v)}}}
+  const key='areaCleanup:'+m.version;if(!s.seenSeedIds.includes(key)){s.seenSeedIds.push(key);
+    for(const a of s.areas)if(a.locationId===l.id&&!a.system&&!a.archived&&!m.keepAreaNames.includes(a.name)&&!(a.updatedBy&&!/^seed/.test(a.updatedBy))&&!s.units.some(u=>u.areaId===a.id&&!u.archived)){a.archived=true;out.areas.push(a.name);S.logChange('areas',a.id,'archived',true,'seed-migration')}}
+  s.groupRemoveResult=out;return out}
 export function migrateRename(s,seed){const m=seed.renameMigration;if(!m||(s.renameMigrationVersion||0)>=m.version)return;
   const ren=(e,r,coll)=>{if(e&&e.name===r.from){(e.nameHistory||=[]).push({name:e.name,at:S.now(),by:'seed-migration'});e.name=r.to;S.logChange(coll,e.id,'name',r.to,'seed-migration')}};
   for(const [id,r] of Object.entries(m.areas||{}))ren(s.areas.find(a=>a.id===id),r,'areas');

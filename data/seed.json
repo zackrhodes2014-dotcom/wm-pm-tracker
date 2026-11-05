@@ -1,6 +1,6 @@
 {
- "version": 15,
- "generatedAt": "2026-11-03T17:26:06.337Z",
+ "version": 16,
+ "generatedAt": "2026-11-05T13:59:31.866Z",
  "note": "Hills Pet Foods = real data from Zach sheet; all other locations = PLACEHOLDER sample units",
  "locations": [
   {
@@ -414,191 +414,9 @@
       "type": "checkmark"
      },
      {
-      "id": "eg_4034f29055",
-      "name": "RTU ALL",
-      "order": 5,
-      "notes": [],
-      "months": {
-       "1": [
-        "PF"
-       ],
-       "2": [],
-       "3": [
-        "PF"
-       ],
-       "4": [
-        "PF",
-        "CC",
-        "CS",
-        "BC"
-       ],
-       "5": [],
-       "6": [],
-       "7": [
-        "PF"
-       ],
-       "8": [],
-       "9": [
-        "PF"
-       ],
-       "10": [],
-       "11": [
-        "PF"
-       ],
-       "12": []
-      },
-      "archived": false
-     },
-     {
-      "id": "eg_dd04c92a6f",
-      "name": "Lab Unit",
-      "order": 6,
-      "notes": [],
-      "months": {
-       "1": [
-        "PF"
-       ],
-       "2": [
-        "PF"
-       ],
-       "3": [
-        "PF"
-       ],
-       "4": [
-        "PF"
-       ],
-       "5": [],
-       "6": [],
-       "7": [
-        "PF"
-       ],
-       "8": [],
-       "9": [
-        "PF"
-       ],
-       "10": [],
-       "11": [
-        "PF"
-       ],
-       "12": []
-      },
-      "archived": false
-     },
-     {
-      "id": "eg_bc53f346ed",
-      "name": "RMT AAON",
-      "order": 7,
-      "notes": [],
-      "months": {
-       "1": [
-        "PF"
-       ],
-       "2": [
-        "PF"
-       ],
-       "3": [],
-       "4": [
-        "PF"
-       ],
-       "5": [
-        "PF"
-       ],
-       "6": [],
-       "7": [
-        "PF"
-       ],
-       "8": [
-        "PF"
-       ],
-       "9": [],
-       "10": [
-        "PF"
-       ],
-       "11": [
-        "PF"
-       ],
-       "12": []
-      },
-      "archived": false
-     },
-     {
-      "id": "eg_fdd1a46191",
-      "name": "Electrical Rooms 1,2,3,5,6,7,9,10,11,12",
-      "order": 8,
-      "notes": [],
-      "months": {
-       "1": [
-        "PF"
-       ],
-       "2": [
-        "PF"
-       ],
-       "3": [],
-       "4": [
-        "PF"
-       ],
-       "5": [
-        "PF"
-       ],
-       "6": [],
-       "7": [
-        "PF"
-       ],
-       "8": [
-        "PF"
-       ],
-       "9": [],
-       "10": [
-        "PF"
-       ],
-       "11": [
-        "PF"
-       ],
-       "12": []
-      },
-      "archived": false
-     },
-     {
-      "id": "eg_c39ab56063",
-      "name": "RTU maintenance Planner office",
-      "order": 9,
-      "notes": [],
-      "months": {
-       "1": [
-        "PF"
-       ],
-       "2": [
-        "PF"
-       ],
-       "3": [],
-       "4": [
-        "PF"
-       ],
-       "5": [
-        "PF"
-       ],
-       "6": [],
-       "7": [
-        "PF"
-       ],
-       "8": [
-        "PF"
-       ],
-       "9": [],
-       "10": [
-        "PF"
-       ],
-       "11": [
-        "PF"
-       ],
-       "12": []
-      },
-      "archived": false
-     },
-     {
       "id": "eg_6a8bf265a2",
       "name": "Gas Fired Make Air Units",
-      "order": 10,
+      "order": 5,
       "notes": [],
       "months": {
        "1": [
@@ -630,7 +448,7 @@
      {
       "id": "eg_33d1aa7f48",
       "name": "Make Air Fans",
-      "order": 11,
+      "order": 6,
       "notes": [],
       "months": {
        "1": [],
@@ -658,7 +476,7 @@
      {
       "id": "eg_3bd8fdcbc9",
       "name": "Exhaust Fans",
-      "order": 12,
+      "order": 7,
       "notes": [],
       "months": {
        "1": [],
@@ -685,40 +503,9 @@
       "archived": false
      },
      {
-      "id": "eg_1eba713b85",
-      "name": "Lab Exhaust Fans",
-      "order": 13,
-      "notes": [],
-      "months": {
-       "1": [
-        "PF"
-       ],
-       "2": [],
-       "3": [],
-       "4": [
-        "PF"
-       ],
-       "5": [],
-       "6": [],
-       "7": [
-        "PF"
-       ],
-       "8": [],
-       "9": [],
-       "10": [
-        "PF",
-        "BC",
-        "AI"
-       ],
-       "11": [],
-       "12": []
-      },
-      "archived": false
-     },
-     {
       "id": "eg_4726e4fb67",
       "name": "Quarterly Supply Fans",
-      "order": 14,
+      "order": 8,
       "notes": [
        "Default quarterly months (Jan/Apr/Jul/Oct) - confirm with Zach",
        "Belts + operational check; no filters"
@@ -754,7 +541,7 @@
      {
       "id": "eg_0d0dbd2808",
       "name": "Dehumidifiers",
-      "order": 15,
+      "order": 9,
       "notes": [
        "Evaporator Cleaning Once per Year",
        "Hepa Filter Change Not Included"
@@ -1302,8 +1089,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_fdd1a46191"
+   "flags": []
   },
   {
    "id": "u_6514fa8a69",
@@ -1328,8 +1114,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_4034f29055"
+   "flags": []
   },
   {
    "id": "u_06c3b5f936",
@@ -1354,8 +1139,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_4034f29055"
+   "flags": []
   },
   {
    "id": "u_34b02550e6",
@@ -1380,8 +1164,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_4034f29055"
+   "flags": []
   },
   {
    "id": "u_2b4126e1ad",
@@ -1406,8 +1189,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_fdd1a46191"
+   "flags": []
   },
   {
    "id": "u_02b9a6a5e0",
@@ -1432,8 +1214,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_4034f29055"
+   "flags": []
   },
   {
    "id": "u_7d5dd9ea12",
@@ -1458,8 +1239,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_4034f29055"
+   "flags": []
   },
   {
    "id": "u_ffdbea9bc3",
@@ -1484,8 +1264,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_4034f29055"
+   "flags": []
   },
   {
    "id": "u_249adb6f82",
@@ -1510,8 +1289,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_4034f29055"
+   "flags": []
   },
   {
    "id": "u_b1dbced866",
@@ -1531,8 +1309,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_4034f29055"
+   "flags": []
   },
   {
    "id": "u_8311007e79",
@@ -1557,8 +1334,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_4034f29055"
+   "flags": []
   },
   {
    "id": "u_f9153dda1f",
@@ -1578,8 +1354,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_4034f29055"
+   "flags": []
   },
   {
    "id": "u_868cb58c4b",
@@ -1604,8 +1379,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_4034f29055"
+   "flags": []
   },
   {
    "id": "u_4e44b6ae47",
@@ -1690,8 +1464,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_bc53f346ed"
+   "flags": []
   },
   {
    "id": "u_f069cefe04",
@@ -1715,8 +1488,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_bc53f346ed"
+   "flags": []
   },
   {
    "id": "u_cd641ce856",
@@ -1740,8 +1512,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_bc53f346ed"
+   "flags": []
   },
   {
    "id": "u_f01e2c72cd",
@@ -1765,8 +1536,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_bc53f346ed"
+   "flags": []
   },
   {
    "id": "u_8546ca6ea3",
@@ -1786,8 +1556,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_4034f29055"
+   "flags": []
   },
   {
    "id": "u_acce8bd312",
@@ -1812,8 +1581,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_4034f29055"
+   "flags": []
   },
   {
    "id": "u_0e39a8dce2",
@@ -1842,8 +1610,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_4034f29055"
+   "flags": []
   },
   {
    "id": "u_d0a03a2c05",
@@ -1872,8 +1639,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_4034f29055"
+   "flags": []
   },
   {
    "id": "u_b1dc45e850",
@@ -2046,8 +1812,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_fdd1a46191"
+   "flags": []
   },
   {
    "id": "u_6a4281c639",
@@ -2092,8 +1857,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_dd04c92a6f"
+   "flags": []
   },
   {
    "id": "u_033f324b5f",
@@ -2155,8 +1919,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_fdd1a46191"
+   "flags": []
   },
   {
    "id": "u_6fbbdb7f46",
@@ -2181,8 +1944,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_fdd1a46191"
+   "flags": []
   },
   {
    "id": "u_6e40bba0c0",
@@ -2239,8 +2001,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_dd04c92a6f"
+   "flags": []
   },
   {
    "id": "u_e5a7cbf0ae",
@@ -2284,8 +2045,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_fdd1a46191"
+   "flags": []
   },
   {
    "id": "u_b501db7c2f",
@@ -2310,8 +2070,7 @@
     "coilCondenser": false,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_fdd1a46191"
+   "flags": []
   },
   {
    "id": "u_095cadd687",
@@ -2336,8 +2095,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_fdd1a46191"
+   "flags": []
   },
   {
    "id": "u_eb2ef8078a",
@@ -2446,8 +2204,7 @@
     "coilCondenser": true,
     "ops": true
    },
-   "flags": [],
-   "equipmentGroupId": "eg_dd04c92a6f"
+   "flags": []
   },
   {
    "id": "u_2484c3379a",
@@ -4619,39 +4376,9 @@
   "version": 11,
   "locationId": "loc_3cfb012bc8",
   "tags": {
-   "u_aadfe604a3": "eg_fdd1a46191",
-   "u_6514fa8a69": "eg_4034f29055",
-   "u_06c3b5f936": "eg_4034f29055",
-   "u_34b02550e6": "eg_4034f29055",
-   "u_2b4126e1ad": "eg_fdd1a46191",
-   "u_02b9a6a5e0": "eg_4034f29055",
-   "u_7d5dd9ea12": "eg_4034f29055",
-   "u_ffdbea9bc3": "eg_4034f29055",
-   "u_249adb6f82": "eg_4034f29055",
-   "u_b1dbced866": "eg_4034f29055",
-   "u_8311007e79": "eg_4034f29055",
-   "u_f9153dda1f": "eg_4034f29055",
-   "u_868cb58c4b": "eg_4034f29055",
    "u_4e44b6ae47": "eg_0d0dbd2808",
    "u_875d1d0ae3": "eg_0d0dbd2808",
-   "u_1339d4188e": "eg_bc53f346ed",
-   "u_f069cefe04": "eg_bc53f346ed",
-   "u_cd641ce856": "eg_bc53f346ed",
-   "u_f01e2c72cd": "eg_bc53f346ed",
-   "u_8546ca6ea3": "eg_4034f29055",
-   "u_acce8bd312": "eg_4034f29055",
-   "u_0e39a8dce2": "eg_4034f29055",
-   "u_d0a03a2c05": "eg_4034f29055",
-   "u_e5ff8b8e4c": "eg_fdd1a46191",
-   "u_c38f3f6feb": "eg_dd04c92a6f",
-   "u_afc2019631": "eg_fdd1a46191",
-   "u_6fbbdb7f46": "eg_fdd1a46191",
-   "u_d123f7a081": "eg_dd04c92a6f",
-   "u_183c522ce0": "eg_fdd1a46191",
-   "u_b501db7c2f": "eg_fdd1a46191",
-   "u_095cadd687": "eg_fdd1a46191",
    "u_3c73dc11ba": "eg_33d1aa7f48",
-   "u_accabadb0f": "eg_dd04c92a6f",
    "u_89018184bb": "eg_3bd8fdcbc9",
    "u_ed6120827b": "eg_3bd8fdcbc9",
    "u_95d88bd0e8": "eg_3bd8fdcbc9",
@@ -4699,7 +4426,7 @@
   "group": {
    "id": "eg_4726e4fb67",
    "name": "Quarterly Supply Fans",
-   "order": 14,
+   "order": 8,
    "notes": [
     "Default quarterly months (Jan/Apr/Jul/Oct) - confirm with Zach",
     "Belts + operational check; no filters"
@@ -4855,6 +4582,33 @@
     "flags": []
    }
   }
+ },
+ "groupRemoveMigration": {
+  "version": 16,
+  "locationId": "loc_3cfb012bc8",
+  "groups": {
+   "eg_4034f29055": "RTU ALL",
+   "eg_dd04c92a6f": "Lab Unit",
+   "eg_bc53f346ed": "RMT AAON",
+   "eg_fdd1a46191": "Electrical Rooms 1,2,3,5,6,7,9,10,11,12",
+   "eg_c39ab56063": "RTU maintenance Planner office",
+   "eg_1eba713b85": "Lab Exhaust Fans"
+  },
+  "keepAreaNames": [
+   "Upper Roof Units",
+   "Lower Roof Units",
+   "Dehumidifiers",
+   "Meat Cooler",
+   "AAON",
+   "Raw Meat RTUs",
+   "Trane Package Ground",
+   "Greenheck LIW",
+   "Indoor AHUs",
+   "Supply Fans",
+   "Other",
+   "Exhaust Fans",
+   "Heaters (Fall/Winter)"
+  ]
  },
  "templateMigration": {
   "version": 6,
